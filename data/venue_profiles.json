@@ -1,0 +1,2601 @@
+[
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Aesop",
+    "Category":"Lifestyle",
+    "Sub-category":"Skin Care",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Artfeena",
+    "Category":"Retail",
+    "Sub-category":"Boutique",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Arsan",
+    "Category":"Lifestyle",
+    "Sub-category":"Services",
+    "Spending Range (SAR)":"200-600"
+  },
+{
+  "MerchantName_Keyword": "Chaps & Co",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "Services",
+  "Sub-category": "Barber Shop",
+  "Spending Range (SAR)": "100–300",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Tax 15%",
+    "CR_Label": null,
+    "TaxID_Label": "310075487100003",
+    "Date_Label": "15/05/2025",
+    "Time_Label": "13:29",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "3626",
+    "StoreID_Label": "Chaps & Co - VIA Riyadh",
+    "MerchantName_Keyword": "تشابس آند كو / Chaps & Co",
+    "MerchantAddress_Keyword": "Via Riyadh, Riyadh"
+  }
+}
+ , {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"CLE",
+    "Category":"Retail",
+    "Sub-category":"Jewelry & Watches",
+    "Spending Range (SAR)":"1000-10000"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Dolce & Gabbana",
+    "Category":"Retail",
+    "Sub-category":"Fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+{
+  "MerchantName_Keyword": "ELIE SAAB",
+  "MerchantAddress_Keyword": "Via Riyadh Mall",
+  "Category": "Retail",
+  "Sub-category": "Luxury Fashion",
+  "Spending Range (SAR)": "10000–50000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Tax amounts",
+    "CR_Label": "1010818841",
+    "TaxID_Label": "396425600003",
+    "Date_Label": "2025/07/10",
+    "Time_Label": "12:19:30",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "ID: KSA1100004255",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "إيلي صعب / ELIE SAAB",
+    "MerchantAddress_Keyword": "Via Riyadh Mall, Al-Hada District, Riyadh"
+  }
+}
+,
+{
+  "MerchantName_Keyword": "Fleurs de Vie",
+  "MerchantAddress_Keyword": "Via Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Florist / Gift Shop",
+  "Spending Range (SAR)": "200–1500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Amount",
+    "Subtotal_Label": "Total Amount after discount (VAT Exclusive)",
+    "Tax_Label": "Total VAT (15%)",
+    "CR_Label": "1010687405",
+    "TaxID_Label": "310865617500003",
+    "Date_Label": "2025-04-15",
+    "Time_Label": "15:54:08",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "1595",
+    "StoreID_Label": "Gift Mart International",
+    "MerchantName_Keyword": "فلور دو في / Fleurs de Vie",
+    "MerchantAddress_Keyword": "Main branch"
+  }
+}
+,
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Isaia",
+    "Category":"Retail",
+    "Sub-category":"Men Wear",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Jacques La Coupe",
+    "Category":"Lifestyle",
+    "Sub-category":"Beauty Salon",
+    "Spending Range (SAR)":"200-600"
+  },
+{
+  "MerchantName_Keyword": "L'Atelier Nawbar",
+  "MerchantAddress_Keyword": "Via Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Luxury Jewelry",
+  "Spending Range (SAR)": "5000–15000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL / الإجمالي",
+    "Subtotal_Label": "Untaxed Amount",
+    "Tax_Label": "VAT Taxes",
+    "CR_Label": null,
+    "TaxID_Label": "312259575500003",
+    "Date_Label": null,
+    "Time_Label": null,
+    "Date_Format": null,
+    "Time_Format": null,
+    "InvoiceId_Label": "501",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "أتولييه نوبر / L'Atelier Nawbar",
+    "MerchantAddress_Keyword": "Riyadh"
+  }
+}
+,
+{
+  "MerchantName_Keyword": "Maria Tash",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Fine Jewelry & Luxury Piercing",
+  "Spending Range (SAR)": "500–6000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "الإجمالي / Amount",
+    "Subtotal_Label": "Amount without tax",
+    "Tax_Label": "ضريبة / (15%)",
+    "CR_Label": null,
+    "TaxID_Label": "311832940200003",
+    "Date_Label": "20/05/2025",
+    "Time_Label": "11:00 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "Ticket #: 14834000756",
+    "StoreID_Label": "Sales Rep: Amira A.",
+    "MerchantName_Keyword": "ماريا تاش / Maria Tash",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "MWAZ",
+  "MerchantAddress_Keyword": "Boulevard City, Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Luxury Fashion",
+  "Spending Range (SAR)": "300–10000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "SubTotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": "300210077100003",
+    "Date_Label": "2025-07-07",
+    "Time_Label": "18:13:15",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "#طلب: 4684-790",
+    "StoreID_Label": "MWAZ BLVD CITY",
+    "MerchantName_Keyword": "مواز / MWAZ",
+    "MerchantAddress_Keyword": "Boulevard City, Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Roberto Coin",
+  "MerchantAddress_Keyword": "Via Riyadh Mall",
+  "Category": "Retail",
+  "Sub-category": "Luxury Jewelry",
+  "Spending Range (SAR)": "5000–10000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL AMOUNT",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT (VAT 15%)",
+    "CR_Label": "1010501472",
+    "TaxID_Label": "311462482600003",
+    "Date_Label": "28/01/2025",
+    "Time_Label": "21:29",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Invoice #1958",
+    "StoreID_Label": "Via Riyadh",
+    "MerchantName_Keyword": "روبرتو كوين / Roberto Coin",
+    "MerchantAddress_Keyword": "Via Riyadh Mall"
+  }
+},
+{
+  "MerchantName_Keyword": "SEVEN Car Lounge",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Luxury Automotive Collectibles",
+  "Spending Range (SAR)": "10,000+",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "الإجمالي شامل الضريبة / Total",
+    "Subtotal_Label": "الإجمالي قبل الضريبة / Subtotal",
+    "Tax_Label": "إجمالي قيمة الضريبة المضافة / VAT",
+    "CR_Label": "1010931460",
+    "TaxID_Label": "300946275300003",
+    "Date_Label": "09/02/2025",
+    "Time_Label": null,
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": null,
+    "InvoiceId_Label": "رقم الفاتورة: 0005",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "سڤن كار لاونج / SEVEN Car Lounge",
+    "MerchantAddress_Keyword": "Riyadh"
+  }
+},
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":"Marriott",
+    "MerchantName_Keyword":"St. Regis",
+    "Category":"Hospitality",
+    "Sub-category":"Hotel",
+    "Spending Range (SAR)":"1000-5000"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":"MAF",
+    "MerchantName_Keyword":"Vox Cinema",
+    "Category":"Lifestyle",
+    "Sub-category":"Entertainment",
+    "Spending Range (SAR)":"50-150"
+  },
+{
+  "MerchantName_Keyword": "Tom Ford",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Luxury Fashion",
+  "Spending Range (SAR)": "2000–6000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Grand Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Total VAT 15%",
+    "CR_Label": "1010211300",
+    "TaxID_Label": "300045984300003",
+    "Date_Label": "21/05/2025",
+    "Time_Label": "23:09",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "ORDR30RDR3100681",
+    "StoreID_Label": "Tom-Ford VIA Riyadh",
+    "MerchantName_Keyword": "توم فورد / Tom Ford",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Madeo Ristorante",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Italian Fine Dining",
+  "Spending Range (SAR)": "300–1000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "02/07/2025",
+    "Time_Label": "18:42",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10011975",
+    "StoreID_Label": "TBL 37/1",
+    "MerchantName_Keyword": "ماديو / Madeo Ristorante",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":"Cool Inc.",
+    "MerchantName_Keyword":"Raoul's",
+    "Category":"Food & Drink",
+    "Sub-category":"Fine Dining",
+    "Spending Range (SAR)":"200-800"
+  },
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":"Cool Inc.",
+    "MerchantName_Keyword":"Cafe Elle",
+    "Category":"Food & Drink",
+    "Sub-category":"Fine Dining",
+    "Spending Range (SAR)":"200-800"
+  },
+{
+  "MerchantName_Keyword": "Ferdi",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Fine Dining / Parisian",
+  "Spending Range (SAR)": "100–500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "09/07/2025",
+    "Time_Label": "17:26",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10033558",
+    "StoreID_Label": "TBL 38/1",
+    "MerchantName_Keyword": "فيردي / Ferdi",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+}
+,
+{
+  "MerchantName_Keyword": "Les Deux Magots",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Cafe / French Bistro",
+  "Spending Range (SAR)": "50–200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Due",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "09/07/2025",
+    "Time_Label": "19:15",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10000510",
+    "StoreID_Label": "TBL 15/1",
+    "MerchantName_Keyword": "لي دو ماگو / Les Deux Magots",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Scott's",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Seafood Fine Dining",
+  "Spending Range (SAR)": "1000–4000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "02/07/2025",
+    "Time_Label": "21:50",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10003294",
+    "StoreID_Label": "TBL 11/1",
+    "MerchantName_Keyword": "سكوتس / Scott's",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Spago by Wolfgang Puck",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Fine Dining",
+  "Spending Range (SAR)": "500–2000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Due",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "09/07/2025",
+    "Time_Label": "18:56",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10004986",
+    "StoreID_Label": "TBL 24/1",
+    "MerchantName_Keyword": "سباجو / Spago by Wolfgang Puck",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Gymkhana",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Indian Fine Dining",
+  "Spending Range (SAR)": "300–1500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "05/07/2025",
+    "Time_Label": "21:55",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10027384",
+    "StoreID_Label": "TBL 35/1",
+    "MerchantName_Keyword": "جمخانا / Gymkhana",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Vega Cigar Lounge",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "Café",
+  "Sub-category": "Cigar Lounge",
+  "Spending Range (SAR)": "100–400",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "10 Jul '25",
+    "Time_Label": "8:58 PM",
+    "Date_Format": "dd MMM ''yy",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "CHK 10004014",
+    "StoreID_Label": "VEGA Cigar Lounge VR",
+    "MerchantName_Keyword": "VEGA",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Over Under",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Coffee Shop",
+  "Spending Range (SAR)": "50–150",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Payment",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "09/07/2025",
+    "Time_Label": "15:39",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10019838",
+    "StoreID_Label": "1199",
+    "MerchantName_Keyword": "أوفر أندر / Over Under",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Hocho",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Japanese Fusion",
+  "Spending Range (SAR)": "150–600",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL / الإجمالي",
+    "Subtotal_Label": null,
+    "Tax_Label": "Sales VAT 15% Included",
+    "CR_Label": null,
+    "TaxID_Label": "311545894700003",
+    "Date_Label": "15/05/2025",
+    "Time_Label": "17:55:50",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "Order 04753-001-0002",
+    "StoreID_Label": "Table 21",
+    "MerchantName_Keyword": "هوشتو / Hocho",
+    "MerchantAddress_Keyword": "Riyadh"
+  }
+},
+  {
+    "MerchantAddress_Keyword":"Via Riyadh",
+    "Group Name":null,
+    "MerchantName_Keyword":"Qahwah Community",
+    "Category":"Food & Drink",
+    "Sub-category":"Community Fine Dining",
+    "Spending Range (SAR)":"200-800"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":"Marriott",
+    "MerchantName_Keyword":"Jeddah Edition",
+    "Category":"Hospitality",
+    "Sub-category":"Hotel",
+    "Spending Range (SAR)":"1000-5000"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Art Dose",
+    "Category":"Lifestyle",
+    "Sub-category":"Art Exhibition",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Haagen-Dazs",
+    "Category":"Food & Drink",
+    "Sub-category":"Desserts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Chelsia Lane",
+    "Category":"Retail",
+    "Sub-category":"Fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"The Concept Store",
+    "Category":"Retail",
+    "Sub-category":"Fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Camila",
+    "Category":"Retail",
+    "Sub-category":"Fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Hill Robinson",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shali Marine",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":"Sela",
+    "MerchantName_Keyword":"Riva",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":"Sela",
+    "MerchantName_Keyword":"JYC Charter",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Taxi Yacht",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shiraz",
+    "Category":"Food & Drink",
+    "Sub-category":"Iranian Cuisine",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Location Coffee",
+    "Category":"Food & Drink",
+    "Sub-category":"Cafe Lounge",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Petit Cafe",
+    "Category":"Food & Drink",
+    "Sub-category":"Lebanese Restaurant & Shisha Café",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":"Cool Inc.",
+    "MerchantName_Keyword":"Le Vesuvio",
+    "Category":"Food & Drink",
+    "Sub-category":"Fine Dining",
+    "Spending Range (SAR)":"200-800"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"OBO Beach House",
+    "Category":"Food & Drink",
+    "Sub-category":"Restaurant & Shisha Cafe",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Lexus Lounge",
+    "Category":"Food & Drink",
+    "Sub-category":"Cafe Lounge",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"95 Celsius",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+
+  {
+  "MerchantName_Keyword": "EL&N London",
+  "MerchantAddress_Keyword":  ["Boulevard Riyadh City", "Jeddah Yacht Club", "Via Riyadh"],
+  "Category": "F&B",
+  "Sub-category": "Cafe",
+  "Spending Range (SAR)": "50-200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL SAR",
+    "Subtotal_Label": "SUB-TOTAL",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": "1010673865",
+    "TaxID_Label": "310804858300003",
+    "Date_Label": "10-06-2025",
+    "Time_Label": "01:46",
+    "Date_Format": "DD-MM-YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHECK # 103764",
+    "StoreID_Label": "TABLE # 1",
+    "MerchantName_Keyword": "إي إل آند إن / EL&N London",
+    "MerchantAddress_Keyword": "Riyadh Blvd"
+  }
+}
+
+,
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Merkaz Alnakheel",
+    "Category":"Food & Drink",
+    "Sub-category":"Middle Eastern Cuisine",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Twina",
+    "Category":"Food & Drink",
+    "Sub-category":"Fine Dining Seafood",
+    "Spending Range (SAR)":"200-800"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Karamna",
+    "Category":"Food & Drink",
+    "Sub-category":"Lebanese Cuisine",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":"Cool Inc.",
+    "MerchantName_Keyword":"Crustacean",
+    "Category":"Food & Drink",
+    "Sub-category":"Fine Dining",
+    "Spending Range (SAR)":"200-800"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Momo Cafe",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Meed",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Mado",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"Sea Pros",
+    "Category":"Lifestyle",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"JYC & Marina",
+    "Group Name":null,
+    "MerchantName_Keyword":"JYC Academy",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Circle K",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Mado \"Ice cream truck\"",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Teeb Alamaken",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Corn in Cup",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Ababeel Zoo",
+    "Category":"Entertainment",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"VR",
+    "Category":"Entertainment",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Midi",
+    "Category":"Retail",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Delicious Sweet",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"درجات وجلسات",
+    "Category":"Entertainment",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"نانا سويت",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Tal Albraka",
+    "Category":"Lifestyle",
+    "Sub-category":"Entertainment",
+    "Spending Range (SAR)":"50-150"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Moter",
+    "Category":"Lifestyle",
+    "Sub-category":"Entertainment",
+    "Spending Range (SAR)":"50-150"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cotton Candy",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Eng Cafe",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"50 Degrees",
+    "Category":"Food & Drink",
+    "Sub-category":"Coffee & Bakery",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shawerma Malak",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Alotibe Tea",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bit Sweet",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Rayan Burger",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Zolabe",
+    "Category":"Food & Drink",
+    "Sub-category":"Desserts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Forn flafel asela",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"95 Celsius",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bonjy Icecream",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Canton",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Al Gawad Al Abyad",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Snack Time",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Spcedia",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Rand Alsham",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Malk Albatats",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"House of Pizza",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Starbucks",
+    "Category":"Food & Drink",
+    "Sub-category":"Coffee & Bakery",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Karamna",
+    "Category":"Food & Drink",
+    "Sub-category":"Lebanese Cuisine",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Fries Lab",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bobaty",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Riyadh Marakash",
+    "Category":"Retail",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"A'wad Al Akaber",
+    "Category":"Retal",
+    "Sub-category":"Perfumes",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Otour Khawater Alkhaleej",
+    "Category":"Retail",
+    "Sub-category":"Perfumes",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"Travel Time",
+    "Category":"Travel Agency",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"ألعاب رملية و هوائية",
+    "Category":"Entertainment",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"Jeddah Promenade",
+    "Group Name":null,
+    "MerchantName_Keyword":"SHAAM",
+    "Category":"Food & Drink",
+    "Sub-category":"Supermarket",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Aleph",
+    "Category":"Shop",
+    "Sub-category":"electronics",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bob’s Famous",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+  "Language": "Mixed",
+  "Total_Label": "TOTAL",
+  "Subtotal_Label": "SUBTOTAL",
+  "Tax_Label": "VAT 15%",
+  "CR_Label": null,
+  "TaxID_Label": "310186763200003",
+  "Date_Label": "07/08/2025",
+  "Time_Label": "21:09",
+  "Date_Format": "DD/MM/YYYY",
+  "Time_Format": "HH:mm",
+  "InvoiceId_Label": "RECEIPT NO.: 59696",
+  "MerchantName_Keyword": "Bob’s Famous",
+  "MerchantAddress_Keyword": "BLVD"
+}
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"House of Hype",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Odyssey VR",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Papa John’s Pizza",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shubak 6",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Slushy’s",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Takenda",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Acai Vibes",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Al Nahdi",
+    "Category":"Shop",
+    "Sub-category":"Pharmacy health and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Aldahiya juices",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Alrefaei",
+    "Category":"Shop",
+    "Sub-category":"grab and go",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Alshraa",
+    "Category":"Shop",
+    "Sub-category":"Toys Games Gifts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Apri",
+    "Category":"Dine",
+    "Sub-category":"Dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Arby's",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+  "Language": "Mixed",
+  "Total_Label": "TOTAL:",
+  "Tax_Label": null,
+  "CR_Label": null,
+  "TaxID_Label": null,
+  "Date_Label": "09.07.2025",
+  "Time_Label": "18:24",
+  "Date_Format": "DD.MM.YYYY",
+  "Time_Format": "HH:mm",
+  "InvoiceId_Label": "Order No. 17811",
+  "MerchantName_Keyword": "Arby's",
+  "MerchantAddress_Keyword": "Boulevard"
+}
+
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Archi",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+  "Language": "Mixed",
+  "Total_Label": "Total",
+  "Subtotal_Label": "Subtotal",
+  "Tax_Label": "VAT(15.0%)",
+  "CR_Label": "2051231076",
+  "TaxID_Label": "311626816300003",
+  "Date_Label": "2025/07/08",
+  "Time_Label": "06:59:31 PM",
+  "Date_Format": "YYYY/MM/DD",
+  "Time_Format": "hh:mm:ss tt",
+  "InvoiceId_Label": "Order# 40",
+  "MerchantName_Keyword": "Archi",
+  "MerchantAddress_Keyword": "AR12 BLVD"
+}
+
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Atyab Ameerah",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Sela",
+    "MerchantName_Keyword":"Bakr Alshaddi Theatre",
+    "Category":"Entertain",
+    "Sub-category":"Cinema & theaters",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Baskin Robbins",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Beau Tea",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+  "Language": "Mixed",
+  "Total_Label": "Total",
+  "Subtotal_Label": null,
+  "Tax_Label": "VAT(15.0%)",
+  "CR_Label": null,
+  "TaxID_Label": null,
+  "Date_Label": "2025/07/09",
+  "Time_Label": "01:44:11 AM",
+  "Date_Format": "YYYY/MM/DD",
+  "Time_Format": "hh:mm:ss tt",
+  "InvoiceId_Label": "Order# 416",
+  "MerchantName_Keyword": "BEAU TEA",
+  "MerchantAddress_Keyword": "Branch 1"
+}
+
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Beirut Khanum",
+    "Category":"Dine",
+    "Sub-category":"Dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bobaty",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Brands For Less",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Brandtionary",
+    "Category":"Shop",
+    "Sub-category":"women fashion, men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Burger King",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Burger Passion",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"By Muneera",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cartoonia",
+    "Category":"Retail",
+    "Sub-category":"Toys Games Gifts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"East Foods",
+    "MerchantName_Keyword":"Charleys",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Chocomilt",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Chuck E. Cheese",
+    "Category":"Dine",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Çılgın Dondurmacı",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cina Roma",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cinnabon",
+    "Category":"F&B",
+    "Sub-category":"Bakery & Beverages",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Take Away (Total)",
+    "Subtotal_Label": "Products Value",
+    "Tax_Label": "VAT 15% Tax",
+    "CR_Label": "1010566122",
+    "TaxID_Label": "310348238600003",
+    "Date_Label": "08/07/2025",
+    "Time_Label": "7:56 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "h:mm tt",
+    "InvoiceId_Label": "Invoice 2507080112820005",
+    "StoreID_Label": "20005",
+    "MerchantName_Keyword": "Cinnabon",
+    "MerchantAddress_Keyword": "Boulevard-Hittin"
+  }
+
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cloud",
+    "Category":"Shop",
+    "Sub-category":"electronics",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Cool Arena",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Crepaffer",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Dalal Boutique",
+    "Category":"Shop",
+    "Sub-category":"women fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Sela",
+    "MerchantName_Keyword":"Dinosaur Ulolo",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Dominos Pizza",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Doos Karting",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+{
+  "MerchantName_Keyword": "Dunkin'",
+  "MerchantAddress_Keyword": "Times Square Boulevard",
+  "Category": "F&B",
+  "Sub-category": "Coffee & Donuts",
+  "Spending Range (SAR)": "10-50",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Amount",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Total VAT Amount",
+    "CR_Label": null,
+    "TaxID_Label": "300049124000003",
+    "Date_Label": "08/07/2025",
+    "Time_Label": "19:14",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Invoice No:10398-10398-307040",
+    "StoreID_Label": "Shop Name: Time Square Boulevard",
+    "MerchantName_Keyword": "دانكن / Dunkin'",
+    "MerchantAddress_Keyword": "Time Square Boulevard"
+  }
+},
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"DZRT",
+    "Category":"Shop",
+    "Sub-category":"Tobacco products",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"EL&N",
+    "Category":"Food & Drink",
+    "Sub-category":"Coffee & Bakery",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Eyewa",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Faisal Aldayel",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Falcon’s Nest",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Faruj Abualbd",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Firstaiment",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Footlocker",
+    "Category":"Shop",
+    "Sub-category":"women fashion, men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Sela",
+    "MerchantName_Keyword":"Global Theatre",
+    "Category":"Entertain",
+    "Sub-category":"Cinema & theaters",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Gobble Me Good",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Half Million",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Al Hatoon",
+    "Category":"Shop",
+    "Sub-category":"women fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+
+  {
+  "MerchantName_Keyword": "Herfy",
+  "MerchantAddress_Keyword": "Boulevard Riyadh City",
+  "Category": "F&B",
+  "Sub-category": "Fast Food",
+  "Spending Range (SAR)": "5-50",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Amount",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Total VAT 15% Amount",
+    "CR_Label": "1010037702",
+    "TaxID_Label": "300004547900003",
+    "Date_Label": "2025-07-08",
+    "Time_Label": "19:56",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Invoice No.: 11794-76-162157",
+    "StoreID_Label": "Restaurant Herfy 1794",
+    "MerchantName_Keyword": "هرفي / Herfy",
+    "MerchantAddress_Keyword": "Riyadh Boulevard"
+  }
+}
+,
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"House of Cenmar",
+    "Category":"Shop",
+    "Sub-category":"women fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"HS Vape",
+    "Category":"Shop",
+    "Sub-category":"Tobacco products",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Jaylah",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Aseer Time",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Karamna",
+    "Category":"Food & Drink",
+    "Sub-category":"Lebanese Cuisine",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Key",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Americana Group",
+    "MerchantName_Keyword":"KFC",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"KM",
+    "Category":"Shop",
+    "Sub-category":"women fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Americana Group",
+    "MerchantName_Keyword":"Krispy Cream",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Kudu",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"La Precious Store",
+    "Category":"Shop",
+    "Sub-category":"women fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Layali Adan",
+    "Category":"Dine",
+    "Sub-category":"Dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+
+  {
+  "MerchantName_Keyword": "Layali Al Iraq",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Iraqi Restaurant",
+  "Spending Range (SAR)": "100-1000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "AMOUNT DUE",
+    "Subtotal_Label": "Sub Total",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": "311432784700003",
+    "Date_Label": "7/8/2025",
+    "Time_Label": "10:59:57 PM",
+    "Date_Format": "D/M/YYYY",
+    "Time_Format": "hh:mm:ss tt",
+    "InvoiceId_Label": "Ticket #: 27",
+    "StoreID_Label": "INV: 981674",
+    "MerchantName_Keyword": "ليالي العراق / Layali Al Iraq",
+    "MerchantAddress_Keyword": "Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Layali Shamia",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Shami Restaurant",
+  "Spending Range (SAR)": "50-300",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "الإجمالي",
+    "Subtotal_Label": "مبلغ الفاتورة",
+    "Tax_Label": "ضريبة القيمة المضافة",
+    "CR_Label": null,
+    "TaxID_Label": "311082852200003",
+    "Date_Label": "09/07/2025",
+    "Time_Label": "07:52 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "59IN",
+    "StoreID_Label": "SN#141341432",
+    "MerchantName_Keyword": "ليالي شامية / Layali Shamia",
+    "MerchantAddress_Keyword": "الرياض - البوليفارد"
+  }
+},
+
+{
+  "MerchantName_Keyword": "LINK",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Accessories",
+  "Spending Range (SAR)": "50–300",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Final Total",
+    "Subtotal_Label": "الإجمالي قبل الضريبة / Total",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": "1011144812",
+    "TaxID_Label": "311137247800003",
+    "Date_Label": "2025-07-08",
+    "Time_Label": "18:36:29",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "2721",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "لينك / LINK",
+    "MerchantAddress_Keyword": "الرياض / Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Lorenzo",
+  "MerchantAddress_Keyword": "Boulevard City, Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Pizza & Italian",
+  "Spending Range (SAR)": "50–200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT - 15%(15.0%)",
+    "CR_Label": null,
+    "TaxID_Label": "300048735600003",
+    "Date_Label": "2025/07/09",
+    "Time_Label": "09:53:53 PM",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "hh:mm:ss tt",
+    "InvoiceId_Label": "Order# 316",
+    "StoreID_Label": "Check# 106102",
+    "MerchantName_Keyword": "لورينزو / Lorenzo",
+    "MerchantAddress_Keyword": "Boulevard City, Riyadh"
+  }
+}
+,
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Luca Land",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"LULU Lemon",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Madas",
+    "Category":"Shop",
+    "Sub-category":"women fashion, men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Mellow Socks",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Merwas Academy",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Midi",
+    "Category":"Shop",
+    "Sub-category":"Toys Games Gifts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Mike Tyson Boxing Gym",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Mohammed Al-Ali Theatre",
+    "Category":"Entertain",
+    "Sub-category":"Cinema & theaters",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Muvi Cinema",
+    "Category":"Entertain",
+    "Sub-category":"Cinema & theaters",
+    "Spending Range (SAR)":"50-150"
+  },
+ {
+  "MerchantName_Keyword": "Never Mind",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Burgers",
+  "Spending Range (SAR)": "20–300",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Price VAT inclusive",
+    "Subtotal_Label": null,
+    "Tax_Label": "including VAT 15",
+    "CR_Label": "1010197592",
+    "TaxID_Label": "311133630700003",
+    "Date_Label": "2025-07-08",
+    "Time_Label": "19:26",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Order # 11",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "نيفر مايند / Never Mind / NM",
+    "MerchantAddress_Keyword": "Riyadh"
+  }
+}
+,
+{
+  "MerchantName_Keyword": "New York Fries",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Fast Food",
+  "Spending Range (SAR)": "30–200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL / الإجمالي",
+    "Subtotal_Label": "Base Total",
+    "Tax_Label": "Tax 15%",
+    "CR_Label": null,
+    "TaxID_Label": "310153523200003",
+    "Date_Label": null,
+    "Time_Label": null,
+    "Date_Format": null,
+    "Time_Format": null,
+    "InvoiceId_Label": "Ticket : 6",
+    "StoreID_Label": "606",
+    "MerchantName_Keyword": "نيويورك فرايز / New York Fries",
+    "MerchantAddress_Keyword": "الرياض / Riyadh"
+  }
+}
+,
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"NOON",
+    "Category":"Shop",
+    "Sub-category":"Toys Games Gifts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Osma",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Otaku Store",
+    "Category":"Retail",
+    "Sub-category":"Toys Games Gifts",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Paddle Rush",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Past",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Petit Cafe",
+    "Category":"Food & Drink",
+    "Sub-category":"Lebanese Restaurant & Shisha Café",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Pink Berry",
+    "Category":"Dine",
+    "Sub-category":"desserts &icecream",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Pizza Bar",
+    "Category":"Dine",
+    "Sub-category":"Dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Americana Group",
+    "MerchantName_Keyword":"Pizza Hut",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Planet Earth",
+    "Category":"Shop",
+    "Sub-category":"kids fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Poshak",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Raising Cane’s",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200",
+    "ExtractionHints": {
+  "Language": "Mixed",
+  "Total_Label": "Invoice Total:",
+  "Subtotal_Label": "Invoice Taxable Amount:",
+  "Tax_Label": "VAT Total 15.00%",
+  "CR_Label": null,
+  "TaxID_Label": "300048728810003",
+  "Date_Label": "07/08/2025",
+  "Time_Label": "19:57:40",
+  "Date_Format": "DD/MM/YYYY",
+  "Time_Format": "HH:mm:ss",
+  "InvoiceId_Label": "Check: 622/RVC",
+  "MerchantName_Keyword": "Raising Cane’s",
+  "MerchantAddress_Keyword": "Riyadh City Boulevard"
+}
+
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Rashat",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Ratio Cafe",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Reef Perfumes",
+    "Category":"Shop",
+    "Sub-category":"Perfumes and beauty",
+    "Spending Range (SAR)":"200-600"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Reefi",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"ROS Academy",
+    "Category":"Entertain",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"East Foods",
+    "MerchantName_Keyword":"Saba",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Shake Shack",
+    "Category":"Dine",
+    "Sub-category":"dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shawarma Jalila",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shawermar",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Spuds",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":"Alshaya",
+    "MerchantName_Keyword":"Starbucks",
+    "Category":"Food & Drink",
+    "Sub-category":"Coffee & Bakery",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Subway",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Tante",
+    "Category":"Dine",
+    "Sub-category":"Dine in",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Tarfh",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Texas Chicken",
+    "Category":"Dine",
+    "Sub-category":"fast food",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Tim Hortons",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Trolley",
+    "Category":"Shop",
+    "Sub-category":"grab and go",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Twisted Minds",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Urban Necessities",
+    "Category":"Shop",
+    "Sub-category":"women fashion , men fashion",
+    "Spending Range (SAR)":"300-3000"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Urth Cafe",
+    "Category":"Dine",
+    "Sub-category":"Cafes Choclate and juices",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"VR City",
+    "Category":"Entertain",
+    "Sub-category":"games and amusement",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"WWE Experience",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Zeela House",
+    "Category":"Entertain",
+    "Sub-category":"Experiences",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Bastah",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Reki",
+    "Category":"Retail",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Caza Pasta",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Shawerma Nahis",
+    "Category":"Food & Drink",
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Okashi",
+    "Category":"Food & Drink",
+    "Sub-category":"Sushi",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Ain Perfumes",
+    "Category":null,
+    "Sub-category":null,
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Behind",
+    "Category":"Food & Drink",
+    "Sub-category":"Coffee",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+    "MerchantAddress_Keyword":"BLVD City",
+    "Group Name":null,
+    "MerchantName_Keyword":"Hunsh Burger ",
+    "Category":"Food & Drink",
+    "Sub-category":"Burger ",
+    "Spending Range (SAR)":"50-200"
+  },
+  {
+  "MerchantName_Keyword": "Casa Pasta",
+  "MerchantAddress_Keyword": "BLVD City",
+  "Category": "Food & Drink",
+  "Sub-category": "Italian Restaurant",
+  "Spending Range (SAR)": "50-200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Take Out Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15% Tax",
+    "CR_Label": null,
+    "TaxID_Label": "310515216100003",
+    "Date_Label": "08/07/2025",
+    "Time_Label": "8:06 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "ORDER-10",
+    "MerchantName_Keyword": "Casa Pasta",
+    "MerchantAddress_Keyword": "Boulevard City"
+  }
+},
+
+{
+  "MerchantName_Keyword": "ZEGNA",
+  "MerchantAddress_Keyword": "Via Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Fashion",
+  "Spending Range (SAR)": "300-3000",
+  "ExtractionHints": {
+    "Language": "English",
+    "Total_Label": "Total",
+    "Subtotal_Label": null,
+    "Tax_Label": null,
+    "CR_Label": null,
+    "TaxID_Label": "312193893300003",
+    "Date_Label": "15/5/25",
+    "Time_Label": "11:32",
+    "Date_Format": "DD/MM/YY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Ticket: 5064",
+    "StoreID_Label": "Store: 1013",
+    "MerchantName_Keyword": "ZEGNA",
+    "MerchantAddress_Keyword": "2941 Makkah Al Mukarramah Road"
+  }
+},
+{
+  "MerchantName_Keyword": "Charley’s",
+  "MerchantAddress_Keyword": "Boulevard Riyadh City",
+  "Category": "F&B",
+  "Sub-category": "Fast Food",
+  "Spending Range (SAR)": "25-100",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL",
+    "Subtotal_Label": null,
+    "Tax_Label": "15%",
+    "CR_Label": null,
+    "TaxID_Label": "307000691000003",
+    "Date_Label": "06/08/2025",
+    "Time_Label": "12:41:12",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "Ticket : 4",
+    "StoreID_Label": "Store No. 202",
+    "MerchantName_Keyword": "Charley’s",
+    "MerchantAddress_Keyword": "Store No. 202"
+  }
+},
+{
+  "MerchantName_Keyword": "Dhaia Juice",
+  "MerchantAddress_Keyword": "Boulevard Riyadh City",
+  "Category": "F&B",
+  "Sub-category": "Juice Bar",
+  "Spending Range (SAR)": "20-80",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "Tax(15.0%)",
+    "CR_Label": null,
+    "TaxID_Label": "310212306200003",
+    "Date_Label": "08/07/2025",
+    "Time_Label": "07:26:10 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm:ss tt",
+    "InvoiceId_Label": "Order #(473467)",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "عصير الضيا / Dhaia Juice",
+    "MerchantAddress_Keyword": "BLVD"
+  }
+},
+{
+  "MerchantName_Keyword": "Palm",
+  "MerchantAddress_Keyword": "Riyadh, حي العارض",
+  "Category": "F&B",
+  "Sub-category": "Desserts",
+  "Spending Range (SAR)": "20-100",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total With VAT",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": "1010302217",
+    "TaxID_Label": "300055271100003",
+    "Date_Label": "07/08/2025",
+    "Time_Label": "11:01 AM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "Invoice No: CR-11243-2/10 073015",
+    "StoreID_Label": "Branch No.: CR-11243",
+    "MerchantName_Keyword": "نخلة / Palm",
+    "MerchantAddress_Keyword": "المططرة، حي العارض"
+  }
+},
+{
+  "MerchantName_Keyword": "Key Cafe",
+  "MerchantAddress_Keyword": "King Abdulaziz Road – Alrabi – Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Cafe",
+  "Spending Range (SAR)": "10-50",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT(15.0%)",
+    "CR_Label": null,
+    "TaxID_Label": "312564445400003",
+    "Date_Label": "2025/07/09",
+    "Time_Label": "06:02:21 PM",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "hh:mm:ss tt",
+    "InvoiceId_Label": "Order# 4",
+    "StoreID_Label": "Key Cafe BOUL 011",
+    "MerchantName_Keyword": "كي كافيه / Key Cafe",
+    "MerchantAddress_Keyword": "King Abdulaziz, Alrabi, Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Lululemon",
+  "MerchantAddress_Keyword": "Boulevard Riyadh City",
+  "Category": "Retail",
+  "Sub-category": "Athleisure / Sportswear",
+  "Spending Range (SAR)": "300–1500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total (Incl. of VAT)",
+    "Subtotal_Label": "Total (Excl. of VAT)",
+    "Tax_Label": "VAT @ 15%",
+    "CR_Label": "1010559359",
+    "TaxID_Label": "300048593400003",
+    "Date_Label": "7/8/2025",
+    "Time_Label": "19:38",
+    "Date_Format": "D/M/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Transaction ID: 052601000002850",
+    "StoreID_Label": "Store ID: 078 / 2110",
+    "MerchantName_Keyword": "لولوليمون / Lululemon",
+    "MerchantAddress_Keyword": "Boulevard Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "McDonald's",
+  "MerchantAddress_Keyword": "Boulevard Riyadh City",
+  "Category": "F&B",
+  "Sub-category": "Fast Food",
+  "Spending Range (SAR)": "20–200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Amount Due",
+    "Subtotal_Label": "Total Taxable Amount",
+    "Tax_Label": "Total VAT (15%)",
+    "CR_Label": "3025102250709067342",
+    "TaxID_Label": "300055987200003",
+    "Date_Label": "2025-07-09",
+    "Time_Label": "18:29:01",
+    "Date_Format": "YYYY-MM-DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "Order No. 98-REG #2",
+    "StoreID_Label": "Restaurant #:1830251",
+    "MerchantName_Keyword": "ماكدونالدز / McDonald's",
+    "MerchantAddress_Keyword": "Boulevard Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Nippon Sayko",
+  "MerchantAddress_Keyword": "Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Anime & Pop Culture Merchandise",
+  "Spending Range (SAR)": "50–300",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "المدفوع",
+    "Subtotal_Label": "الاجمالي",
+    "Tax_Label": "VAT",
+    "CR_Label": null,
+    "TaxID_Label": "310060249400003",
+    "Date_Label": "7/7/2025",
+    "Time_Label": "21:40",
+    "Date_Format": "D/M/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "2140",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "نيبون سايكو / Nippon Sayko",
+    "MerchantAddress_Keyword": "الرياض / Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Elle Tea Lounge",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Cafe / Tea Lounge",
+  "Spending Range (SAR)": "50–250",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Net Total",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "08/07/2025",
+    "Time_Label": "22:58",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "CHK 10004812",
+    "StoreID_Label": "TBL 33/1",
+    "MerchantName_Keyword": "إيل تي لاونج / Elle Tea Lounge",
+    "MerchantAddress_Keyword": "Via Riyadh, Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "Emmy Squared Pizza",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "F&B",
+  "Sub-category": "Pizza / Cafe",
+  "Spending Range (SAR)": "50–400",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Due",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": "7025386900",
+    "TaxID_Label": null,
+    "Date_Label": "14/05/2025",
+    "Time_Label": "12:23 PM",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm tt",
+    "InvoiceId_Label": "CHK 50010953",
+    "StoreID_Label": "TBL 22/1",
+    "MerchantName_Keyword": "إيمي سكويرد / Emmy Squared Pizza",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+},
+{
+  "MerchantName_Keyword": "IBATA",
+  "MerchantAddress_Keyword": "VIA Riyadh Mall",
+  "Category": "Retail",
+  "Sub-category": "Luxury Fashion",
+  "Spending Range (SAR)": "500–1000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Net Amount",
+    "Tax_Label": "Total VAT",
+    "CR_Label": null,
+    "TaxID_Label": "300063369100003",
+    "Date_Label": "07/06/2025",
+    "Time_Label": "21:27",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "Invoice#: 2704011000467",
+    "StoreID_Label": "IBATA - VIA Riyadh Mall",
+    "MerchantName_Keyword": "إيباتا / IBATA",
+    "MerchantAddress_Keyword": "VIA Riyadh Mall"
+  }
+},
+{
+  "MerchantName_Keyword": "Richard Orlinski",
+  "MerchantAddress_Keyword": "VIA Riyadh",
+  "Category": "Retail",
+  "Sub-category": "Art & Luxury Sculptures",
+  "Spending Range (SAR)": "100,000–150,000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total Amount Including VAT",
+    "Subtotal_Label": "Total Before VAT",
+    "Tax_Label": "15% VAT",
+    "CR_Label": null,
+    "TaxID_Label": "311549920200003",
+    "Date_Label": "26/01/2024",
+    "Time_Label": null,
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": null,
+    "InvoiceId_Label": "Invoice no: INV11",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": "ريتشارد أورلينسكي / Richard Orlinski",
+    "MerchantAddress_Keyword": "VIA Riyadh"
+  }
+}
+
+
+]
