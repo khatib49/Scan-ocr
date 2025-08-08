@@ -1,0 +1,10 @@
+﻿# venv / caches
+.venv/
+__pycache__/
+*.pyc
+
+# env / secrets
+.env
+
+# OS junk
+.DS_Store
