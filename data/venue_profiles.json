@@ -1890,7 +1890,7 @@
     "Spending Range (SAR)":"50-150"
   },
  {
-  "MerchantName_Keyword": "Never Mind",
+  "MerchantName_Keyword": ["نيفر مايند ", " Never Mind", "NM"],
   "MerchantAddress_Keyword": "Riyadh",
   "Category": "F&B",
   "Sub-category": "Burgers",
@@ -1908,7 +1908,7 @@
     "Time_Format": "HH:mm",
     "InvoiceId_Label": "Order # 11",
     "StoreID_Label": null,
-    "MerchantName_Keyword": "نيفر مايند / Never Mind / NM",
+    "MerchantName_Keyword": ["نيفر مايند ", " Never Mind", "NM"],
     "MerchantAddress_Keyword": "Riyadh"
   }
 }
