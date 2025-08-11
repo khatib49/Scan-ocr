@@ -5,6 +5,3 @@ python-multipart==0.0.9
 openai>=1.41.0
 python-dotenv==1.0.1
 rapidfuzz==3.9.6
-# optional QR support (KSA ZATCA); safe to keep installed
-Pillow>=10.3.0
-pyzbar>=0.1.9
