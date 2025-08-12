@@ -2,6 +2,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import Optional, Dict, Any
 import json
+import os
 
 from ..prompt_store import get_active_prompt            # reads app/data/system_prompt.txt
 from ..utils.images import to_base64_optimized
@@ -65,7 +66,7 @@ async def analyze_image(file: UploadFile = File(...), reference: Optional[str] =
                     "role": "user",
                     "content": [
                         {"type": "text", "text": probe_prompt},
-                        {"type": "input_image", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}" }},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}" }},
                     ],
                 },
             ],
@@ -77,10 +78,22 @@ async def analyze_image(file: UploadFile = File(...), reference: Optional[str] =
         except Exception:
             merchant_guess, addr_guess = "", ""
 
+        if not (merchant_guess or addr_guess):
+            raise HTTPException(status_code=400, detail="No merchant or address found in image.")
+        else:
+            print(merchant_guess, addr_guess)
         # RapidFuzz venue/profile match (your adapter handles loading profiles)
-        profile = match_venue_profile({"MerchantName": merchant_guess, "MerchantAddress": addr_guess})
+        profiles_path = os.path.join(os.path.dirname(__file__), "..", "data", "venue_profiles.json")
+        profiles_path = os.path.abspath(profiles_path)
+        profiles = load_profiles(profiles_path)
+        print(f"Loaded {len(profiles)} venue profiles from {profiles_path}")
+        profile = match_venue_profile(profiles, merchant_guess, addr_guess)
+
+
+
 
         # ===== Call #2: Main extraction with profile hints =====
+        print(f"Using profile: {profile}")
         base_prompt = await get_active_prompt()              # file-backed prompt text
         system_prompt = build_system_prompt(base_prompt, profile)
 
@@ -94,7 +107,7 @@ async def analyze_image(file: UploadFile = File(...), reference: Optional[str] =
                     "role": "user",
                     "content": [
                         {"type": "text", "text": "Extract the required fields. Return ONLY valid JSON under a single top-level object."},
-                        {"type": "input_image", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}" }},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}" }},
                     ],
                 },
             ],
@@ -104,12 +117,13 @@ async def analyze_image(file: UploadFile = File(...), reference: Optional[str] =
             extracted_json = json.loads(extract_text)
         except Exception:
             extracted_json = {"data": {}}
-
+        print(f"Extracted JSON: {extracted_json}")
         data_json: Dict[str, Any] = extracted_json.get("data") or extracted_json
 
         # ===== Code-side validation (no extra tokens) =====
         validation = validate_extracted(data_json)
 
+        print(f"Validation result: {validation}")
         # Token usage aggregation (probe + extract)
         usage = {}
         try:
@@ -121,6 +135,7 @@ async def analyze_image(file: UploadFile = File(...), reference: Optional[str] =
 
         # ===== Persist to Mongo =====
         db = get_db()
+        print(f"Persisting analysis for {db}")
         await db["analyses"].insert_one({
             "reference": reference,
             "filename": file.filename,
