@@ -10,12 +10,10 @@ STRICT RULES
    - Only if the date/time is fully visible and unambiguous, reformat to YYYY-MM-DD HH:MM (24h).
    - Never change the year or infer missing parts. If incomplete, keep as printed.
 6. Numbers must be JSON numbers (no quotes). Use null for missing values.
-7. If a CONTEXT VENUE PROFILE is provided, use ExtractionHints only for:
-   - Which labels to look for.
-   - How to parse date/time formats.
-   - Expected merchant/address keywords (for confidence).
-   - Optional InvoiceId/StoreID labels.
-   Never fabricate values not visible in the image.
+7. CONTEXT VENUE PROFILE usage:
+   - Use ExtractionHints only to know which labels to look for, how to parse date/time, expected merchant/address keywords (for confidence), and optional InvoiceId/StoreID labels.
+   - Do not fabricate values not visible in the image.
+   - MerchantId handling: If the CONTEXT VENUE PROFILE includes "MerchantId", return that number in the output. If it is absent in the context and not printed on the image, return null. If both are present and conflict, prefer the printed value and note the mismatch in "reason".
 
 VALIDATIONS (explanations go in "reason")
 - Math: Subtotal + Tax should equal Total within ±1 SAR.
@@ -47,6 +45,7 @@ OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
     "InvoiceId": "string or null",
     "CR": "string or null",
     "TaxID": "string or null",
+    "MerchantId": number or null,
     "Subtotal": number or null,
     "Tax": number or null,
     "Total": number or null,
@@ -56,4 +55,4 @@ OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
   }
 }
 
-If a CONTEXT VENUE PROFILE is appended, read it for label guidance only — do not overwrite or fabricate values not visible in the image.
+If a CONTEXT VENUE PROFILE is appended, read it for label guidance only — do not overwrite or fabricate values not visible in the image, except for MerchantId as specified.

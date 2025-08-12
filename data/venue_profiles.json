@@ -153,6 +153,7 @@
 {
   "MerchantName_Keyword": "Maria Tash",
   "MerchantAddress_Keyword": "VIA Riyadh",
+  "MerchantId" : 739,
   "Category": "Retail",
   "Sub-category": "Fine Jewelry & Luxury Piercing",
   "Spending Range (SAR)": "500–6000",
@@ -1206,6 +1207,7 @@
     "Group Name":null,
     "MerchantName_Keyword":"Arby's",
     "Category":"Dine",
+    "EntityId" :null,
     "Sub-category":"fast food",
     "Spending Range (SAR)":"50-200",
     "ExtractionHints": {
