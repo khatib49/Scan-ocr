@@ -34,7 +34,7 @@ Confidence score (0–100), start at 30:
   +10 if InvoiceId/StoreID match the labels suggested by hints.
   Cap at 100.
 
-OUTPUT SHAPE (return exactly this shape):
+OUTPUT SHAPE (return exactly this shape) ⚠️ DO NOT return markdown, code blocks, or notes. ONLY return the JSON object below:
 {
   "data": {
     "MerchantName": "string or null",
