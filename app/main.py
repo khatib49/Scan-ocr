@@ -48,6 +48,7 @@ def build_system_prompt(with_profile: Optional[Dict[str, Any]]) -> str:
                 } and v
             },
             "MerchantName_Keyword": with_profile.get("MerchantName_Keyword"),
+            "MerchantId": with_profile.get("MerchantId"),
             "MerchantAddress_Keyword": with_profile.get("MerchantAddress_Keyword"),
             "SpendingRange": with_profile.get("Spending Range (SAR)")
         }
