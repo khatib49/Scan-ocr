@@ -4,7 +4,8 @@ pydantic==2.8.2
 python-multipart==0.0.9
 openai>=1.41.0
 python-dotenv==1.0.1
+motor>=3.3,<3.4
+pymongo<4.6
 rapidfuzz==3.9.6
-# optional QR support (KSA ZATCA); safe to keep installed
-Pillow>=10.3.0
-pyzbar>=0.1.9
+Pillow>=10.3.0        # optional (if you later add QR decoding)
+pyzbar>=0.1.9         # optional (if you later add QR decoding)
