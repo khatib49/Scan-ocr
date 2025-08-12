@@ -1,5 +1,5 @@
 import json, re, unicodedata
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional, Union, Any
 from rapidfuzz import fuzz
 
 ARABIC_MAP = {

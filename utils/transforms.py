@@ -1,60 +1,48 @@
-from typing import Optional
+from typing import Optional, Dict, Any
+from datetime import datetime
 
-try:
-    from PIL import Image
-    from pyzbar.pyzbar import decode as qr_decode
-except ImportError:
-    Image = None
-    qr_decode = None
-
-def decode_zatca_qr(image_bytes: bytes) -> Optional[dict]:
-    if not (Image and qr_decode):
-        return None
-
-    try:
-        image = Image.open(BytesIO(image_bytes))
-        qrs = qr_decode(image)
-        if not qrs:
-            return None
-
-        qr_data = qrs[0].data
-        if not qr_data:
-            return None
-
-        raw = qr_data.decode("utf-8", errors="ignore")
-        if raw.startswith('{'):
-            return json.loads(raw)
-
-        from base64 import b64decode
-        data = b64decode(qr_data)
-        out = {}
-
-        i = 0
-        while i < len(data):
-            tag = data[i]
-            i += 1
-            length = data[i]
-            i += 1
-            value = data[i:i+length].decode("utf-8", errors="ignore")
-            i += length
-
-            if tag == 1:
-                out["seller"] = value
-            elif tag == 2:
-                out["vat"] = value
-            elif tag == 3:
-                out["timestamp"] = value
-            elif tag == 4:
-                out["total"] = try_float(value)
-            elif tag == 5:
-                out["vat_amount"] = try_float(value)
-
-        return out if out else None
-    except Exception:
-        return None
-
-def try_float(x):
+def coerce_number(x):
     try:
         return float(str(x).replace(",", "").replace("SAR", ""))
     except:
         return None
+
+def coerce_nullish(x):
+    if x is None:
+        return None
+    x = str(x).strip()
+    return None if not x or x.lower() in ("null", "none", "n/a", "-") else x
+
+def norm_date(datestr: Optional[str]) -> Optional[str]:
+    if not datestr:
+        return None
+    try:
+        return datetime.fromisoformat(datestr).isoformat()
+    except Exception:
+        return None
+
+def validate_and_score(data: Dict[str, Any], profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    # You can keep your original logic here
+    d = data.get("data", {})
+    subtotal = coerce_number(d.get("Subtotal"))
+    tax = coerce_number(d.get("Tax"))
+    total = coerce_number(d.get("Total"))
+    reason = []
+
+    if subtotal is not None and tax is not None and total is not None:
+        expected = round(subtotal + tax, 2)
+        if abs(expected - total) > 0.1:
+            reason.append("Subtotal + Tax != Total")
+
+    if profile:
+        if d.get("TaxID") and profile.get("TaxID_Label") and d.get("TaxID") != profile["TaxID_Label"]:
+            reason.append("TaxID mismatch")
+        if d.get("MerchantName") and profile.get("MerchantName_Keyword"):
+            if not any(k.lower() in d["MerchantName"].lower() for k in profile["MerchantName_Keyword"]):
+                reason.append("Merchant name mismatch")
+
+    d["fraudScore"] = 100 if reason else 0
+    d["confidentScore"] = 0 if reason else 100
+    d["reason"] = ", ".join(reason) if reason else "All values match the venue profile and calculations are correct."
+    data["data"] = d
+    return data

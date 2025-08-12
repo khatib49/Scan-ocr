@@ -6,15 +6,19 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from .venue_matcher import load_profiles, find_best_profile
-from .prompts import SYSTEM_PROMPT
 from utils.qr import decode_zatca_qr
 from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score
+from utils.logger import log_scan_invoice, log_error
 
 # Load environment variables
 try:
     load_dotenv()
 except Exception:
     pass
+
+PROMPT_PATH = os.getenv("PROMPT_PATH", "data/prompt.txt")
+with open(PROMPT_PATH, encoding="utf-8") as f:
+    SYSTEM_PROMPT = f.read()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
@@ -82,8 +86,9 @@ Return ONLY this JSON:
         ma = json.loads(quick.choices[0].message.content or "{}")
         merchant_guess = (ma.get("m") or "")[:200]
         addr_guess = (ma.get("a") or "")[:200]
-    except:
+    except Exception as e:
         merchant_guess, addr_guess = "", ""
+        await log_error(b64, str(e), "quick_guess")
 
     profile = find_best_profile(VENUE_PROFILES, merchant_guess, addr_guess)
     sys = build_system_prompt(profile)
@@ -104,6 +109,7 @@ Return ONLY this JSON:
         if "data" not in data:
             raise ValueError("Missing 'data' root.")
     except Exception as e:
+        await log_error(b64, str(e), "parse_openai_response", {"raw_response": raw_txt})
         data = {
             "data": {
                 "MerchantName": None,
@@ -122,23 +128,23 @@ Return ONLY this JSON:
             }
         }
 
-    # Post-process and patch with ZATCA QR
     d = data.get("data", {})
     for k in ("MerchantName","MerchantAddress","TransactionDate","StoreID","InvoiceId","CR","TaxID"):
         d[k] = coerce_nullish(d.get(k))
     d["TransactionDate"] = norm_date(d.get("TransactionDate"))
 
-    qr_fields = decode_zatca_qr(raw)
-    if qr_fields:
-        if qr_fields.get("vat"):
-            d["TaxID"] = qr_fields["vat"]
-        if qr_fields.get("timestamp"):
-            d["TransactionDate"] = qr_fields["timestamp"]
-        if qr_fields.get("total") is not None and coerce_number(d.get("Total")) is None:
-            d["Total"] = qr_fields["total"]
-        if qr_fields.get("vat_amount") is not None and coerce_number(d.get("Tax")) is None:
-            d["Tax"] = qr_fields["vat_amount"]
-
     data["data"] = d
     final_payload = validate_and_score(data, profile)
+
+    # Log final result
+    await log_scan_invoice(
+        b64_image=b64,
+        merchant_guess=merchant_guess,
+        address_guess=addr_guess,
+        profile=profile,
+        raw_text=raw_txt,
+        parsed_data=data,
+        final_result=final_payload
+    )
+
     return AnalyzeResponse(**final_payload)
