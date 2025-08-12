@@ -128,12 +128,12 @@ Return ONLY this JSON:
             }
         }
 
-    d = data.get("data", {})
-    for k in ("MerchantName","MerchantAddress","TransactionDate","StoreID","InvoiceId","CR","TaxID"):
-        d[k] = coerce_nullish(d.get(k))
-    d["TransactionDate"] = norm_date(d.get("TransactionDate"))
+    # d = data.get("data", {})
+    # for k in ("MerchantName","MerchantAddress","TransactionDate","StoreID","InvoiceId","CR","TaxID"):
+    #     d[k] = coerce_nullish(d.get(k))
+    # d["TransactionDate"] = norm_date(d.get("TransactionDate"))
 
-    data["data"] = d
+    # data["data"] = d
     final_payload = validate_and_score(data, profile)
 
     # Log final result
