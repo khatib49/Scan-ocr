@@ -40,6 +40,7 @@ OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
   "data": {
     "MerchantName": "string or null",
     "MerchantAddress": "string or null",
+    "MerchantId": number or null,
     "TransactionDate": "string or null",
     "StoreID": "string or null",
     "InvoiceId": "string or null",
