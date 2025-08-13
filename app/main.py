@@ -139,7 +139,7 @@ Return ONLY this JSON:
 
     # Log final result
     await log_scan_invoice(
-        # b64_image=b64,
+        b64_image="",
         merchant_guess=merchant_guess,
         address_guess=addr_guess,
         profile=profile,

@@ -53,7 +53,7 @@ async def log_error(
     try:
         await error_collection.insert_one({
             "created_at": datetime.utcnow(),
-            # "image": b64_image,
+            "image": "",
             "stage": stage,
             "error": error,
             "extra": extra or {}
