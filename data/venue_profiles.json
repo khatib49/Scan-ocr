@@ -499,7 +499,8 @@
     "MerchantName_Keyword": ["أوفر أندر", "Over Under"],
     "MerchantAddress_Keyword": ["الرياض - فيا الرياض", "Via Riyadh, Riyadh"]
   }
-},
+}
+,
 {
   "MerchantName_Keyword": "Hocho",
   "MerchantAddress_Keyword": "Riyadh",
