@@ -881,7 +881,7 @@
     "TaxID_Label": "312331405100003",
     "Date_Label": "14/01/47",
     "Time_Label": "02:58 ص",
-    "Date_Format": "DD/MM/YY (Hijri date — must be converted to Gregorian before output)",
+    "Date_Format": "DD/MM/YY (Hijri date — must not be converted)",
     "Time_Format": "hh:mm a",
     "InvoiceId_Label": "1777",
     "StoreID_Label": "رقم الطلب 1058",
