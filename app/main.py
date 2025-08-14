@@ -88,7 +88,7 @@ Extraction rules:
 
 
     quick = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         temperature=0.0,
         messages=[
             {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
