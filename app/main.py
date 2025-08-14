@@ -69,13 +69,21 @@ async def analyze(image: UploadFile = File(...)):
     finally:
         await image.close()
 
-    # Quick model call to guess merchant/address
+        # Quick model call to guess merchant/address
     quick_prompt = """
-Return ONLY this JSON:
-{"m": "merchant name or null", "a": "merchant address or null"}
-"""
+    Return ONLY this JSON:
+    {"m": "merchant name or null", "a": "merchant address or null"}
+
+    Rules:
+    - "m" must be the BUSINESS/STORE/BRAND name selling the goods, not a customer, salesperson, cashier, or staff name.
+    - Ignore any names near or following labels like "Served by", "Customer", "Cashier", "Phone".
+    - Prefer the brand/logo text or store name printed near the top of the receipt or in the footer section.
+    - If multiple candidates exist, pick the most prominent brand name.
+    - "a" should be the merchant/store address if printed, not a personal address.
+    - If any value is missing or unreadable, set it to null.
+    """
     quick = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         temperature=0.0,
         messages=[
             {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
