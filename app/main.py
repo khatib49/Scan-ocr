@@ -98,36 +98,20 @@ Extraction rules:
     )
     try:
         ma = json.loads(quick.choices[0].message.content or "{}")
-        merchant_guess = (ma.get("m") or "")[:200]
-        addr_guess = (ma.get("a") or "")[:200]
+        merchant_guess = (ma.get("m") or "").strip()[:200]
+        addr_guess = (ma.get("a") or "").strip()[:200]
     except Exception as e:
         merchant_guess, addr_guess = "", ""
         await log_error(b64, str(e), "quick_guess")
 
     profile = find_best_profile(VENUE_PROFILES, merchant_guess, addr_guess)
-    sys = build_system_prompt(profile)
-
-    # Main extraction
-    resp = client.chat.completions.create(
-        model="gpt-4o",
-        temperature=0.1,
-        messages=[
-            {"role":"system","content": sys},
-            {"role":"user","content":[{"type":"image_url","image_url":{"url":f"data:image/jpeg;base64,{b64}"}}]}
-        ]
-    )
-
-    raw_txt = resp.choices[0].message.content or ""
-    try:
-        data = json.loads(raw_txt)
-        if "data" not in data:
-            raise ValueError("Missing 'data' root.")
-    except Exception as e:
-        await log_error(b64, str(e), "parse_openai_response", {"raw_response": raw_txt})
+    raw_txt = None
+    if not merchant_guess or profile is None:
         data = {
             "data": {
-                "MerchantName": None,
-                "MerchantAddress": None,
+                "MerchantName": merchant_guess or None,
+                "MerchantAddress": addr_guess or None,
+                "MerchantId": None,
                 "TransactionDate": None,
                 "StoreID": None,
                 "InvoiceId": None,
@@ -136,19 +120,57 @@ Extraction rules:
                 "Subtotal": None,
                 "Tax": None,
                 "Total": None,
-                "fraudScore": 0,
+                "fraudScore": 100,
                 "confidentScore": 0,
-                "reason": f"Model returned non-JSON or invalid format. {str(e)}"
+                "reason": (
+                    "Merchant name missing."
+                    if not merchant_guess else
+                    "No matching venue profile found."
+                )
             }
         }
+        
+        final_payload = data
 
-    # d = data.get("data", {})
-    # for k in ("MerchantName","MerchantAddress","TransactionDate","StoreID","InvoiceId","CR","TaxID"):
-    #     d[k] = coerce_nullish(d.get(k))
-    # d["TransactionDate"] = norm_date(d.get("TransactionDate"))
+    else:
+        sys = build_system_prompt(profile)
 
-    # data["data"] = d
-    final_payload = validate_and_score(data, profile)
+        # Main extraction
+        resp = client.chat.completions.create(
+            model="gpt-4o",
+            temperature=0.1,
+            messages=[
+                {"role":"system","content": sys},
+                {"role":"user","content":[{"type":"image_url","image_url":{"url":f"data:image/jpeg;base64,{b64}"}}]}
+            ]
+        )
+
+        raw_txt = resp.choices[0].message.content or ""
+        try:
+            data = json.loads(raw_txt)
+            if "data" not in data:
+                raise ValueError("Missing 'data' root.")
+        except Exception as e:
+            await log_error(b64, str(e), "parse_openai_response", {"raw_response": raw_txt})
+            data = {
+                "data": {
+                    "MerchantName": None,
+                    "MerchantAddress": None,
+                    "TransactionDate": None,
+                    "StoreID": None,
+                    "InvoiceId": None,
+                    "CR": None,
+                    "TaxID": None,
+                    "Subtotal": None,
+                    "Tax": None,
+                    "Total": None,
+                    "fraudScore": 0,
+                    "confidentScore": 0,
+                    "reason": f"Model returned non-JSON or invalid format. {str(e)}"
+                }
+            }
+
+        final_payload = validate_and_score(data, profile)
 
     # Log final result
     await log_scan_invoice(
