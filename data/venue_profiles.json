@@ -136,7 +136,7 @@
     "Time_Label": "04:33 PM",
     "Date_Format": "DD/MM/YYYY",
     "Time_Format": "hh:mm a",
-    "InvoiceId_Label": "JLC8777",
+    "InvoiceId_Label": "JLC8749",
     "StoreID_Label": null,
     "MerchantName_Keyword": ["جاك لو كاك", "Jacques La Coupe"],
     "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
@@ -226,7 +226,7 @@
     "Subtotal_Label": "Subtotal",
     "Tax_Label": "VAT (VAT, 15%)",
     "CR_Label": null,
-    "TaxID_Label": "311462182600003",
+    "TaxID_Label": "311462482600003",
     "Date_Label": "29 Jun 2025",
     "Time_Label": "9:21pm",
     "Date_Format": "DD MMM YYYY",
@@ -737,7 +737,7 @@
 
 ,
 {
-  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel"],
+  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل"],
   "MerchantAddress_Keyword": ["الرياض", "Riyadh"],
   "MerchantId" : 735,
   "Category": "F&B",
@@ -756,7 +756,7 @@
     "Time_Format": "hh:mm:ss a",
     "InvoiceId_Label": "110405",
     "StoreID_Label": null,
-    "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel"],
+  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل"],
     "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
   }
 }
@@ -868,7 +868,7 @@
 {
   "MerchantName_Keyword": ["مؤسسة المستقبل لاند للفعاليات الترفيهية", "Future Land Entertainment", "Future Land"],
   "MerchantAddress_Keyword": ["جدة - نادي اليخوت", "Jeddah - Yacht Club"],
-    "MerchantId" :766,
+  "MerchantId": 766,
   "Category": "Entertainment",
   "Sub-category": "VR & Arcade",
   "Spending Range (SAR)": "20-500",
@@ -881,7 +881,7 @@
     "TaxID_Label": "312331405100003",
     "Date_Label": "14/01/47",
     "Time_Label": "02:58 ص",
-    "Date_Format": "DD/MM/YY",
+    "Date_Format": "DD/MM/YY (Hijri date — must be converted to Gregorian before output)",
     "Time_Format": "hh:mm a",
     "InvoiceId_Label": "1777",
     "StoreID_Label": "رقم الطلب 1058",
@@ -1074,7 +1074,7 @@
     "Spending Range (SAR)":"50-200"
   },
  {
-  "MerchantName_Keyword": ["ريف المصري", "Rif El Masri"],
+  "MerchantName_Keyword": ["ريف المصري", "Rif El Masri","الريف المصري"],
   "MerchantAddress_Keyword": ["جدة", "Jeddah"],
     "MerchantId" :767,
   "Category": "F&B",
@@ -1093,7 +1093,7 @@
     "Time_Format": "hh:mm a",
     "InvoiceId_Label": "5421",
     "StoreID_Label": null,
-    "MerchantName_Keyword": ["ريف المصري", "Rif El Masri"],
+  "MerchantName_Keyword": ["ريف المصري", "Rif El Masri","الريف المصري"],
     "MerchantAddress_Keyword": ["جدة", "Jeddah"]
   }
 }
@@ -1259,7 +1259,7 @@
       "Time_Label": "06:47:29",
       "Date_Format": "YYYY/MM/DD",
       "Time_Format": "HH:mm:ss",
-      "InvoiceId_Label": "140493",
+      "InvoiceId_Label": "140492",
       "StoreID_Label": null,
       "MerchantName_Keyword": ["سلاشيز", "سلاشز", "SLUSHY'S", "Slushy's"],
       "MerchantAddress_Keyword": ["الرياض - البوليفارد", "Boulevard City, Riyadh"]
