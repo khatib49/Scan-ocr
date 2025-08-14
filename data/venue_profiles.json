@@ -487,7 +487,7 @@
   "ExtractionHints": {
     "Language": "Mixed",
     "Total_Label": "Payment",
-    "Subtotal_Label": "Subtotal",
+    "Subtotal_Label": "Net Total",
     "Tax_Label": "VAT 15%",
     "CR_Label": null,
     "TaxID_Label": null,
