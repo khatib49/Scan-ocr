@@ -71,17 +71,22 @@ async def analyze(image: UploadFile = File(...)):
 
         # Quick model call to guess merchant/address
     quick_prompt = """
-    Return ONLY this JSON:
-    {"m": "merchant name or null", "a": "merchant address or null"}
+Return ONLY this raw JSON object:
+{"m": "merchant name or null", "a": "merchant address or null"}
 
-    Rules:
-    - "m" must be the BUSINESS/STORE/BRAND name selling the goods, not a customer, salesperson, cashier, or staff name.
-    - Ignore any names near or following labels like "Served by", "Customer", "Cashier", "Phone".
-    - Prefer the brand/logo text or store name printed near the top of the receipt or in the footer section.
-    - If multiple candidates exist, pick the most prominent brand name.
-    - "a" should be the merchant/store address if printed, not a personal address.
-    - If any value is missing or unreadable, set it to null.
-    """
+Formatting rules:
+- DO NOT include ```json or any markdown formatting — return raw JSON only, no code fences or explanations.
+- The output must start with '{' and end with '}', with no extra characters before or after.
+
+Extraction rules:
+- "m" must be the BUSINESS/STORE/BRAND name selling the goods — not a customer or staff name.
+- Accept brand names even if they appear next to "Customer" if clearly recognizable (e.g., luxury brands like 'Roberto Coin').
+- Ignore names that appear next to: "Served by", "Cashier", "Salesperson", "Phone", or "Register".
+- Prefer names at the top of the receipt or near store/VAT info — but allow brand names from footer if layout confirms they are merchants.
+- "a" is the merchant's physical store address if printed. If not available, set it to null.
+"""
+
+
     quick = client.chat.completions.create(
         model="gpt-4o-mini",
         temperature=0.0,
