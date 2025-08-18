@@ -1,11 +1,12 @@
 import os, json, base64
+from re import match
 from typing import Optional, Dict, Any
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from .venue_matcher import load_profiles, find_best_profile
+from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
 from utils.qr import decode_zatca_qr
 from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score
 from utils.logger import log_scan_invoice, log_error
@@ -29,6 +30,7 @@ app = FastAPI(title="Scan Invoice API", version="0.1.1")
 
 # Load venue profiles from JSON
 VENUE_PROFILES = load_profiles(os.getenv("VENUE_PROFILES_PATH", "data/venue_profiles.json"))
+NAME_INDEX = build_name_index(VENUE_PROFILES) 
 
 class AnalyzeResponse(BaseModel):
     data: Dict[str, Any]
@@ -104,9 +106,13 @@ Extraction rules:
         merchant_guess, addr_guess = "", ""
         await log_error(b64, str(e), "quick_guess")
 
-    profile = find_best_profile(VENUE_PROFILES, merchant_guess, addr_guess)
+
+    match = find_best_profile_indexed(NAME_INDEX, merchant_guess)
+    matched = match["matched"]
+    profile = match["profile"]
+
     raw_txt = None
-    if not merchant_guess or profile is None:
+    if not merchant_guess or not matched:
         data = {
             "data": {
                 "MerchantName": merchant_guess or None,

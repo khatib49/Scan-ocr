@@ -1,54 +1,52 @@
-import json, re, unicodedata
-from typing import List, Dict, Optional, Union, Any
-from rapidfuzz import fuzz
+# venue_matcher.py
+import re, unicodedata, json
+from typing import Dict, Any, List, Optional
 
-ARABIC_MAP = {
-    "أ": "ا", "إ": "ا", "آ": "ا",
-    "ة": "ه",
-    "ى": "ي",
-    "ؤ": "و", "ئ": "ي",
-}
+def _strip_diacritics(s: str) -> str:
+    s = unicodedata.normalize("NFKD", s)
+    return "".join(ch for ch in s if not unicodedata.combining(ch))
 
-def normalize_text(s: Optional[str]) -> str:
+def _normalize(s: Optional[str]) -> str:
     if not s:
         return ""
-    s = unicodedata.normalize("NFKC", s).lower()
-    s = re.sub(r"[^\w\u0600-\u06FF]+", " ", s)
-    for k, v in ARABIC_MAP.items():
-        s = s.replace(k, v)
-    return re.sub(r"\s+", " ", s).strip()
+    s = _strip_diacritics(s.lower())
+    s = re.sub(r"[^\w\s]", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
 
-def _score(candidates: Union[str, List[str], None], query: str) -> int:
-    if not candidates:
-        return 0
-    if isinstance(candidates, list):
-        return max((fuzz.partial_ratio(normalize_text(c), normalize_text(query))
-                   for c in candidates if isinstance(c, str)), default=0)
-    return fuzz.partial_ratio(normalize_text(str(candidates)), normalize_text(query))
+def _names_from_profile(p: Dict[str, Any]) -> List[str]:
+    # support multiple fields / aliases
+    raw = []
+    for k in ("MerchantName_Keyword", "TenantName", "Brand", "Aliases"):
+        v = p.get(k)
+        if isinstance(v, str):
+            raw.extend([t.strip() for t in re.split(r"[|,/]", v) if t.strip()])
+        elif isinstance(v, list):
+            raw.extend([str(t).strip() for t in v if str(t).strip()])
+    return list({r for r in raw if r})
 
-def find_best_profile(profiles: List[Dict], merchant: str, address: str) -> Optional[Dict]:
-    m = normalize_text(merchant)
-    a = normalize_text(address)
-    if not (m or a):
-        return None
-
-    best = None
-    best_total = 0.0
+def build_name_index(profiles: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    idx: Dict[str, Dict[str, Any]] = {}
     for p in profiles:
-        mk = p.get("MerchantName_Keyword")
-        ak = p.get("MerchantAddress_Keyword")
-        ms = _score(mk, m)
-        as_ = _score(ak, a)
-        total = ms * 0.7 + as_ * 0.3
-        if total > best_total:
-            best_total = total
-            best = p
+        for n in _names_from_profile(p):
+            nn = _normalize(n)
+            if nn:
+                idx[nn] = p  # last one wins if duplicates
+    return idx
 
-    return best if best_total >= 55 else None
+def load_profiles(path: str) -> List[Dict[str, Any]]:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-def load_profiles(json_path: str) -> List[Dict[str, Any]]:
-    try:
-        with open(json_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return []
+# ---- O(1) exact match by name ----
+def find_best_profile_indexed(
+    name_index: Dict[str, Dict[str, Any]],
+    merchant_guess: Optional[str]
+) -> Dict[str, Any]:
+    ng = _normalize(merchant_guess)
+    if not ng:
+        return {"matched": False, "profile": None, "hints": {}}
+    p = name_index.get(ng)
+    if p:
+        return {"matched": True, "profile": p, "hints": p.get("ExtractionHints", {})}
+    return {"matched": False, "profile": None, "hints": {}}
