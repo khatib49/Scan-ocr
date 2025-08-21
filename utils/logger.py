@@ -32,12 +32,11 @@ async def log_scan_invoice(
     try:
         await scan_invoice_collection.insert_one({
             "created_at": datetime.utcnow(),
-            # "image": b64_image,
+            "image_url": b64_image,
             "merchant_guess": merchant_guess,
             "address_guess": address_guess,
             "matched_profile": profile,
             "openai_raw": raw_text,
-            # "parsed_data": parsed_data,
             "final_result": final_result
         })
     except Exception as e:
@@ -53,7 +52,7 @@ async def log_error(
     try:
         await error_collection.insert_one({
             "created_at": datetime.utcnow(),
-            # "image": "",
+            "image_url": b64_image,
             "stage": stage,
             "error": error,
             "extra": extra or {}

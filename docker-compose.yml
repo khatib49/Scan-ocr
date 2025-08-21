@@ -1,0 +1,40 @@
+# docker-compose.yml
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: scan_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scan_invoice_api
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # --- required ---
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      MONGO_URL: "mongodb://mongo:27017/scan-invoice"
+      # Multiple keys allowed (comma-separated)
+      API_KEYS: ${API_KEYS:-dev-key-1,dev-key-2}
+      # CORS: "*" for all or comma-separated list
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-*}
+
+      # --- optional (your code already defaults to these) ---
+      PROMPT_PATH: ${PROMPT_PATH:-data/prompt.txt}
+      QUICK_PROMPT_PATH: ${QUICK_PROMPT_PATH:-data/quick_prompt.txt}
+      VENUE_PROFILES_PATH: ${VENUE_PROFILES_PATH:-data/venue_profiles.json}
+    volumes:
+      # Mount data so you can edit prompts/profiles without rebuild
+      - ./data:/app/data:ro
+
+volumes:
+  mongo_data:

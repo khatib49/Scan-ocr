@@ -1,15 +1,18 @@
 import os, json, base64
 from re import match
 from typing import Optional, Dict, Any
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, Query, UploadFile, File, HTTPException
+from fastapi.params import Depends
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
-from utils.qr import decode_zatca_qr
 from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score
 from utils.logger import log_scan_invoice, log_error
+
+from .security import verify_api_key, add_cors 
+from .blob_service import upload_image_bytes
 
 # Load environment variables
 try:
@@ -26,7 +29,10 @@ if not OPENAI_API_KEY:
     raise RuntimeError("Set OPENAI_API_KEY in environment or .env")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
-app = FastAPI(title="Scan Invoice API", version="0.1.1")
+app = FastAPI(title="Scan Invoice API", version="0.1.1",  dependencies=[Depends(verify_api_key)])
+
+# CORS
+add_cors(app)
 
 # Load venue profiles from JSON
 VENUE_PROFILES = load_profiles(os.getenv("VENUE_PROFILES_PATH", "data/venue_profiles.json"))
@@ -62,31 +68,36 @@ def health():
     return {"status": "ok", "profiles": len(VENUE_PROFILES)}
 
 @app.post("/analyze", response_model=AnalyzeResponse)
-async def analyze(image: UploadFile = File(...)):
+async def analyze(image: UploadFile = File(...),
+                    save_image: bool = Query(False, description="If true, saves the uploaded image to Azure Blob Storage")
+):
     try:
         raw = await image.read()
         if not raw:
             raise HTTPException(400, "Empty file.")
         b64 = base64.b64encode(raw).decode("utf-8")
+        content_type = image.content_type
     finally:
         await image.close()
 
+
+    blob_name = None
+    blob_url = None
+    if save_image:
+        try:
+            preferred = None
+            # keep original filename if it’s safe; otherwise let service pick UUID
+            if image.filename and len(image.filename) < 150 and "." in image.filename:
+                preferred = image.filename.replace("\\", "/").split("/")[-1]
+            blob_name, blob_url = await upload_image_bytes(raw, content_type=content_type, preferred_name=preferred)
+        except Exception as e:
+            # Don’t fail the whole analyze if storage is down; just log and continue
+            await log_error("", f"Blob upload failed: {str(e)}", "blob_upload")
+
         # Quick model call to guess merchant/address
-    quick_prompt = """
-Return ONLY this raw JSON object:
-{"m": "merchant name or null", "a": "merchant address or null"}
-
-Formatting rules:
-- DO NOT include ```json or any markdown formatting — return raw JSON only, no code fences or explanations.
-- The output must start with '{' and end with '}', with no extra characters before or after.
-
-Extraction rules:
-- "m" must be the BUSINESS/STORE/BRAND name selling the goods — not a customer or staff name.
-- Accept brand names even if they appear next to "Customer" if clearly recognizable (e.g., luxury brands like 'Roberto Coin').
-- Ignore names that appear next to: "Served by", "Cashier", "Salesperson", "Phone", or "Register".
-- Prefer names at the top of the receipt or near store/VAT info — but allow brand names from footer if layout confirms they are merchants.
-- "a" is the merchant's physical store address if printed. If not available, set it to null.
-"""
+    QUICK_PROMPT_PATH = os.getenv("QUICK_PROMPT_PATH", "data/quick_prompt.txt")
+    with open(QUICK_PROMPT_PATH, encoding="utf-8") as f:
+        QUICK_PROMPT = f.read()
 
 
     quick = client.chat.completions.create(
@@ -95,7 +106,7 @@ Extraction rules:
         messages=[
             {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
             {"role":"user","content":[{"type":"image_url","image_url":{"url":f"data:image/jpeg;base64,{b64}"}}]},
-            {"role":"user","content":quick_prompt}
+            {"role":"user","content":QUICK_PROMPT}
         ]
     )
     try:
@@ -104,7 +115,7 @@ Extraction rules:
         addr_guess = (ma.get("a") or "").strip()[:200]
     except Exception as e:
         merchant_guess, addr_guess = "", ""
-        await log_error(b64, str(e), "quick_guess")
+        await log_error(blob_url, str(e), "quick_guess")
 
 
     match = find_best_profile_indexed(NAME_INDEX, merchant_guess)
@@ -157,7 +168,7 @@ Extraction rules:
             if "data" not in data:
                 raise ValueError("Missing 'data' root.")
         except Exception as e:
-            await log_error(b64, str(e), "parse_openai_response", {"raw_response": raw_txt})
+            await log_error(blob_url, str(e), "parse_openai_response", {"raw_response": raw_txt})
             data = {
                 "data": {
                     "MerchantName": None,
@@ -180,7 +191,7 @@ Extraction rules:
 
     # Log final result
     await log_scan_invoice(
-        b64_image="",
+        b64_image=blob_url,
         merchant_guess=merchant_guess,
         address_guess=addr_guess,
         profile=profile,

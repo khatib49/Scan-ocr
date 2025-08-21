@@ -38,7 +38,6 @@ def load_profiles(path: str) -> List[Dict[str, Any]]:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-# ---- O(1) exact match by name ----
 def find_best_profile_indexed(
     name_index: Dict[str, Dict[str, Any]],
     merchant_guess: Optional[str]
