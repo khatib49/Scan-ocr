@@ -1,4 +1,3 @@
-# docker-compose.yml
 services:
   mongo:
     image: mongo:6.0
@@ -19,21 +18,29 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
-      # --- required ---
+      # Allow overriding from host env if desired
+      MONGO_URL: ${MONGO_URL:-mongodb://mongo:27017}
+      MONGO_DB: ${MONGO_DB:-scan-invoice}
+
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-      MONGO_URL: "mongodb://mongo:27017/scan-invoice"
-      # Multiple keys allowed (comma-separated)
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+
       API_KEYS: ${API_KEYS:-dev-key-1,dev-key-2}
-      # CORS: "*" for all or comma-separated list
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-*}
 
-      # --- optional (your code already defaults to these) ---
       PROMPT_PATH: ${PROMPT_PATH:-data/prompt.txt}
       QUICK_PROMPT_PATH: ${QUICK_PROMPT_PATH:-data/quick_prompt.txt}
       VENUE_PROFILES_PATH: ${VENUE_PROFILES_PATH:-data/venue_profiles.json}
+
+      # Azure vars are REQUIRED for image saving
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
+      AZURE_BLOB_CONTAINER: ${AZURE_BLOB_CONTAINER:-invoicefiles}
+      SAS_TTL_MINUTES: ${SAS_TTL_MINUTES:-60}
+
     volumes:
-      # Mount data so you can edit prompts/profiles without rebuild
       - ./data:/app/data:ro
 
 volumes:
