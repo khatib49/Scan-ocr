@@ -80,6 +80,7 @@ def health():
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
     image: UploadFile = File(...),
+    userReference : str = Query(..., description="Your internal user ID or reference"),
     save_image: bool = Query(False, description="If true, saves the uploaded image to Azure Blob Storage")
 ):
     # 1) Read file
@@ -214,12 +215,12 @@ async def analyze(
 
     # 7) Persist log (SAS URL included if saved)
     await log_scan_invoice(
-        b64_image=blob_url,
+        imageUrl=blob_url,
         merchant_guess=merchant_guess if 'merchant_guess' in locals() else None,
         address_guess=addr_guess if 'addr_guess' in locals() else None,
         profile=profile if 'profile' in locals() else None,
         raw_text=raw_txt,
-        parsed_data=data,
+        userReference = userReference,
         final_result=final_payload
     )
 
