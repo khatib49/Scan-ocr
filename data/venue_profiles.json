@@ -2756,6 +2756,32 @@
       "MerchantName_Keyword": ["مؤسسة الحساوي للتجارة", "Al-Hasawi Trading Est"],
       "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
     }
+  },
+
+  {
+  "MerchantName_Keyword": ["مومينتو بيتزا", "mom3nto pizza", "Momento Pizza"],
+  "MerchantAddress_Keyword": ["جدة - حي الشاطئ", "Jeddah - Al Shati"],
+  "MerchantId": 767,
+  "Category": "F&B",
+  "Sub-category": "Restaurant",
+  "Spending Range (SAR)": "20-150",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "الصافي",
+    "Subtotal_Label": "الإجمالي",
+    "Tax_Label": "ضريبة القيمة المضافة %15",
+    "CR_Label": "الرقم الضريبي",
+    "TaxID_Label": "311338520400003",
+    "Date_Label": "27/08/2025",
+    "Time_Label": "05:53 م",
+    "Date_Format": "DD/MM/YYYY",
+    "Time_Format": "hh:mm a",
+    "InvoiceId_Label": "55257",
+    "StoreID_Label": null,
+    "MerchantName_Keyword": ["مومينتو بيتزا", "mom3nto pizza", "Momento Pizza"],
+    "MerchantAddress_Keyword": ["جدة - حي الشاطئ", "Jeddah - Al Shati"]
   }
+}
+
 
 ]
