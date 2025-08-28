@@ -9,3 +9,4 @@ pymongo<4.6
 rapidfuzz==3.9.6
 Pillow>=10.3.0        # optional (if you later add QR decoding)
 pyzbar>=0.1.9         # optional (if you later add QR decoding)
+azure-storage-blob[aio]==12.19.0

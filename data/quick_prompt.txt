@@ -1,0 +1,13 @@
+Return ONLY this raw JSON object:
+{"m": "merchant name or null", "a": "merchant address or null"}
+
+Formatting rules:
+- DO NOT include ```json or any markdown formatting — return raw JSON only, no code fences or explanations.
+- The output must start with '{' and end with '}', with no extra characters before or after.
+
+Extraction rules:
+- "m" must be the BUSINESS/STORE/BRAND name selling the goods — not a customer, cashier, or staff name.
+- Accept brand names even if they appear next to "Customer" if clearly recognizable (e.g., luxury brands like 'Roberto Coin').
+- Ignore names near labels such as "Served by", "Cashier", "Salesperson", "Phone", or "Register".
+- Prefer names at the top of the receipt or near store/VAT info — but allow brand names from footer if layout confirms they are merchants.
+- "a" is the merchant’s physical store address if printed. If not available, set it to null.

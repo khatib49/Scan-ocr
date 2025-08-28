@@ -1,0 +1,47 @@
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: scan_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scan_invoice_api
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Allow overriding from host env if desired
+      MONGO_URL: ${MONGO_URL:-mongodb://mongo:27017}
+      MONGO_DB: ${MONGO_DB:-scan-invoice}
+
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+
+      API_KEYS: ${API_KEYS:-dev-key-1,dev-key-2}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-*}
+
+      PROMPT_PATH: ${PROMPT_PATH:-data/prompt.txt}
+      QUICK_PROMPT_PATH: ${QUICK_PROMPT_PATH:-data/quick_prompt.txt}
+      VENUE_PROFILES_PATH: ${VENUE_PROFILES_PATH:-data/venue_profiles.json}
+
+      # Azure vars are REQUIRED for image saving
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
+      AZURE_BLOB_CONTAINER: ${AZURE_BLOB_CONTAINER:-invoicefiles}
+      SAS_TTL_MINUTES: ${SAS_TTL_MINUTES:-60}
+
+    volumes:
+      - ./data:/app/data:ro
+
+volumes:
+  mongo_data:
