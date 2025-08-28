@@ -21,7 +21,9 @@ def norm_date(datestr: Optional[str]) -> Optional[str]:
     except Exception:
         return None
 
-def validate_and_score(data: Dict[str, Any], profile: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+def validate_and_score(data: Dict[str, Any], profile: Optional[Dict[str, Any]], image_url: Optional[str], 
+    merchant_guess: Optional[str] = None,
+    matched: Optional[bool] = None) -> Dict[str, Any]:
     # You can keep your original logic here
     d = data.get("data", {})
     subtotal = coerce_number(d.get("Subtotal"))
@@ -43,6 +45,12 @@ def validate_and_score(data: Dict[str, Any], profile: Optional[Dict[str, Any]]) 
 
     d["fraudScore"] = 100 if reason else 0
     d["confidentScore"] = 0 if reason else 100
-    d["reason"] = ", ".join(reason) if reason else "All values match the venue profile and calculations are correct."
+    if reason:
+        d["reason"] = ", ".join(reason)
+    d["image_url"] = image_url
+    
+    d["needsRescan"] = merchant_guess is None
+    d["profileMatched"] = bool(matched) if merchant_guess else False
+
     data["data"] = d
     return data

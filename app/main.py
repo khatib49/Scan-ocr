@@ -159,6 +159,7 @@ async def analyze(
             "data": {
                 "MerchantName": merchant_guess or None,
                 "MerchantAddress": addr_guess or None,
+                "Image": blob_url or None,
                 "MerchantId": None,
                 "TransactionDate": None,
                 "StoreID": None,
@@ -170,7 +171,9 @@ async def analyze(
                 "Total": None,
                 "fraudScore": 100,
                 "confidentScore": 0,
-                "reason": ("Merchant name missing." if not merchant_guess else "No matching venue profile found.")
+                "reason": ("Merchant name missing." if not merchant_guess else "No matching venue profile found."),
+                "needsRescan": merchant_guess is None,
+                "profileMatched": bool(matched) if merchant_guess else False
             }
         }
         final_payload = data
@@ -196,6 +199,7 @@ async def analyze(
                 "data": {
                     "MerchantName": None,
                     "MerchantAddress": None,
+                "Image": blob_url or None,
                     "TransactionDate": None,
                     "StoreID": None,
                     "InvoiceId": None,
@@ -211,7 +215,7 @@ async def analyze(
             }
 
         # Validate/score via your custom logic
-        final_payload = validate_and_score(data, profile)
+        final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
 
     # 7) Persist log (SAS URL included if saved)
     await log_scan_invoice(
