@@ -1,7 +1,7 @@
 import os, json, base64
 from typing import Optional, Dict, Any
 
-from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends
+from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends, Form
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -80,8 +80,8 @@ def health():
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
     image: UploadFile = File(...),
-    userReference : str = Query(..., description="Your internal user ID or reference"),
-    save_image: bool = Query(False, description="If true, saves the uploaded image to Azure Blob Storage")
+    userReference : str = Form(..., description="Your internal user ID or reference"),
+    save_image: bool = Form(False, description="If true, saves the uploaded image to Azure Blob Storage")
 ):
     # 1) Read file
     try:
