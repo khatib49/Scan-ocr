@@ -737,7 +737,7 @@
 
 ,
 {
-  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل"],
+  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل", "مركز النخيل", "Merkaz JYC", "JYC Merkaz"],
   "MerchantAddress_Keyword": ["الرياض", "Riyadh"],
   "MerchantId" : 735,
   "Category": "F&B",
@@ -756,7 +756,7 @@
     "Time_Format": "hh:mm:ss a",
     "InvoiceId_Label": "110405",
     "StoreID_Label": null,
-  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل"],
+  "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل", "مركز النخيل", "Merkaz JYC", "JYC Merkaz"],
     "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
   }
 }
