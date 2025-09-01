@@ -25,28 +25,28 @@
   },
 {
   "MerchantName_Keyword": "Chaps & Co",
-  "MerchantAddress_Keyword": "VIA Riyadh",
+  "MerchantAddress_Keyword": "Via Riyadh, Riyadh, 12912.",
   "Category": "Services",
   "Sub-category": "Barber Shop",
   "Spending Range (SAR)": "100–300",
   "ExtractionHints": {
     "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "Tax 15%",
+    "Total_Label": "SAR 171.10",
+    "Subtotal_Label": "SAR 126.09",
+    "Tax_Label": "SAR 18.91 (Tax 15%)",
     "CR_Label": null,
-    "TaxID_Label": "310075487100003",
-    "Date_Label": "15/05/2025",
-    "Time_Label": "13:29",
+    "TaxID_Label": "3000011784570013",
+    "VATNumber_Label": "310075487100003",
+    "Date_Label": "15 May 2025",
+    "Time_Label": "1:29pm",
     "Date_Format": "DD/MM/YYYY",
     "Time_Format": "HH:mm",
     "InvoiceId_Label": "3626",
     "StoreID_Label": "Chaps & Co - VIA Riyadh",
-    "MerchantName_Keyword": "تشابس آند كو / Chaps & Co",
+    "MerchantName_Keyword": "Chaps & Co",
     "MerchantAddress_Keyword": "Via Riyadh, Riyadh"
   }
-}
- , {
+}, {
     "MerchantAddress_Keyword":"Via Riyadh",
     "Group Name":null,
     "MerchantName_Keyword":"CLE",
