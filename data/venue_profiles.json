@@ -1315,13 +1315,30 @@
     "Spending Range (SAR)":"50-200"
   },
   {
-    "MerchantAddress_Keyword":"BLVD City",
-    "Group Name":null,
-    "MerchantName_Keyword":"Apri",
-    "Category":"Dine",
-    "Sub-category":"Dine in",
-    "Spending Range (SAR)":"50-200"
-  },
+  "MerchantName_Keyword": ["APRI", "أبري", "Apri Cafe", "Apri City"],
+  "MerchantAddress_Keyword": ["الرياض", "Riyadh"],
+  "MerchantId": 764,
+  "Category": "F&B",
+  "Sub-category": "Cafe",
+  "Spending Range (SAR)": "20-250",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "الإجمالي",
+    "Subtotal_Label": "المجموع بدون ضريبة",
+    "Tax_Label": "VAT (15%)",
+    "CR_Label": "VAT",
+    "TaxID_Label": "312120295200003",
+    "Date_Label": "2025/07/18",
+    "Time_Label": "08:28 PM",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "hh:mm a",
+    "InvoiceId_Label": "1290900",
+    "StoreID_Label": "Apri City",
+    "MerchantName_Keyword": ["APRI", "أبري", "Apri Cafe", "Apri City"],
+    "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
+  }
+}
+,
   {
     "MerchantAddress_Keyword":"BLVD City",
     "Group Name":null,
