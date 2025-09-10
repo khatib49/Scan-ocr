@@ -1,6 +1,4 @@
 import os, json, base64
-import time
-from time import time
 from time import perf_counter
 from typing import Optional, Dict, Any
 import uuid
@@ -195,7 +193,7 @@ async def analyze(
         b64 = base64.b64encode(raw).decode("utf-8")
 
         q_start = perf_counter()
-        quick = client.chat.completions.create(
+        quick = await client.chat.completions.create(
             model=OPENAI_MODEL,
             temperature=0.0,
             messages=[
@@ -266,7 +264,7 @@ async def analyze(
             sys = build_system_prompt(profile)
 
             m_start = perf_counter()
-            resp = client.chat.completions.create(
+            resp = await client.chat.completions.create(
                 model=OPENAI_MODEL,
                 temperature=0.1,
                 messages=[
