@@ -1,7 +1,7 @@
 import os, json, base64
 from typing import Optional, Dict, Any
 
-from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends, Form
+from fastapi import FastAPI, Query, Request, UploadFile, File, HTTPException, Depends, Form
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -79,10 +79,13 @@ def health():
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
+    request: Request,
     image: UploadFile = File(...),
     userReference : str = Form(..., description="Your internal user ID or reference"),
     save_image: bool = Form(False, description="If true, saves the uploaded image to Azure Blob Storage")
 ):
+     # If you need the project later (e.g., to log project_id), it's already here:
+    project_id = request.state.project["_id"]
     # 1) Read file
     try:
         raw = await image.read()
@@ -194,7 +197,7 @@ async def analyze(
             if "data" not in data:
                 raise ValueError("Missing 'data' root.")
         except Exception as e:
-            await log_error(blob_url, str(e), "parse_openai_response", {"raw_response": raw_txt})
+            await log_error(blob_url, str(e), "parse_openai_response", {"raw_response": raw_txt}, project_id=project_id)
             data = {
                 "data": {
                     "MerchantName": None,
@@ -210,7 +213,7 @@ async def analyze(
                     "Total": None,
                     "fraudScore": 0,
                     "confidentScore": 0,
-                    "reason": f"Model returned non-JSON or invalid format. {str(e)}"
+                    "reason": f"Model returned non-JSON or invalid format. {str(e)}",
                 }
             }
 
@@ -225,7 +228,8 @@ async def analyze(
         profile=profile if 'profile' in locals() else None,
         raw_text=raw_txt,
         userReference = userReference,
-        final_result=final_payload
+        final_result=final_payload,
+        project_id=project_id
     )
 
     return AnalyzeResponse(**final_payload)
