@@ -323,7 +323,8 @@ async def analyze(
             profile=profile if 'profile' in locals() else None,
             raw_text=raw_txt,
             userReference=userReference,
-            final_result=final_payload
+            final_result=final_payload,
+            request_id=request_id
         )
 
         # Done

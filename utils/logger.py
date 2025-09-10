@@ -38,7 +38,8 @@ async def log_scan_invoice(
     profile: Optional[Dict[str, Any]],
     raw_text: Optional[str],
     userReference: str,
-    final_result: Optional[Dict[str, Any]]
+    final_result: Optional[Dict[str, Any]],
+    request_id: Optional[str] = None,
 ):
     try:
         doc = {
@@ -49,7 +50,8 @@ async def log_scan_invoice(
             "matched_profile": profile,
             "openai_raw": raw_text,
             "userReference" :  userReference,
-            "final_result": final_result
+            "final_result": final_result,
+            "request_id": request_id
         }
         res = await scan_invoice_collection.insert_one(doc)
     except Exception as e:
@@ -138,8 +140,8 @@ async def append_blob_op(
         )
     except Exception as e:
         print("[append_blob_op ERROR]", str(e))
-        
-                        
+
+
 async def init_request_log(
     request_id: str,
     path: str,
