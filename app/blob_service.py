@@ -1,4 +1,3 @@
-# app/blob_service.py
 import os
 import uuid
 import re
@@ -6,10 +5,10 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional, Tuple
 
 from dotenv import load_dotenv
-from azure.storage.blob.aio import BlobServiceClient
-from azure.storage.blob import ContentSettings
+
+from azure.storage.blob.aio import BlobServiceClient, ContainerClient, BlobClient
+from azure.storage.blob import ContentSettings, generate_blob_sas, BlobSasPermissions
 from azure.core.exceptions import ResourceExistsError
-from azure.storage.blob import generate_blob_sas, BlobSasPermissions
 
 try:
     load_dotenv()
@@ -19,8 +18,12 @@ except Exception:
 _CONN = (os.getenv("AZURE_STORAGE_CONNECTION_STRING") or "").strip()
 _CONTAINER = (os.getenv("AZURE_BLOB_CONTAINER", "invoicefiles") or "").strip().lower()
 _SAS_TTL_MINUTES = int(os.getenv("SAS_TTL_MINUTES", "60"))
+# tuneable concurrency for faster uploads (each upload uses up to N parallel chunks)
+_MAX_CONCURRENCY = int(os.getenv("AZURE_BLOB_MAX_CONCURRENCY", "4"))
 
 _service_client: Optional[BlobServiceClient] = None
+_container_client: Optional[ContainerClient] = None
+
 _slug_re = re.compile(r"[^A-Za-z0-9._-]+")
 
 
@@ -31,9 +34,8 @@ def _validate_conn_string(conn: str) -> None:
         raise RuntimeError("Remove quotes around AZURE_STORAGE_CONNECTION_STRING.")
     if "DefaultEndpointsProtocol=" not in conn or "AccountName=" not in conn:
         raise RuntimeError("AZURE_STORAGE_CONNECTION_STRING looks malformed.")
-    # We require AccountKey to mint SAS server-side
     if "AccountKey=" not in conn:
-        raise RuntimeError("AZURE_STORAGE_CONNECTION_STRING is missing AccountKey (required to generate SAS).")
+        raise RuntimeError("AZURE_STORAGE_CONNECTION_STRING missing AccountKey (required for SAS).")
 
 
 def _safe_filename(name: str) -> str:
@@ -51,24 +53,6 @@ def _guess_ext_from_content_type(ct: Optional[str]) -> str:
     if "tiff" in ct or "tif" in ct: return ".tif"
     if "bmp" in ct: return ".bmp"
     return ".bin"
-
-
-async def _get_client() -> BlobServiceClient:
-    global _service_client
-    if _service_client is None:
-        _validate_conn_string(_CONN)
-        _service_client = BlobServiceClient.from_connection_string(_CONN)
-    return _service_client
-
-
-async def _ensure_container():
-    svc = await _get_client()
-    container = svc.get_container_client(_CONTAINER)
-    try:
-        await container.create_container()  # private by default
-    except ResourceExistsError:
-        pass
-    return container
 
 
 def _account_parts():
@@ -90,10 +74,45 @@ def _build_read_sas_url(blob_name: str, ttl_minutes: int) -> str:
         blob_name=blob_name,
         permission=BlobSasPermissions(read=True),
         expiry=expires,
-        account_key=key,              # ✅ pass the AccountKey
+        account_key=key,
     )
     return f"https://{account}.blob.{suffix}/{_CONTAINER}/{blob_name}?{sas}"
 
+
+# ---------- Lifecycle (call from FastAPI startup/shutdown) ----------
+
+async def init_blob_clients() -> None:
+    """
+    Create BlobServiceClient + ContainerClient once per process and ensure container exists.
+    Call from FastAPI @app.on_event('startup').
+    """
+    global _service_client, _container_client
+    if _service_client is None:
+        _validate_conn_string(_CONN)
+        _service_client = BlobServiceClient.from_connection_string(_CONN)
+    if _container_client is None:
+        _container_client = _service_client.get_container_client(_CONTAINER)
+        try:
+            await _container_client.create_container()  # private by default
+        except ResourceExistsError:
+            pass
+
+
+async def close_blob_clients() -> None:
+    """
+    Gracefully close underlying aio HTTP session.
+    Call from FastAPI @app.on_event('shutdown').
+    """
+    global _service_client, _container_client
+    try:
+        if _service_client is not None:
+            await _service_client.close()
+    finally:
+        _service_client = None
+        _container_client = None
+
+
+# ---------- Public helpers you call from your routes ----------
 
 async def upload_image_bytes(
     data: bytes,
@@ -104,10 +123,12 @@ async def upload_image_bytes(
     sas_ttl_minutes: Optional[int] = None,
 ) -> Tuple[str, Optional[str]]:
     """
-    Upload bytes to a PRIVATE container. Optionally return a short-lived READ SAS URL.
+    Upload bytes to a PRIVATE container (async, parallel chunking).
     Returns: (blob_name, sas_url_or_None)
     """
-    container = await _ensure_container()
+    if _container_client is None:
+        # Safety: if startup hook wasn't called, lazily init once
+        await init_blob_clients()
 
     ext = _guess_ext_from_content_type(content_type)
     if preferred_name:
@@ -117,22 +138,27 @@ async def upload_image_bytes(
     else:
         blob_name = uuid.uuid4().hex + ext
 
-    blob = container.get_blob_client(blob_name)
+    blob: BlobClient = _container_client.get_blob_client(blob_name)
+
+    # ✅ async, non-blocking upload; enable parallel chunking via max_concurrency
     await blob.upload_blob(
         data,
         overwrite=True,
         content_settings=ContentSettings(content_type=content_type or "application/octet-stream"),
+        max_concurrency=max(1, _MAX_CONCURRENCY),
+        length=len(data),  # helps pipeline avoid re-reading
     )
 
-    if return_sas:
-        ttl = _SAS_TTL_MINUTES if sas_ttl_minutes is None else int(sas_ttl_minutes)
-        # If SAS generation ever fails, DO NOT raise—return (blob_name, None) so caller can fallback.
-        try:
-            return blob_name, _build_read_sas_url(blob_name, ttl)
-        except Exception as e:
-            print("[blob] SAS generation failed:", e)
-            return blob_name, None
-    return blob_name, None
+    if not return_sas:
+        return blob_name, None
+
+    ttl = _SAS_TTL_MINUTES if sas_ttl_minutes is None else int(sas_ttl_minutes)
+    try:
+        return blob_name, _build_read_sas_url(blob_name, ttl)
+    except Exception as e:
+        # Don’t fail the request if SAS minting hiccups; caller can fallback to build_read_url()
+        print("[blob] SAS generation failed:", e)
+        return blob_name, None
 
 
 async def build_read_url(blob_name: str, ttl_minutes: Optional[int] = None) -> str:
@@ -141,4 +167,5 @@ async def build_read_url(blob_name: str, ttl_minutes: Optional[int] = None) -> s
 
 
 async def assert_blob_ready():
-    await _ensure_container()
+    # kept for compatibility with your existing startup code
+    await init_blob_clients()

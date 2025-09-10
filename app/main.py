@@ -8,14 +8,14 @@ import uuid
 from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends, Form, Response
 from pydantic import BaseModel
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
 from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score  # your module
 from utils.logger import append_blob_op, append_llm_call, ensure_telemetry_indexes, finalize_request_log, init_request_log, log_scan_invoice, log_error, ping_mongo_or_raise
 
 from .security import verify_api_key, add_cors
-from .blob_service import upload_image_bytes, assert_blob_ready , build_read_url
+from .blob_service import close_blob_clients, init_blob_clients, upload_image_bytes, assert_blob_ready , build_read_url
 
 # Load environment variables
 try:
@@ -33,7 +33,7 @@ if not OPENAI_API_KEY:
 
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 app = FastAPI(title="Scan Invoice API", version="0.2.0", dependencies=[Depends(verify_api_key)])
 
 # CORS
@@ -73,11 +73,16 @@ async def _startup_checks():
     # Fail fast on Mongo; warn on Azure
     await ping_mongo_or_raise()
     await ensure_telemetry_indexes()
+    await init_blob_clients()
     try:
         await assert_blob_ready()
     except Exception as e:
         print("[startup] Azure Blob not ready:", str(e))
 
+@app.on_event("shutdown")
+async def _shutdown():
+    await close_blob_clients()
+    
 @app.get("/health")
 def health():
     return {"status": "ok", "profiles": len(VENUE_PROFILES)}
