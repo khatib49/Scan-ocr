@@ -31,7 +31,7 @@ if not OPENAI_API_KEY:
 
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
-client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+client = AsyncOpenAI(api_key=OPENAI_API_KEY, timeout=60, max_retries=2)
 app = FastAPI(title="Scan Invoice API", version="0.2.0", dependencies=[Depends(verify_api_key)])
 
 # CORS
@@ -191,14 +191,14 @@ async def analyze(
             QUICK_PROMPT = '{"instruction":"Return JSON { \\"m\\": \\"<merchant>\\", \\"a\\": \\"<address>\\" } only."}'
 
         b64 = base64.b64encode(raw).decode("utf-8")
-
+        img_block = {"type":"image_url","image_url":{"url": blob_url}} if blob_url else {"type":"image_url","image_url":{"url": f"data:image/jpeg;base64,{b64}"}}
         q_start = perf_counter()
         quick = await client.chat.completions.create(
             model=OPENAI_MODEL,
             temperature=0.0,
             messages=[
                 {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
-                {"role":"user","content":[{"type":"image_url","image_url":{"url":f"data:image/jpeg;base64,{b64}"}}]},
+                {"role":"user","content":[img_block]},
                 {"role":"user","content":QUICK_PROMPT}
             ]
         )
@@ -269,7 +269,7 @@ async def analyze(
                 temperature=0.1,
                 messages=[
                     {"role":"system","content": sys},
-                    {"role":"user","content":[{"type":"image_url","image_url":{"url":f"data:image/jpeg;base64,{b64}"}}]}
+                    {"role":"user","content":[img_block]}
                 ]
             )
             m_ms = (perf_counter() - m_start) * 1000.0
