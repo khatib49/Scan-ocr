@@ -2,11 +2,13 @@ import os, json, base64
 from time import perf_counter
 from typing import Optional, Dict, Any
 import uuid
+import re
 
 from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends, Form, Response
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, RateLimitError
 
 from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
 from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score  # your module
@@ -193,15 +195,41 @@ async def analyze(
         b64 = base64.b64encode(raw).decode("utf-8")
         img_block = {"type":"image_url","image_url":{"url": blob_url}} if blob_url else {"type":"image_url","image_url":{"url": f"data:image/jpeg;base64,{b64}"}}
         q_start = perf_counter()
-        quick = await client.chat.completions.create(
-            model=OPENAI_MODEL,
-            temperature=0.0,
-            messages=[
-                {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
-                {"role":"user","content":[img_block]},
-                {"role":"user","content":QUICK_PROMPT}
-            ]
-        )
+
+        try:
+            quick = await client.chat.completions.create(
+                model=OPENAI_MODEL,
+                temperature=0.0,
+                messages=[
+                    {"role":"system","content":"Read the image and return merchant + address only as JSON. DO NOT add text."},
+                    {"role":"user","content":[img_block]},
+                    {"role":"user","content":QUICK_PROMPT}
+                ]
+            )
+        except RateLimitError as e:
+             retry_after = _retry_after_seconds(e)
+             await log_error(
+                blob_url,
+                f"Rate limit on quick call: {e}",
+                "openai_rate_limit_quick",
+                userReference,
+                extra={"request_id": request_id, "retry_after": retry_after}
+            )
+             # Return a clean JSON error with a Retry-After hint
+             return JSONResponse(
+                status_code=429,
+                content={
+                    "error": {
+                        "code": "rate_limit",
+                        "stage": "quick",
+                        "message": "Upstream rate limit from OpenAI. Please retry.",
+                        "retry_after": retry_after,
+                    }
+                }
+            )
+             
+
+        
         q_ms = (perf_counter() - q_start) * 1000.0
 
         # usage extraction (SDK dependent)
@@ -264,14 +292,37 @@ async def analyze(
             sys = build_system_prompt(profile)
 
             m_start = perf_counter()
-            resp = await client.chat.completions.create(
-                model=OPENAI_MODEL,
-                temperature=0.1,
-                messages=[
-                    {"role":"system","content": sys},
-                    {"role":"user","content":[img_block]}
-                ]
-            )
+            try:
+                resp = await client.chat.completions.create(
+                    model=OPENAI_MODEL,
+                    temperature=0.1,
+                    messages=[
+                        {"role":"system","content": sys},
+                        {"role":"user","content":[img_block]}
+                    ]
+                )
+            except RateLimitError as e:
+                 retry_after = _retry_after_seconds(e)
+                 await log_error(
+                    blob_url,
+                    f"Rate limit on main call: {e}",
+                    "openai_rate_limit_main",
+                    userReference,
+                    extra={"request_id": request_id, "retry_after": retry_after}
+                )
+                 # Return a clean JSON error with a Retry-After hint
+                 return JSONResponse(
+                    status_code=429,
+                    content={
+                        "error": {
+                            "code": "rate_limit",
+                            "stage": "main",
+                            "message": "Upstream rate limit from OpenAI. Please retry.",
+                            "retry_after": retry_after,
+                        }
+                    }
+                )
+            
             m_ms = (perf_counter() - m_start) * 1000.0
 
             m_usage = getattr(resp, "usage", None)
@@ -354,3 +405,26 @@ async def analyze(
         if response is not None:
             response.headers["X-Request-ID"] = request_id
             response.headers["X-Response-Time"] = f"{total_ms:.2f}ms"
+
+
+_retry_secs_re = re.compile(r"try again in\s+([0-9]+(?:\.[0-9]+)?)", re.I)
+
+def _retry_after_seconds(err: RateLimitError) -> float:
+    # Prefer header if present
+    try:
+        resp = getattr(err, "response", None)
+        if resp and getattr(resp, "headers", None):
+            h = resp.headers or {}
+            if "retry-after" in h:
+                return float(h["retry-after"])
+    except Exception:
+        pass
+    # Fallback: parse message text ("Please try again in 3.45s")
+    try:
+        m = str(err)
+        g = _retry_secs_re.search(m)
+        if g:
+            return float(g.group(1))
+    except Exception:
+        pass
+    return 3.0
