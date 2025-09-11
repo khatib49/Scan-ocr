@@ -40,6 +40,7 @@ async def log_scan_invoice(
     userReference: str,
     final_result: Optional[Dict[str, Any]],
     request_id: Optional[str] = None,
+    scanReference: Optional[str] = None
 ):
     try:
         doc = {
@@ -51,7 +52,8 @@ async def log_scan_invoice(
             "openai_raw": raw_text,
             "userReference" :  userReference,
             "final_result": final_result,
-            "request_id": request_id
+            "request_id": request_id,
+            "scanReference": scanReference
         }
         res = await scan_invoice_collection.insert_one(doc)
     except Exception as e:
@@ -63,7 +65,8 @@ async def log_error(
     error: str,
     stage: str,
     userReference : str,
-    extra: Optional[Dict[str, Any]] = None
+    extra: Optional[Dict[str, Any]] = None,
+    scanReference: Optional[str] = None
 ):
     try:
         await error_collection.insert_one({
@@ -90,7 +93,8 @@ async def ensure_telemetry_indexes():
     except Exception as e:
         print("[ensure_telemetry_indexes ERROR]", str(e))
 
-async def init_request_log(request_id: str, path: str, userReference: Optional[str], meta: Optional[Dict[str, Any]] = None):
+async def init_request_log(request_id: str, path: str, userReference: Optional[str], 
+    scanReference: Optional[str] = None, meta: Optional[Dict[str, Any]] = None):
     try:
         now = datetime.utcnow()
         await telemetry_collection.update_one(
@@ -102,6 +106,7 @@ async def init_request_log(request_id: str, path: str, userReference: Optional[s
                     "created_at": now,
                     "path": path,
                     "userReference": userReference,
+                    "scanReference": scanReference,
                     "meta": meta or {},
                     "llm_calls": [],
                     "blob_ops": [],     # <-- NEW
@@ -146,6 +151,7 @@ async def init_request_log(
     request_id: str,
     path: str,
     userReference: Optional[str],
+    scanReference: Optional[str] = None,  
     meta: Optional[Dict[str, Any]] = None,
 ):
     """Create (or upsert) the request log with start info."""
@@ -161,6 +167,7 @@ async def init_request_log(
                     "created_at": now,
                     "path": path,
                     "userReference": userReference,
+                    "scanReference": scanReference,
                     "meta": meta or {},
                     "llm_calls": [],
                     "status": "started",

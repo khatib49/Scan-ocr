@@ -91,6 +91,7 @@ def health():
 async def analyze(
     image: UploadFile = File(...),
     userReference: str = Form(..., description="Your internal user ID or reference"),
+    scanReference: str = Form(..., description="Your internal scan reference"),
     save_image: bool = Form(False, description="If true, saves the uploaded image to Azure Blob Storage"),
     response: Response = AnalyzeResponse
 ):
@@ -101,6 +102,7 @@ async def analyze(
         request_id=request_id,
         path="/analyze",
         userReference=userReference,
+        scanReference=scanReference,
         meta={"save_image": save_image}
     )
 
@@ -180,7 +182,7 @@ async def analyze(
                     )
                 except Exception:
                     pass
-                await log_error(None, f"Blob upload failed: {str(e)}", "blob_upload", userReference=userReference)
+                await log_error(None, f"Blob upload failed: {str(e)}", "blob_upload", userReference=userReference, scanReference=scanReference, extra={"request_id": request_id})
 
         print("[log] about to insert image_url:", blob_url)
 
@@ -213,6 +215,7 @@ async def analyze(
                 f"Rate limit on quick call: {e}",
                 "openai_rate_limit_quick",
                 userReference,
+                scanReference=scanReference,
                 extra={"request_id": request_id, "retry_after": retry_after}
             )
              # Return a clean JSON error with a Retry-After hint
@@ -253,7 +256,7 @@ async def analyze(
             addr_guess = (ma.get("a") or "").strip()[:200]
         except Exception as e:
             merchant_guess, addr_guess = "", ""
-            await log_error(blob_url, str(e), "quick_guess", userReference=userReference)
+            await log_error(blob_url, str(e), "quick_guess", userReference=userReference, scanReference=scanReference, extra={"raw_response": quick.choices[0].message.content if quick and getattr(quick, "choices", None) else None})
 
         # 4) Venue match
         match = find_best_profile_indexed(NAME_INDEX, merchant_guess)
@@ -308,6 +311,7 @@ async def analyze(
                     f"Rate limit on main call: {e}",
                     "openai_rate_limit_main",
                     userReference,
+                scanReference=scanReference,
                     extra={"request_id": request_id, "retry_after": retry_after}
                 )
                  # Return a clean JSON error with a Retry-After hint
@@ -346,7 +350,7 @@ async def analyze(
                 if "data" not in data:
                     raise ValueError("Missing 'data' root.")
             except Exception as e:
-                await log_error(blob_url, str(e), "parse_openai_response", userReference=userReference, extra={"raw_response": raw_txt})
+                await log_error(blob_url, str(e), "parse_openai_response", userReference=userReference, scanReference=scanReference, extra={"raw_response": raw_txt})
                 data = {
                     "data": {
                         "MerchantName": None,
@@ -378,7 +382,8 @@ async def analyze(
             raw_text=raw_txt,
             userReference=userReference,
             final_result=final_payload,
-            request_id=request_id
+            request_id=request_id,
+            scanReference=scanReference
         )
 
         # Done
@@ -386,7 +391,7 @@ async def analyze(
 
     except Exception as e:
         success = False
-        await log_error(blob_url, f"Analyze failed: {e}", "analyze_handler", userReference=userReference)
+        await log_error(blob_url, f"Analyze failed: {e}", "analyze_handler", userReference=userReference, scanReference=scanReference)
         raise
     finally:
         total_ms = (perf_counter() - t0) * 1000.0
