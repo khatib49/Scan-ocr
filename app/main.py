@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any
 import uuid
 import re
 
-from fastapi import FastAPI, Query, UploadFile, File, HTTPException, Depends, Form, Response
+from fastapi import FastAPI, Query, Request, UploadFile, File, HTTPException, Depends, Form, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -89,6 +89,7 @@ def health():
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
+    request: Request,
     image: UploadFile = File(...),
     userReference: str = Form(..., description="Your internal user ID or reference"),
     scanReference: str = Form(..., description="Your internal scan reference"),
@@ -112,7 +113,9 @@ async def analyze(
     raw_txt: Optional[str] = None
 
     try:
-        # 1) Read file
+         # If you need the project later (e.g., to log project_id), it's already here:
+    project_id = request.state.project["_id"]
+    # 1) Read file
         try:
             raw = await image.read()
             if not raw:
@@ -350,7 +353,7 @@ async def analyze(
                 if "data" not in data:
                     raise ValueError("Missing 'data' root.")
             except Exception as e:
-                await log_error(blob_url, str(e), "parse_openai_response", userReference=userReference, scanReference=scanReference, extra={"raw_response": raw_txt})
+                await log_error(blob_url, str(e), "parse_openai_response", userReference=userReference, scanReference=scanReference, extra={"raw_response": raw_txt}, project_id=project_id)
                 data = {
                     "data": {
                         "MerchantName": None,
@@ -366,7 +369,7 @@ async def analyze(
                         "Total": None,
                         "fraudScore": 0,
                         "confidentScore": 0,
-                        "reason": f"Model returned non-JSON or invalid format. {str(e)}"
+                        "reason": f"Model returned non-JSON or invalid format. {str(e)}",
                     }
                 }
 
@@ -382,6 +385,7 @@ async def analyze(
             raw_text=raw_txt,
             userReference=userReference,
             final_result=final_payload,
+        project_id=project_id,
             request_id=request_id,
             scanReference=scanReference
         )

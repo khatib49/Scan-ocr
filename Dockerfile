@@ -28,5 +28,4 @@ ENV PROMPT_PATH="data/prompt.txt" \
     QUICK_PROMPT_PATH="data/quick_prompt.txt" \
     VENUE_PROFILES_PATH="data/venue_profiles.json"
 
-
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

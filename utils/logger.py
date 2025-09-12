@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from typing import Dict, Any, Optional
 
+from bson import ObjectId
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -40,7 +41,8 @@ async def log_scan_invoice(
     userReference: str,
     final_result: Optional[Dict[str, Any]],
     request_id: Optional[str] = None,
-    scanReference: Optional[str] = None
+    scanReference: Optional[str] = None,
+    project_id: Optional[ObjectId] = None,
 ):
     try:
         doc = {
@@ -53,9 +55,10 @@ async def log_scan_invoice(
             "userReference" :  userReference,
             "final_result": final_result,
             "request_id": request_id,
-            "scanReference": scanReference
+            "scanReference": scanReference,
+            "project_id": project_id
         }
-        res = await scan_invoice_collection.insert_one(doc)
+        await scan_invoice_collection.insert_one(doc)
     except Exception as e:
         print("[log_scan_invoice ERROR]", str(e))
 
@@ -66,7 +69,8 @@ async def log_error(
     stage: str,
     userReference : str,
     extra: Optional[Dict[str, Any]] = None,
-    scanReference: Optional[str] = None
+    scanReference: Optional[str] = None,
+    project_id: Optional[ObjectId] = None,
 ):
     try:
         await error_collection.insert_one({
@@ -75,7 +79,8 @@ async def log_error(
             "stage": stage,
             "error": error,
             "userReference" : userReference,
-            "extra": extra or {}
+            "extra": extra or {},
+            "project_id": project_id
         })
     except Exception as e:
         print("[log_error ERROR]", str(e))
