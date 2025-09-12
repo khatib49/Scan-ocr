@@ -1078,7 +1078,9 @@
     "Date_Format": "YYYY/MM/DD",
     "Time_Format": "HH:mm",
     "InvoiceId_Label": "48057",
-    "StoreID_Label": "21"
+    "StoreID_Label": "21",
+  "MerchantName_Keyword": ["mom3nto pizza", "مومينتو بيتزا"],
+  "MerchantAddress_Keyword": ["Jeddah", "حي النخيل"]
   }
 },
 {
@@ -1100,9 +1102,134 @@
     "Date_Format": "YYYY/MM/DD",
     "Time_Format": "HH:mm",
     "InvoiceId_Label": "5421",
-    "StoreID_Label": null
+    "StoreID_Label": null,
+  "MerchantName_Keyword": ["الريف المصري", "Al Rif Al Masry"],
+  "MerchantAddress_Keyword": ["Riyadh"]
+  }
+},
+{
+  "MerchantName_Keyword": ["Bob's Famous", "بوبز"],
+  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"],
+  "MerchantId": 784,
+  "Category": "Retail",
+  "Sub-category": "Entertainment Cards",
+  "Spending Range (SAR)": "10-200",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "TOTAL",
+    "Subtotal_Label": "SUBTOTAL",
+    "Tax_Label": "VAT INCLUSIVE",
+    "CR_Label": null,
+    "TaxID_Label": "300884862300003",
+    "Date_Label": "2025/07/07",
+    "Time_Label": "18:43",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "G3870",
+    "StoreID_Label": "POS2",
+  "MerchantName_Keyword": ["Bob's Famous", "بوبز"],
+  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"]
+  }
+},
+{
+  "MerchantName_Keyword": ["MUFTAH ALRAFAHYAH EST", "مؤسسة مفتاح الرفاهية للتجارة", "CLÉ"],
+  "MerchantAddress_Keyword": ["VIA Riyadh, Jeddah Road, Saudi Arabia"],
+  "MerchantId": 718,
+  "Category": "Retail",
+  "Sub-category": "Luxury Accessories",
+  "Spending Range (SAR)": "100-50000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "Total",
+    "Subtotal_Label": "Untaxed Amount",
+    "Tax_Label": "VAT Taxes",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "2025/04/07",
+    "Time_Label": null,
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm:ss",
+    "InvoiceId_Label": "INV/2025/00000",
+    "StoreID_Label": "Shop/0613",
+  "MerchantName_Keyword": ["MUFTAH ALRAFAHYAH EST", "مؤسسة مفتاح الرفاهية للتجارة", "CLÉ"],
+  "MerchantAddress_Keyword": ["VIA Riyadh, Jeddah Road, Saudi Arabia"]
+  }
+},
+{
+  "MerchantName_Keyword": ["Elle Tea Lounge", "ELLE"],
+  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh,12912"],
+  "MerchantId": 715,
+  "Category": "F&B",
+  "Sub-category": "Cafe",
+  "Spending Range (SAR)": "50-500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "132.00SAR",
+    "Subtotal_Label": "Net Total",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "2025/07/08",
+    "Time_Label": "22:58",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "10004812",
+    "StoreID_Label": "TBL 33/1",
+  "MerchantName_Keyword": ["Elle Tea Lounge", "ELLE"],
+  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh,12912"]
+  }
+},
+{
+  "MerchantName_Keyword": ["Madeo", "ماديو"],
+  "MerchantAddress_Keyword": ["Via Riyadh", "Riyadh,12912"],
+  "MerchantId": 714,
+  "Category": "F&B",
+  "Sub-category": "Restaurant",
+  "Spending Range (SAR)": "100-1500",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "748.00SAR",
+    "Subtotal_Label": "Net Total",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": null,
+    "Date_Label": "2025/07/02",
+    "Time_Label": "18:42",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "1001975",
+    "StoreID_Label": "TBL 37/1",
+    
+  "MerchantName_Keyword": ["Madeo", "ماديو"],
+  "MerchantAddress_Keyword": ["Via Riyadh", "Riyadh,12912"]
+  }
+},
+{
+  "MerchantName_Keyword": ["VOX Cinema", "ڤوكس سينما"],
+  "MerchantAddress_Keyword": ["2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"],
+  "MerchantId": 713,
+  "Category": "Entertainment",
+  "Sub-category": "Cinema",
+  "Spending Range (SAR)": "50-1000",
+  "ExtractionHints": {
+    "Language": "Mixed",
+    "Total_Label": "SAR 410.00",
+    "Subtotal_Label": "Subtotal",
+    "Tax_Label": "VAT 15%",
+    "CR_Label": null,
+    "TaxID_Label": "310193160610003",
+    "Date_Label": "2025/05/15",
+    "Time_Label": "15:59",
+    "Date_Format": "YYYY/MM/DD",
+    "Time_Format": "HH:mm",
+    "InvoiceId_Label": "VIASTD-ONLINE/4/25968",
+    "StoreID_Label": "75489",
+  "MerchantName_Keyword": ["VOX Cinema", "ڤوكس سينما"],
+  "MerchantAddress_Keyword": ["2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"]
   }
 }
+
+
 
 
 ]
