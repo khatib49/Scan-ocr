@@ -9,9 +9,13 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import AsyncOpenAI, RateLimitError
+from app.venue_profiles_api import router as venue_profiles_router  
+from app.projects import router as projects_router
+from utils.helpers import ensure_project_indexes     
+from app.security import _mongo_db as DB
 
 from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
-from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score  # your module
+from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score  
 from utils.logger import append_blob_op, append_llm_call, ensure_telemetry_indexes, finalize_request_log, init_request_log, log_scan_invoice, log_error, ping_mongo_or_raise
 
 from .security import verify_api_key, add_cors
@@ -36,6 +40,9 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 client = AsyncOpenAI(api_key=OPENAI_API_KEY, timeout=60, max_retries=2)
 app = FastAPI(title="Scan Invoice API", version="0.2.0", dependencies=[Depends(verify_api_key)])
 
+app.include_router(projects_router)
+
+app.include_router(venue_profiles_router)
 # CORS
 add_cors(app)
 
@@ -74,6 +81,8 @@ async def _startup_checks():
     await ping_mongo_or_raise()
     await ensure_telemetry_indexes()
     await init_blob_clients()
+    await ensure_project_indexes(DB)
+    # ...
     try:
         await assert_blob_ready()
     except Exception as e:

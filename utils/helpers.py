@@ -1,0 +1,85 @@
+# app/helpers/projects.py
+import os, secrets
+from datetime import datetime, timezone
+from typing import Optional, Dict, Any, Tuple
+from bson import ObjectId
+from fastapi import HTTPException
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from pymongo import ASCENDING, errors
+
+# ---------- Lookups ----------
+
+async def get_project_by_api_key(db: AsyncIOMotorDatabase, api_key: str) -> Dict[str, Any]:
+    project = await db["Project"].find_one({"ApiKey": api_key})
+    if not project:
+        raise HTTPException(status_code=403, detail="API key not assigned to a project")
+    return project
+
+# ---------- Indexes & utilities ----------
+
+async def ensure_project_indexes(db) -> None:
+    """
+    Idempotent index bootstrap for the Project collection.
+    - If an index on ApiKey already exists (any name), keep it.
+    - If it's not unique, drop & recreate as unique.
+    - If missing, create it (no explicit name => Mongo will use 'ApiKey_1').
+    """
+    coll = db["Project"]
+
+    try:
+        info = await coll.index_information()  # {index_name: {"key": [("ApiKey", 1)], "unique": True, ...}, ...}
+    except Exception:
+        info = {}
+
+    # Find any index on ApiKey
+    existing_name = None
+    existing_unique = False
+    for name, spec in (info or {}).items():
+        key = spec.get("key")
+        if key == [("ApiKey", 1)] or key == (("ApiKey", 1),):
+            existing_name = name
+            existing_unique = bool(spec.get("unique", False))
+            break
+
+    if existing_name:
+        if not existing_unique:
+            # Rare: non-unique index exists; replace it with a unique one.
+            try:
+                await coll.drop_index(existing_name)
+            except errors.OperationFailure:
+                # If drop fails because someone else raced us, carry on.
+                pass
+            await coll.create_index([("ApiKey", ASCENDING)], unique=True)
+        # else: already correct → nothing to do
+        return
+
+    # No existing index on ApiKey → create it (let Mongo name it 'ApiKey_1')
+    try:
+        await coll.create_index([("ApiKey", ASCENDING)], unique=True)
+    except errors.OperationFailure as e:
+        # If another instance created it between our check and now, ignore conflict.
+        if "IndexOptionsConflict" not in str(e):
+            raise
+
+async def generate_unique_api_key(db: AsyncIOMotorDatabase) -> str:
+    """Generate a collision-resistant API key and ensure uniqueness."""
+    for _ in range(10):
+        key = secrets.token_urlsafe(48)  # ~64 chars, safe for headers
+        if not await db["Project"].find_one({"ApiKey": key}, {"_id": 1}):
+            return key
+    raise RuntimeError("Could not generate unique API key after several attempts")
+
+def normalize_project_out(doc: Dict[str, Any]) -> Dict[str, Any]:
+    """Convert Mongo document to clean API shape."""
+    return {
+        "_id": str(doc["_id"]),
+        "Name": doc.get("Name"),
+        "ApiKey": doc.get("ApiKey"),
+        "CreatedAt": doc.get("CreatedAt"),
+    }
+
+def parse_oid(project_id: str) -> ObjectId:
+    try:
+        return ObjectId(project_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid project id")
