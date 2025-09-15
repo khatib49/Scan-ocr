@@ -25,7 +25,7 @@ _api_key_header = APIKeyHeader(
 ADMIN_KEY_NAME = "X-Admin-Key"
 _admin_key_header = APIKeyHeader(
     name=ADMIN_KEY_NAME,
-    scheme_name="AdminApiKey",     # 👈 distinct name for Swagger
+    scheme_name="AdminApiKey",
     auto_error=False,
 )
 # --------- Mongo for Project lookup ----------

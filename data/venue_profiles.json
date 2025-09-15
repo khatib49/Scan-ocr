@@ -1,899 +1,1309 @@
 [
-{
-  "MerchantName_Keyword": ["Ferdi", "ferdi", "ferdi paris"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 716,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Payment",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/09",
-    "Time_Label": "17:26",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "10033558",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Ferdi", "ferdi", "ferdi paris"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Chaps & Co", "Chaps and Co"],
-  "MerchantAddress_Keyword": ["VIA Riyadh, Riyadh, 12912", "Via Riyadh, Riyadh"],
-  "MerchantId": 717,
-  "Category": "Personal Care",
-  "Sub-category": "Barbershop",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "Tax 15%",
-    "CR_Label": null,
-    "TaxID_Label": "310075487100003",
-    "Date_Label": "2025/05/15",
-    "Time_Label": "13:39",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "3626",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Chaps & Co", "Chaps and Co"],
-  "MerchantAddress_Keyword": ["VIA Riyadh, Riyadh, 12912", "Via Riyadh, Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle", "مؤسسة مفتاح الرفاهية للتجارة" , "كلي"],
-  "MerchantAddress_Keyword": ["VIA Riyadh Jeddah Road", "Saudi Arabia"],
-  "MerchantId": 718,
-  "Category": "Retail",
-  "Sub-category": "Accessories",
-  "Spending Range (SAR)": "0-5000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Untaxed Amount",
-    "Tax_Label": "VAT Taxes",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/04/07",
-    "Time_Label": null,
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": null,
-    "InvoiceId_Label": "INV/2025/00000",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle", "مؤسسة مفتاح الرفاهية للتجارة" , "كلي"],
-  "MerchantAddress_Keyword": ["VIA Riyadh Jeddah Road", "Saudi Arabia"]
-  }
-},
   {
-  "MerchantName_Keyword": ["Jacques La Coupe", "جاك لا كروب"],
-  "MerchantAddress_Keyword": ["Al Hada, Riyadh, 12912", "Riyadh, Saudi Arabia"],
-  "MerchantId": 719,
-  "Category": "Personal Care",
-  "Sub-category": "Salon",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total الإجمالي",
-    "Subtotal_Label": "Total Before VAT",
-    "Tax_Label": "Includes VAT",
-    "CR_Label": "1010855358",
-    "TaxID_Label": "311533757900003",
-    "Date_Label": "2025/08/7",
-    "Time_Label": "16:33",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "JLC8749",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Jacques La Coupe", "جاك لا كروب"],
-  "MerchantAddress_Keyword": ["Al Hada, Riyadh, 12912", "Riyadh, Saudi Arabia"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Scott's", "Scotts"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 723,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "100-5000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Payment",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/02",
-    "Time_Label": "21:50",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHk 10003294",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Scott's", "Scotts"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Les Deux Magots"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 722,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "20-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total Due",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/09",
-    "Time_Label": "19:15",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHK 10000510",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Les Deux Magots"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Spago", "Spago by Wolfgang Puck"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 724,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "100-5000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total Due",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/09",
-    "Time_Label": "18:56",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHK 10004986",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Spago", "Spago by Wolfgang Puck"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Gymkhana"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 725,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-2000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Payment",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/05",
-    "Time_Label": "21:55",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHK 10023784",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Gymkhana"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Vega Cigar Lounge", "Vega"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 726,
-  "Category": "F&B",
-  "Sub-category": "Lounge",
-  "Spending Range (SAR)": "50-1000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Payment",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/10",
-    "Time_Label": "20:58",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHK 10004014",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Vega Cigar Lounge", "Vega"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-},
-
-{
-  "MerchantName_Keyword": ["Over Under"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"],
-  "MerchantId": 727,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "20-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Payment",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "310756274500003",
-    "Date_Label": "2025/07/09",
-    "Time_Label": "15:39",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "CHK 1001938",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Over Under"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh", "Riyadh 12912"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["HÖGHÖ", "هوغو", "Hocho"],
-  "MerchantAddress_Keyword": [null],
-  "MerchantId": 728,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-1000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL / الإجمالي",
-    "Subtotal_Label": null,
-    "Tax_Label": "Sales VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "311545894700003",
-    "Date_Label": "2025/05/15",
-    "Time_Label": "17:35",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "04753-001-0002",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["HÖGHÖ", "هوغو", "Hocho"],
-  "MerchantAddress_Keyword": [null]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Art Dose", "مؤسسة جرعة الفن"],
-  "MerchantAddress_Keyword": ["طريق الكورنيش جي, الشاطئ, جدة", "SA 2473 23613"],
-  "MerchantId": 729,
-  "Category": "Retail",
-  "Sub-category": "Art & Crafts",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي (شامل الضريبة)",
-    "Subtotal_Label": "الإجمالي الفرعي",
-    "Tax_Label": "قيمة الضريبة",
-    "CR_Label": null,
-    "TaxID_Label": "312506752800003",
-    "Date_Label": "2025/05/20",
-    "Time_Label": "11:39",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "S20250520-1208",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Art Dose", "مؤسسة جرعة الفن"],
-  "MerchantAddress_Keyword": ["طريق الكورنيش جي, الشاطئ, جدة", "SA 2473 23613"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Shiraz Restaurant", "مطعم شيراز"],
-  "MerchantAddress_Keyword": ["Jeddah, Al Shati District, Yacht Club", "جدة، حي الشاطئ، نادي اليخوت"],
-  "MerchantId": 730,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "المجموع قبل الضريبة",
-    "Tax_Label": "ضريبة القيمة المضافة",
-    "CR_Label": null,
-    "TaxID_Label": "311806186200003",
-    "Date_Label": "2025/07/10",
-    "Time_Label": "15:07:53",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "3/4318",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Shiraz Restaurant", "مطعم شيراز"],
-  "MerchantAddress_Keyword": ["Jeddah, Al Shati District, Yacht Club", "جدة، حي الشاطئ، نادي اليخوت"]
-  }
-},
- {
-  "MerchantName_Keyword": ["EL&N London", "EL&N"],
-  "MerchantAddress_Keyword": ["Riyadh Blvd", "Boulevard", "الرياض بوليفارد"],
-  "MerchantId": 732,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "10-100",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL SAR",
-    "Subtotal_Label": "SUB-TOTAL",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": "1010673865",
-    "TaxID_Label": "310808558300003", 
-    "Date_Label": "2025/06/01",
-    "Time_Label": "17:26",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "103213",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["EL&N London", "EL&N"],
-  "MerchantAddress_Keyword": ["Riyadh Blvd", "Boulevard", "الرياض بوليفارد"]
-  }
-},
- {
-  "MerchantName_Keyword": ["Le Vesuvio", "لو فيسوفيو"],
-  "MerchantAddress_Keyword": ["Jeddah Yacht Club", "جدة نادي اليخوت"],
-  "MerchantId": 731,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Invoice Ttl",
-    "Subtotal_Label": "Invoice Taxable Amount",
-    "Tax_Label": "VAT 15.00%",
-    "CR_Label": "4030393062",
-    "TaxID_Label": "310756274500003",
-    "Date_Label": "2025/08/14",
-    "Time_Label": "18:04",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "10006892",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Le Vesuvio", "لو فيسوفيو"],
-  "MerchantAddress_Keyword": ["Jeddah Yacht Club", "جدة نادي اليخوت"]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["50 Degrees", "50 ديقري"],
-  "MerchantAddress_Keyword": ["Promenade Branch", "Table Promenade"],
-  "MerchantId": 739,
-  "Category": "F&B",
-  "Sub-category": "Dessert",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL / الإجمالي",
-    "Subtotal_Label": null,
-    "Tax_Label": "Taxes 15% Inc.",
-    "CR_Label": null,
-    "TaxID_Label": "312687878200003",
-    "Date_Label": "2025/08/13",
-    "Time_Label": "21:01:22",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "15837-002-0005",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["50 Degrees", "50 ديقري"],
-  "MerchantAddress_Keyword": ["Promenade Branch", "Table Promenade"]
-  }
-}
-,{
-  "MerchantName_Keyword": ["سلاشيز", "سلاشز", "SLUSHY'S", "Slushy's"],
-  "MerchantAddress_Keyword": ["الرياض - البوليفارد", "Boulevard City, Riyadh"],
-  "MerchantId": 761,
-  "Category": "F&B",
-  "Sub-category": "Beverages",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "المجموع الفرعي",
-    "Tax_Label": "VAT 15%(15.0%)",
-    "CR_Label": null,
-    "TaxID_Label": "302147520800003",
-    "Date_Label": "2025/07/09",
-    "Time_Label": "06:17:20",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "140491",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["سلاشيز", "سلاشز", "SLUSHY'S", "Slushy's"],
-  "MerchantAddress_Keyword": ["الرياض - البوليفارد", "Boulevard City, Riyadh"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Tante", "تانتة"],
-  "MerchantAddress_Keyword": ["Boulevard City", "الرياض بوليفارد"],
-  "MerchantId": 763,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "SubTotal",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "311825134700003",
-    "Date_Label": "2025/07/09",
-    "Time_Label": "19:45:31",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "4177-12970",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Tante", "تانتة"],
-  "MerchantAddress_Keyword": ["Boulevard City", "الرياض بوليفارد"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Roberto Coin", "روبرتو كوين"],
-  "MerchantAddress_Keyword": ["Via Riyadh", "الرياض"],
-  "MerchantId": 765,
-  "Category": "Retail",
-  "Sub-category": "Jewelry",
-  "Spending Range (SAR)": "5000-50000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL AMOUNT",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "VAT (15%)",
-    "CR_Label": null,
-    "TaxID_Label": "311462482600003",
-    "Date_Label": "2025/06/29",
-    "Time_Label": "21:21",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "2200",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Roberto Coin", "روبرتو كوين"],
-  "MerchantAddress_Keyword": ["Via Riyadh", "الرياض"]
-  }
-}
-,
+    "MerchantName_Keyword": [
+      "Ferdi",
+      "ferdi",
+      "ferdi paris"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 716,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Payment",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/09",
+      "Time_Label": "17:26",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "10033558",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Ferdi",
+        "ferdi",
+        "ferdi paris"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
   {
-  "MerchantName_Keyword": ["Twina", "توينا"],
-  "MerchantAddress_Keyword": ["طريق الامير سلطان"],
-  "MerchantId": 770,
-  "Category": "F&B",
-  "Sub-category": "Seafood Restaurant",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "المجموع",
-    "Subtotal_Label": "المجموع الكلي",
-    "Tax_Label": " مجموع الضريبة   ",
-    "CR_Label": null,
-    "TaxID_Label": "310784419900003",
-    "Date_Label": "2025/05/14",
-    "Time_Label": "15:00",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "1947328",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Twina", "توينا"],
-  "MerchantAddress_Keyword": ["طريق الامير سلطان"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Chelsie Lane", "تشيلسي لين"],
-  "MerchantAddress_Keyword": [null],
-  "MerchantId": 771,
-  "Category": "Retail",
-  "Sub-category": "Cosmetics",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي شامل ضريبة القيمة المضافة",
-    "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
-    "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
-    "CR_Label": "1010687405",
-    "TaxID_Label": "310865617500003",
-    "Date_Label": "2025/07/27",
-    "Time_Label": "23:01:48",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "LS-202500124",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Chelsie Lane", "تشيلسي لين"],
-  "MerchantAddress_Keyword": [null]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["Camilla", "كاميلا"],
-  "MerchantAddress_Keyword": [null],
-  "MerchantId": 772,
-  "Category": "Retail",
-  "Sub-category": "Clothing",
-  "Spending Range (SAR)": "50-1000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي شامل ضريبة القيمة المضافة",
-    "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
-    "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
-    "CR_Label": "1010687405",
-    "TaxID_Label": "310865617500003",
-    "Date_Label": "2025/08/17",
-    "Time_Label": "19:10:51",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "CAS-202500012",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Camilla", "كاميلا"],
-  "MerchantAddress_Keyword": [null]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["The Concept by the Sea", "ذا كونسبت"],
-  "MerchantAddress_Keyword": [null],
-  "MerchantId": 773,
-  "Category": "Retail",
-  "Sub-category": "Home Decor",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي شامل الضريبة",
-    "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
-    "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
-    "CR_Label": "1010687405",
-    "TaxID_Label": "310865617500003",
-    "Date_Label": "2025/07/27",
-    "Time_Label": "20:56:37",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "CTS-202500078",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["The Concept by the Sea", "ذا كونسبت"],
-  "MerchantAddress_Keyword": [null]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Shali Marine Trading Co.", "شركة شالي البحر للتجارة"],
-  "MerchantAddress_Keyword": ["Ar Rawdah District, Abdul Aziz Airport, Jeddah", "الروضة، مطار الملك عبدالعزيز، جدة"],
-  "MerchantId": 774,
-  "Category": "Services",
-  "Sub-category": "Marine Services",
-  "Spending Range (SAR)": "5000-50000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Invoice Total (inclusive of VAT)",
-    "Subtotal_Label": "Invoice Taxable Amount",
-    "Tax_Label": "VAT Taxes",
-    "CR_Label": null,
-    "TaxID_Label": "313024722300003",
-    "Date_Label": "2025/08/18",
-    "Time_Label": "15:39:55",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "INV/2025/00250",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Shali Marine Trading Co.", "شركة شالي البحر للتجارة"],
-  "MerchantAddress_Keyword": ["Ar Rawdah District, Abdul Aziz Airport, Jeddah", "الروضة، مطار الملك عبدالعزيز، جدة"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["SABA", "سبا"],
-  "MerchantAddress_Keyword": ["Boulevard Riyadh City", "الرياض بوليفارد"],
-  "MerchantId": 785,
-  "Category": "F&B",
-  "Sub-category": "Beverages",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL / الإجمالي",
-    "Subtotal_Label": null,
-    "Tax_Label": "الضريبة",
-    "CR_Label": "1010430389",
-    "TaxID_Label": "310148454800003",
-    "Date_Label": null,
-    "Time_Label": null,
-    "Date_Format": null,
-    "Time_Format": null,
-    "InvoiceId_Label": "945",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["SABA", "سبا"],
-  "MerchantAddress_Keyword": ["Boulevard Riyadh City", "الرياض بوليفارد"]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["وكاشي", "okashi"],
-  "MerchantAddress_Keyword": ["Boulevard City", "طريق الملك فهد، حي العقيق، مجمع الرياض"],
-  "MerchantId": 786,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "50-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "VAT 15% Tax",
-    "CR_Label": null,
-    "TaxID_Label": "310151521610003",
-    "Date_Label": "2025/07/08",
-    "Time_Label": "05:39 PM",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "hh:mm a",
-    "InvoiceId_Label": "10001",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["وكاشي", "okashi"],
-  "MerchantAddress_Keyword": ["Boulevard City", "طريق الملك فهد، حي العقيق، مجمع الرياض"]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["Burger Hunch", "برجر هنش"],
-  "MerchantAddress_Keyword": ["Boulevard", "بوليفارد"],
-  "MerchantId": 788,
-  "Category": "F&B",
-  "Sub-category": "Fast Food",
-  "Spending Range (SAR)": "10-100",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": null,
-    "Tax_Label": "VAT 15 (15.0%)",
-    "CR_Label": null,
-    "TaxID_Label": "310397914500003",
-    "Date_Label": "2025/08/18",
-    "Time_Label": "22:29:49",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "121234",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Burger Hunch", "برجر هنش"],
-  "MerchantAddress_Keyword": ["Boulevard", "بوليفارد"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["كازا باستا", "Casa Pasta"],
-  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"],
-  "MerchantId": 790,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "10-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Take Out Total",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "VAT 15% Tax",
-    "CR_Label": null,
-    "TaxID_Label": "310151521610003",
-    "Date_Label": "2025/07/08",
-    "Time_Label": "20:06",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "ORDER-10",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["كازا باستا", "Casa Pasta"],
-  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["APRI", "أبري"],
-  "MerchantAddress_Keyword": [null],
-  "MerchantId": 792,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total include Tax",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "VAT (5%)",
-    "CR_Label": null,
-    "TaxID_Label": "312120295200003",
-    "Date_Label": "2025/07/18",
-    "Time_Label": "20:28",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "12900900",
-    "StoreID_Label": null,
-    
-  "MerchantName_Keyword": ["APRI", "أبري"],
-  "MerchantAddress_Keyword": [null]
-  }
-}
-
-,
- {
-  "MerchantName_Keyword": ["Otaku Store", "اوتاكو ستور"],
-  "MerchantAddress_Keyword": ["Riyadh", "الرياض"],
-  "MerchantId": 793,
-  "Category": "Retail",
-  "Sub-category": "Anime Merchandise",
-  "Spending Range (SAR)": "0-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": null,
-    "Tax_Label": null,
-    "CR_Label": "4030386270",
-    "TaxID_Label": "310652027500003",
-    "Date_Label": "2025/07/08",
-    "Time_Label": "07:06:01",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "S20250708-118919",
-    "StoreID_Label": null,"MerchantName_Keyword": ["Otaku Store", "اوتاكو ستور"],
-  "MerchantAddress_Keyword": ["Riyadh", "الرياض"]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["ليالي عدن", "Layali Aden","Layali Adan"],
-  "MerchantAddress_Keyword": ["Riyadh"],
-  "MerchantId": 794,
-  "Category": "F&B",
-  "Sub-category": "Cafe & Lounge",
-  "Spending Range (SAR)": "20-500",
-  "ExtractionHints": {
-    "Language": "Arabic",
-    "Total_Label": "330",
-    "Subtotal_Label": "الصافي",
-    "Tax_Label": null,
-    "CR_Label": null,
-    "TaxID_Label": "311524635700003",
-    "Date_Label": "2025/06/14",
-    "Time_Label": "22:00:21",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "9169",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["ليالي عدن", "Layali Aden","Layali Adan"],
-  "MerchantAddress_Keyword": ["Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Petit Cafe", "بيتي كافيه"],
-  "MerchantAddress_Keyword": ["Turki Al Awwal Rd", "Riyadh Boulevard", "الرياض بوليفارد"],
-  "MerchantId": 796,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "50-100",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL SR",
-    "Subtotal_Label": "SUB-TOTAL",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "310394627900003",
-    "Date_Label": "2025/08/18",
-    "Time_Label": "23:36",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "239860",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Petit Cafe", "بيتي كافيه"],
-  "MerchantAddress_Keyword": ["Turki Al Awwal Rd", "Riyadh Boulevard", "الرياض بوليفارد"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Sham", "شام"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"],
-  "MerchantId": 804,
-  "Category": "F&B",
-  "Sub-category": "Fast Food",
-  "Spending Range (SAR)": "5-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "صافي المبلغ",
-    "Subtotal_Label": "جمالي المبلغ",
-    "Tax_Label": "ضريبة القيمة المضافة",
-    "CR_Label": null,
-    "TaxID_Label": "310558115500003",
-    "Date_Label": "2025/07/05",
-    "Time_Label": "20:15",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "2001011050",
-    "StoreID_Label": null,
-    
-  "MerchantName_Keyword": ["Sham", "شام"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["95 Celsius", "٩٥ سيلسيوس"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"],
-  "MerchantId": 805,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "20-100",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "المجموع",
-    "Tax_Label": "ضريبة القيمة المضافة (15.0%)",
-    "CR_Label": null,
-    "TaxID_Label": "311272026300003",
-    "Date_Label": "2025/08/17",
-    "Time_Label": "07:07:11",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "276021",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["95 Celsius", "٩٥ سيلسيوس"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["Eng Coffee", "انق كوفي"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"],
-  "MerchantId": 808,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "20-50",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "المجموع الفرعي",
-    "Tax_Label": "ضريبة القيمة المضافة (15.0%)",
-    "CR_Label": null,
-    "TaxID_Label": "310179766900003",
-    "Date_Label": "2025/06/12",
-    "Time_Label": "06:47:37",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "162187",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Eng Coffee", "انق كوفي"],
-  "MerchantAddress_Keyword": ["Jeddah", "جدة"]
-  }
-}
-,
- {
-  "MerchantName_Keyword": ["Canton", "كانتون"],
-  "MerchantAddress_Keyword": ["Riyadh", "الرياض"],
-  "MerchantId": 809,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "20-100",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Net Amt",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": "1010414530",
-    "TaxID_Label": "300914908810003",
-    "Date_Label": "2025/08/15",
-    "Time_Label": "04:25",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": null,
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["Canton", "كانتون"],
-  "MerchantAddress_Keyword": ["Riyadh", "الرياض"]
-  }
-},
-{
-    "MerchantName_Keyword": ["مؤسسة الحساوي للتجارة", "Al-Hasawi Trading Est", "Al-Hasawi Trading"],
-    "MerchantAddress_Keyword": ["الرياض", "Riyadh"],
-    "MerchantId" :762,
+    "MerchantName_Keyword": [
+      "Chaps & Co",
+      "Chaps and Co"
+    ],
+    "MerchantAddress_Keyword": [
+      "VIA Riyadh, Riyadh, 12912",
+      "Via Riyadh, Riyadh"
+    ],
+    "MerchantId": 717,
+    "Category": "Personal Care",
+    "Sub-category": "Barbershop",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "Tax 15%",
+      "CR_Label": null,
+      "TaxID_Label": "310075487100003",
+      "Date_Label": "2025/05/15",
+      "Time_Label": "13:39",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "3626",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Chaps & Co",
+        "Chaps and Co"
+      ],
+      "MerchantAddress_Keyword": [
+        "VIA Riyadh, Riyadh, 12912",
+        "Via Riyadh, Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Mufatah Alrafayiah Est",
+      "CLÉ",
+      "Cle",
+      "مؤسسة مفتاح الرفاهية للتجارة",
+      "كلي"
+    ],
+    "MerchantAddress_Keyword": [
+      "VIA Riyadh Jeddah Road",
+      "Saudi Arabia"
+    ],
+    "MerchantId": 718,
+    "Category": "Retail",
+    "Sub-category": "Accessories",
+    "Spending Range (SAR)": "0-5000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "Untaxed Amount",
+      "Tax_Label": "VAT Taxes",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/04/07",
+      "Time_Label": null,
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": null,
+      "InvoiceId_Label": "INV/2025/00000",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Mufatah Alrafayiah Est",
+        "CLÉ",
+        "Cle",
+        "مؤسسة مفتاح الرفاهية للتجارة",
+        "كلي"
+      ],
+      "MerchantAddress_Keyword": [
+        "VIA Riyadh Jeddah Road",
+        "Saudi Arabia"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Jacques La Coupe",
+      "جاك لا كروب"
+    ],
+    "MerchantAddress_Keyword": [
+      "Al Hada, Riyadh, 12912",
+      "Riyadh, Saudi Arabia"
+    ],
+    "MerchantId": 719,
+    "Category": "Personal Care",
+    "Sub-category": "Salon",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total الإجمالي",
+      "Subtotal_Label": "Total Before VAT",
+      "Tax_Label": "Includes VAT",
+      "CR_Label": "1010855358",
+      "TaxID_Label": "311533757900003",
+      "Date_Label": "2025/08/7",
+      "Time_Label": "16:33",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "JLC8749",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Jacques La Coupe",
+        "جاك لا كروب"
+      ],
+      "MerchantAddress_Keyword": [
+        "Al Hada, Riyadh, 12912",
+        "Riyadh, Saudi Arabia"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Scott's",
+      "Scotts"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 723,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "100-5000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Payment",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/02",
+      "Time_Label": "21:50",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHk 10003294",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Scott's",
+        "Scotts"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Les Deux Magots"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 722,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "20-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total Due",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/09",
+      "Time_Label": "19:15",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHK 10000510",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Les Deux Magots"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Spago",
+      "Spago by Wolfgang Puck"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 724,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "100-5000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total Due",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/09",
+      "Time_Label": "18:56",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHK 10004986",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Spago",
+        "Spago by Wolfgang Puck"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Gymkhana"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 725,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-2000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Payment",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/05",
+      "Time_Label": "21:55",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHK 10023784",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Gymkhana"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Vega Cigar Lounge",
+      "Vega"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 726,
+    "Category": "F&B",
+    "Sub-category": "Lounge",
+    "Spending Range (SAR)": "50-1000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Payment",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/10",
+      "Time_Label": "20:58",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHK 10004014",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Vega Cigar Lounge",
+        "Vega"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Over Under"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh",
+      "Riyadh 12912"
+    ],
+    "MerchantId": 727,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "20-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Payment",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "310756274500003",
+      "Date_Label": "2025/07/09",
+      "Time_Label": "15:39",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "CHK 1001938",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Over Under"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh",
+        "Riyadh 12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "HÖGHÖ",
+      "هوغو",
+      "Hocho"
+    ],
+    "MerchantAddress_Keyword": [
+      null
+    ],
+    "MerchantId": 728,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-1000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL / الإجمالي",
+      "Subtotal_Label": null,
+      "Tax_Label": "Sales VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "311545894700003",
+      "Date_Label": "2025/05/15",
+      "Time_Label": "17:35",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "04753-001-0002",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "HÖGHÖ",
+        "هوغو",
+        "Hocho"
+      ],
+      "MerchantAddress_Keyword": [
+        null
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Art Dose",
+      "مؤسسة جرعة الفن"
+    ],
+    "MerchantAddress_Keyword": [
+      "طريق الكورنيش جي, الشاطئ, جدة",
+      "SA 2473 23613"
+    ],
+    "MerchantId": 729,
+    "Category": "Retail",
+    "Sub-category": "Art & Crafts",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي (شامل الضريبة)",
+      "Subtotal_Label": "الإجمالي الفرعي",
+      "Tax_Label": "قيمة الضريبة",
+      "CR_Label": null,
+      "TaxID_Label": "312506752800003",
+      "Date_Label": "2025/05/20",
+      "Time_Label": "11:39",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "S20250520-1208",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Art Dose",
+        "مؤسسة جرعة الفن"
+      ],
+      "MerchantAddress_Keyword": [
+        "طريق الكورنيش جي, الشاطئ, جدة",
+        "SA 2473 23613"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Shiraz Restaurant",
+      "مطعم شيراز"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah, Al Shati District, Yacht Club",
+      "جدة، حي الشاطئ، نادي اليخوت"
+    ],
+    "MerchantId": 730,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "المجموع قبل الضريبة",
+      "Tax_Label": "ضريبة القيمة المضافة",
+      "CR_Label": null,
+      "TaxID_Label": "311806186200003",
+      "Date_Label": "2025/07/10",
+      "Time_Label": "15:07:53",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "3/4318",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Shiraz Restaurant",
+        "مطعم شيراز"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah, Al Shati District, Yacht Club",
+        "جدة، حي الشاطئ، نادي اليخوت"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "EL&N London",
+      "EL&N"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh Blvd",
+      "Boulevard",
+      "الرياض بوليفارد"
+    ],
+    "MerchantId": 732,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "10-100",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL SAR",
+      "Subtotal_Label": "SUB-TOTAL",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": "1010673865",
+      "TaxID_Label": "310808558300003",
+      "Date_Label": "2025/06/01",
+      "Time_Label": "17:26",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "103213",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "EL&N London",
+        "EL&N"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh Blvd",
+        "Boulevard",
+        "الرياض بوليفارد"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Le Vesuvio",
+      "لو فيسوفيو"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah Yacht Club",
+      "جدة نادي اليخوت"
+    ],
+    "MerchantId": 731,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Invoice Ttl",
+      "Subtotal_Label": "Invoice Taxable Amount",
+      "Tax_Label": "VAT 15.00%",
+      "CR_Label": "4030393062",
+      "TaxID_Label": "310756274500003",
+      "Date_Label": "2025/08/14",
+      "Time_Label": "18:04",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "10006892",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Le Vesuvio",
+        "لو فيسوفيو"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah Yacht Club",
+        "جدة نادي اليخوت"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "50 Degrees",
+      "50 ديقري"
+    ],
+    "MerchantAddress_Keyword": [
+      "Promenade Branch",
+      "Table Promenade"
+    ],
+    "MerchantId": 739,
+    "Category": "F&B",
+    "Sub-category": "Dessert",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL / الإجمالي",
+      "Subtotal_Label": null,
+      "Tax_Label": "Taxes 15% Inc.",
+      "CR_Label": null,
+      "TaxID_Label": "312687878200003",
+      "Date_Label": "2025/08/13",
+      "Time_Label": "21:01:22",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "15837-002-0005",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "50 Degrees",
+        "50 ديقري"
+      ],
+      "MerchantAddress_Keyword": [
+        "Promenade Branch",
+        "Table Promenade"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "سلاشيز",
+      "سلاشز",
+      "SLUSHY'S",
+      "Slushy's"
+    ],
+    "MerchantAddress_Keyword": [
+      "الرياض - البوليفارد",
+      "Boulevard City, Riyadh"
+    ],
+    "MerchantId": 761,
+    "Category": "F&B",
+    "Sub-category": "Beverages",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "المجموع الفرعي",
+      "Tax_Label": "VAT 15%(15.0%)",
+      "CR_Label": null,
+      "TaxID_Label": "302147520800003",
+      "Date_Label": "2025/07/09",
+      "Time_Label": "06:17:20",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "140491",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "سلاشيز",
+        "سلاشز",
+        "SLUSHY'S",
+        "Slushy's"
+      ],
+      "MerchantAddress_Keyword": [
+        "الرياض - البوليفارد",
+        "Boulevard City, Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Tante",
+      "تانتة"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard City",
+      "الرياض بوليفارد"
+    ],
+    "MerchantId": 763,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "SubTotal",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "311825134700003",
+      "Date_Label": "2025/07/09",
+      "Time_Label": "19:45:31",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "4177-12970",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Tante",
+        "تانتة"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard City",
+        "الرياض بوليفارد"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Roberto Coin",
+      "روبرتو كوين"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh",
+      "الرياض"
+    ],
+    "MerchantId": 765,
+    "Category": "Retail",
+    "Sub-category": "Jewelry",
+    "Spending Range (SAR)": "5000-50000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL AMOUNT",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "VAT (15%)",
+      "CR_Label": null,
+      "TaxID_Label": "311462482600003",
+      "Date_Label": "2025/06/29",
+      "Time_Label": "21:21",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "2200",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Roberto Coin",
+        "روبرتو كوين"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh",
+        "الرياض"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Twina",
+      "توينا"
+    ],
+    "MerchantAddress_Keyword": [
+      "طريق الامير سلطان"
+    ],
+    "MerchantId": 770,
+    "Category": "F&B",
+    "Sub-category": "Seafood Restaurant",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "المجموع",
+      "Subtotal_Label": "المجموع الكلي",
+      "Tax_Label": " مجموع الضريبة   ",
+      "CR_Label": null,
+      "TaxID_Label": "310784419900003",
+      "Date_Label": "2025/05/14",
+      "Time_Label": "15:00",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "1947328",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Twina",
+        "توينا"
+      ],
+      "MerchantAddress_Keyword": [
+        "طريق الامير سلطان"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Chelsie Lane",
+      "تشيلسي لين"
+    ],
+    "MerchantAddress_Keyword": [
+      null
+    ],
+    "MerchantId": 771,
+    "Category": "Retail",
+    "Sub-category": "Cosmetics",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي شامل ضريبة القيمة المضافة",
+      "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
+      "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
+      "CR_Label": "1010687405",
+      "TaxID_Label": "310865617500003",
+      "Date_Label": "2025/07/27",
+      "Time_Label": "23:01:48",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "LS-202500124",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Chelsie Lane",
+        "تشيلسي لين"
+      ],
+      "MerchantAddress_Keyword": [
+        null
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Camilla",
+      "كاميلا"
+    ],
+    "MerchantAddress_Keyword": [
+      null
+    ],
+    "MerchantId": 772,
+    "Category": "Retail",
+    "Sub-category": "Clothing",
+    "Spending Range (SAR)": "50-1000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي شامل ضريبة القيمة المضافة",
+      "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
+      "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
+      "CR_Label": "1010687405",
+      "TaxID_Label": "310865617500003",
+      "Date_Label": "2025/08/17",
+      "Time_Label": "19:10:51",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "CAS-202500012",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Camilla",
+        "كاميلا"
+      ],
+      "MerchantAddress_Keyword": [
+        null
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "The Concept by the Sea",
+      "ذا كونسبت"
+    ],
+    "MerchantAddress_Keyword": [
+      null
+    ],
+    "MerchantId": 773,
+    "Category": "Retail",
+    "Sub-category": "Home Decor",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي شامل الضريبة",
+      "Subtotal_Label": "الإجمالي قبل ضريبة القيمة المضافة",
+      "Tax_Label": "إجمالي ضريبة القيمة المضافة 15.0",
+      "CR_Label": "1010687405",
+      "TaxID_Label": "310865617500003",
+      "Date_Label": "2025/07/27",
+      "Time_Label": "20:56:37",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "CTS-202500078",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "The Concept by the Sea",
+        "ذا كونسبت"
+      ],
+      "MerchantAddress_Keyword": [
+        null
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Shali Marine Trading Co.",
+      "شركة شالي البحر للتجارة"
+    ],
+    "MerchantAddress_Keyword": [
+      "Ar Rawdah District, Abdul Aziz Airport, Jeddah",
+      "الروضة، مطار الملك عبدالعزيز، جدة"
+    ],
+    "MerchantId": 774,
+    "Category": "Services",
+    "Sub-category": "Marine Services",
+    "Spending Range (SAR)": "5000-50000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Invoice Total (inclusive of VAT)",
+      "Subtotal_Label": "Invoice Taxable Amount",
+      "Tax_Label": "VAT Taxes",
+      "CR_Label": null,
+      "TaxID_Label": "313024722300003",
+      "Date_Label": "2025/08/18",
+      "Time_Label": "15:39:55",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "INV/2025/00250",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Shali Marine Trading Co.",
+        "شركة شالي البحر للتجارة"
+      ],
+      "MerchantAddress_Keyword": [
+        "Ar Rawdah District, Abdul Aziz Airport, Jeddah",
+        "الروضة، مطار الملك عبدالعزيز، جدة"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "SABA",
+      "سبا"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard Riyadh City",
+      "الرياض بوليفارد"
+    ],
+    "MerchantId": 785,
+    "Category": "F&B",
+    "Sub-category": "Beverages",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL / الإجمالي",
+      "Subtotal_Label": null,
+      "Tax_Label": "الضريبة",
+      "CR_Label": "1010430389",
+      "TaxID_Label": "310148454800003",
+      "Date_Label": null,
+      "Time_Label": null,
+      "Date_Format": null,
+      "Time_Format": null,
+      "InvoiceId_Label": "945",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "SABA",
+        "سبا"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard Riyadh City",
+        "الرياض بوليفارد"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "وكاشي",
+      "okashi"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard City",
+      "طريق الملك فهد، حي العقيق، مجمع الرياض"
+    ],
+    "MerchantId": 786,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "50-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "VAT 15% Tax",
+      "CR_Label": null,
+      "TaxID_Label": "310151521610003",
+      "Date_Label": "2025/07/08",
+      "Time_Label": "05:39 PM",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "hh:mm a",
+      "InvoiceId_Label": "10001",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "وكاشي",
+        "okashi"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard City",
+        "طريق الملك فهد، حي العقيق، مجمع الرياض"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Burger Hunch",
+      "برجر هنش"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard",
+      "بوليفارد"
+    ],
+    "MerchantId": 788,
+    "Category": "F&B",
+    "Sub-category": "Fast Food",
+    "Spending Range (SAR)": "10-100",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": null,
+      "Tax_Label": "VAT 15 (15.0%)",
+      "CR_Label": null,
+      "TaxID_Label": "310397914500003",
+      "Date_Label": "2025/08/18",
+      "Time_Label": "22:29:49",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "121234",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Burger Hunch",
+        "برجر هنش"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard",
+        "بوليفارد"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "كازا باستا",
+      "Casa Pasta"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard City, Riyadh"
+    ],
+    "MerchantId": 790,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "10-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Take Out Total",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "VAT 15% Tax",
+      "CR_Label": null,
+      "TaxID_Label": "310151521610003",
+      "Date_Label": "2025/07/08",
+      "Time_Label": "20:06",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "ORDER-10",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "كازا باستا",
+        "Casa Pasta"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard City, Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "APRI",
+      "أبري"
+    ],
+    "MerchantAddress_Keyword": [
+      null
+    ],
+    "MerchantId": 792,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total include Tax",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "VAT (5%)",
+      "CR_Label": null,
+      "TaxID_Label": "312120295200003",
+      "Date_Label": "2025/07/18",
+      "Time_Label": "20:28",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "12900900",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "APRI",
+        "أبري"
+      ],
+      "MerchantAddress_Keyword": [
+        null
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Otaku Store",
+      "اوتاكو ستور"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh",
+      "الرياض"
+    ],
+    "MerchantId": 793,
+    "Category": "Retail",
+    "Sub-category": "Anime Merchandise",
+    "Spending Range (SAR)": "0-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": null,
+      "Tax_Label": null,
+      "CR_Label": "4030386270",
+      "TaxID_Label": "310652027500003",
+      "Date_Label": "2025/07/08",
+      "Time_Label": "07:06:01",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "S20250708-118919",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Otaku Store",
+        "اوتاكو ستور"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh",
+        "الرياض"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "ليالي عدن",
+      "Layali Aden",
+      "Layali Adan"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh"
+    ],
+    "MerchantId": 794,
+    "Category": "F&B",
+    "Sub-category": "Cafe & Lounge",
+    "Spending Range (SAR)": "20-500",
+    "ExtractionHints": {
+      "Language": "Arabic",
+      "Total_Label": "330",
+      "Subtotal_Label": "الصافي",
+      "Tax_Label": null,
+      "CR_Label": null,
+      "TaxID_Label": "311524635700003",
+      "Date_Label": "2025/06/14",
+      "Time_Label": "22:00:21",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "9169",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "ليالي عدن",
+        "Layali Aden",
+        "Layali Adan"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Petit Cafe",
+      "بيتي كافيه"
+    ],
+    "MerchantAddress_Keyword": [
+      "Turki Al Awwal Rd",
+      "Riyadh Boulevard",
+      "الرياض بوليفارد"
+    ],
+    "MerchantId": 796,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "50-100",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL SR",
+      "Subtotal_Label": "SUB-TOTAL",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "310394627900003",
+      "Date_Label": "2025/08/18",
+      "Time_Label": "23:36",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "239860",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Petit Cafe",
+        "بيتي كافيه"
+      ],
+      "MerchantAddress_Keyword": [
+        "Turki Al Awwal Rd",
+        "Riyadh Boulevard",
+        "الرياض بوليفارد"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Sham",
+      "شام"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah",
+      "جدة"
+    ],
+    "MerchantId": 804,
+    "Category": "F&B",
+    "Sub-category": "Fast Food",
+    "Spending Range (SAR)": "5-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "صافي المبلغ",
+      "Subtotal_Label": "جمالي المبلغ",
+      "Tax_Label": "ضريبة القيمة المضافة",
+      "CR_Label": null,
+      "TaxID_Label": "310558115500003",
+      "Date_Label": "2025/07/05",
+      "Time_Label": "20:15",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "2001011050",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Sham",
+        "شام"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah",
+        "جدة"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "95 Celsius",
+      "٩٥ سيلسيوس"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah",
+      "جدة"
+    ],
+    "MerchantId": 805,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "20-100",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "المجموع",
+      "Tax_Label": "ضريبة القيمة المضافة (15.0%)",
+      "CR_Label": null,
+      "TaxID_Label": "311272026300003",
+      "Date_Label": "2025/08/17",
+      "Time_Label": "07:07:11",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "276021",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "95 Celsius",
+        "٩٥ سيلسيوس"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah",
+        "جدة"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Eng Coffee",
+      "انق كوفي"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah",
+      "جدة"
+    ],
+    "MerchantId": 808,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "20-50",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "المجموع الفرعي",
+      "Tax_Label": "ضريبة القيمة المضافة (15.0%)",
+      "CR_Label": null,
+      "TaxID_Label": "310179766900003",
+      "Date_Label": "2025/06/12",
+      "Time_Label": "06:47:37",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "162187",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Eng Coffee",
+        "انق كوفي"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah",
+        "جدة"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Canton",
+      "كانتون"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh",
+      "الرياض"
+    ],
+    "MerchantId": 809,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "20-100",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "Net Amt",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": "1010414530",
+      "TaxID_Label": "300914908810003",
+      "Date_Label": "2025/08/15",
+      "Time_Label": "04:25",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": null,
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "Canton",
+        "كانتون"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh",
+        "الرياض"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "مؤسسة الحساوي للتجارة",
+      "Al-Hasawi Trading Est",
+      "Al-Hasawi Trading"
+    ],
+    "MerchantAddress_Keyword": [
+      "الرياض",
+      "Riyadh"
+    ],
+    "MerchantId": 762,
     "Category": "Retail",
     "Sub-category": "Health / Pharmacy",
     "Spending Range (SAR)": "50-500",
@@ -910,86 +1320,143 @@
       "Time_Format": "hh:mm tt",
       "InvoiceId_Label": "1016",
       "StoreID_Label": null,
-      "MerchantName_Keyword": ["مؤسسة الحساوي للتجارة", "Al-Hasawi Trading Est"],
-      "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
+      "MerchantName_Keyword": [
+        "مؤسسة الحساوي للتجارة",
+        "Al-Hasawi Trading Est"
+      ],
+      "MerchantAddress_Keyword": [
+        "الرياض",
+        "Riyadh"
+      ]
     }
   },
   {
-      "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل", "مركز النخيل", "Merkaz JYC", "JYC Merkaz"],
-  "MerchantAddress_Keyword": ["Riyadh"],
-  "MerchantId": 735,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "20-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "المجموع الفرعي",
-    "Tax_Label": "Tax(15.0%)",
-    "CR_Label": null,
-    "TaxID_Label": "31161552130003",
-    "Date_Label": "2025/08/28",
-    "Time_Label": "01:49:45",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "122580",
-    "StoreID_Label": "New Table 49",
-    "MerchantName_Keyword": ["النخيل", "مركز النخيل", "Al Nakheel", "Markaz Al Nakheel" ,"مركاز النخيل", "مركز النخيل", "Merkaz JYC", "JYC Merkaz"],
-    "MerchantAddress_Keyword": ["الرياض", "Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["MWAZ", "مواز"],
-  "MerchantAddress_Keyword": ["BLVD City, Riyadh"],
-  "MerchantId": 768,
-  "Category": "Retail",
-  "Sub-category": "Fashion",
-  "Spending Range (SAR)": "100-10000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "SubTotal",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "300210077100003",
-    "Date_Label": "2025/07/07",
-    "Time_Label": "18:13:15",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "4684-790",
-    "StoreID_Label": null,
-    "MerchantName_Keyword": ["MWAZ", "مواز"],
-  "MerchantAddress_Keyword": ["BLVD City, Riyadh"]
-  }
-}
-,
-{
-  "MerchantName_Keyword": ["NYF", "New York Fries", "نيويورك فرايز"],
-  "MerchantAddress_Keyword": ["Riyadh", "BLVD Riyadh"],
-  "MerchantId": 789,
-  "Category": "F&B",
-  "Sub-category": "Fast Food",
-  "Spending Range (SAR)": "20-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "Base",
-    "Tax_Label": "ضريبة القيمة المضافة 15%",
-    "CR_Label": null,
-    "TaxID_Label": "310153522300003",
-    "Date_Label": null,
-    "Time_Label": null,
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "Ticket : 6",
-    "StoreID_Label": "NYF BLVD",
-  "MerchantName_Keyword": ["NYF", "New York Fries", "نيويورك فرايز"],
-  "MerchantAddress_Keyword": ["Riyadh", "BLVD Riyadh"]
-  }
-},
+    "MerchantName_Keyword": [
+      "النخيل",
+      "مركز النخيل",
+      "Al Nakheel",
+      "Markaz Al Nakheel",
+      "مركاز النخيل",
+      "مركز النخيل",
+      "Merkaz JYC",
+      "JYC Merkaz"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh"
+    ],
+    "MerchantId": 735,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "20-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "المجموع الفرعي",
+      "Tax_Label": "Tax(15.0%)",
+      "CR_Label": null,
+      "TaxID_Label": "31161552130003",
+      "Date_Label": "2025/08/28",
+      "Time_Label": "01:49:45",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "122580",
+      "StoreID_Label": "New Table 49",
+      "MerchantName_Keyword": [
+        "النخيل",
+        "مركز النخيل",
+        "Al Nakheel",
+        "Markaz Al Nakheel",
+        "مركاز النخيل",
+        "مركز النخيل",
+        "Merkaz JYC",
+        "JYC Merkaz"
+      ],
+      "MerchantAddress_Keyword": [
+        "الرياض",
+        "Riyadh"
+      ]
+    }
+  },
   {
-    "MerchantName_Keyword": ["مؤسسة الرائحة الذهبية التجارية", "مؤسسة الرائحة الذهبية"],
-    "MerchantAddress_Keyword": ["Boulevard City, Riyadh"],
+    "MerchantName_Keyword": [
+      "MWAZ",
+      "مواز"
+    ],
+    "MerchantAddress_Keyword": [
+      "BLVD City, Riyadh"
+    ],
+    "MerchantId": 768,
+    "Category": "Retail",
+    "Sub-category": "Fashion",
+    "Spending Range (SAR)": "100-10000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "Total",
+      "Subtotal_Label": "SubTotal",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "300210077100003",
+      "Date_Label": "2025/07/07",
+      "Time_Label": "18:13:15",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "4684-790",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "MWAZ",
+        "مواز"
+      ],
+      "MerchantAddress_Keyword": [
+        "BLVD City, Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "NYF",
+      "New York Fries",
+      "نيويورك فرايز"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh",
+      "BLVD Riyadh"
+    ],
+    "MerchantId": 789,
+    "Category": "F&B",
+    "Sub-category": "Fast Food",
+    "Spending Range (SAR)": "20-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "Base",
+      "Tax_Label": "ضريبة القيمة المضافة 15%",
+      "CR_Label": null,
+      "TaxID_Label": "310153522300003",
+      "Date_Label": null,
+      "Time_Label": null,
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": "Ticket : 6",
+      "StoreID_Label": "NYF BLVD",
+      "MerchantName_Keyword": [
+        "NYF",
+        "New York Fries",
+        "نيويورك فرايز"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh",
+        "BLVD Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "مؤسسة الرائحة الذهبية التجارية",
+      "مؤسسة الرائحة الذهبية"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard City, Riyadh"
+    ],
     "MerchantId": 776,
     "Category": "F&B",
     "Sub-category": "Cafe",
@@ -1007,205 +1474,289 @@
       "Time_Format": "HH:mm:ss",
       "InvoiceId_Label": "102368",
       "StoreID_Label": "Order# 3",
-    "MerchantName_Keyword": ["مؤسسة الرائحة الذهبية التجارية", "مؤسسة الرائحة الذهبية"],
-    "MerchantAddress_Keyword": ["Boulevard City, Riyadh"]
+      "MerchantName_Keyword": [
+        "مؤسسة الرائحة الذهبية التجارية",
+        "مؤسسة الرائحة الذهبية"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard City, Riyadh"
+      ]
     }
   },
   {
-  "MerchantName_Keyword": ["مؤسسة المستقبل لاند", "مؤسسة المستقبل لاند للفاعليات الترفيهية"],
-  "MerchantAddress_Keyword": ["جدة"],
-  "MerchantId": 766,
-  "Category": "FMCG",
-  "Sub-category": "Food & Groceries",
-  "Spending Range (SAR)": "20-500",
-  "ExtractionHints": {
-    "Language": "Arabic",
-    "Total_Label": "الإجمالي",
-    "Subtotal_Label": "الاجمالي قبل الضريبة",
-    "Tax_Label": "ضريبة القيمة المضافة %15",
-    "CR_Label": null,
-    "TaxID_Label": "312331405100003",
-    "Date_Label": "2025/01/14",
-    "Time_Label": "02:58",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "1777",
-    "StoreID_Label": "1058",
-  "MerchantName_Keyword": ["مؤسسة المستقبل لاند", "مؤسسة المستقبل لاند للفاعليات الترفيهية"],
-  "MerchantAddress_Keyword": ["جدة"]
+    "MerchantName_Keyword": [
+      "مؤسسة المستقبل لاند",
+      "مؤسسة المستقبل لاند للفاعليات الترفيهية"
+    ],
+    "MerchantAddress_Keyword": [
+      "جدة"
+    ],
+    "MerchantId": 766,
+    "Category": "FMCG",
+    "Sub-category": "Food & Groceries",
+    "Spending Range (SAR)": "20-500",
+    "ExtractionHints": {
+      "Language": "Arabic",
+      "Total_Label": "الإجمالي",
+      "Subtotal_Label": "الاجمالي قبل الضريبة",
+      "Tax_Label": "ضريبة القيمة المضافة %15",
+      "CR_Label": null,
+      "TaxID_Label": "312331405100003",
+      "Date_Label": "2025/01/14",
+      "Time_Label": "02:58",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "1777",
+      "StoreID_Label": "1058",
+      "MerchantName_Keyword": [
+        "مؤسسة المستقبل لاند",
+        "مؤسسة المستقبل لاند للفاعليات الترفيهية"
+      ],
+      "MerchantAddress_Keyword": [
+        "جدة"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "مركز مريم المالكي",
+      "Mariam Almaliki Center"
+    ],
+    "MerchantAddress_Keyword": [
+      "AR RUSAYFAH, Makkah"
+    ],
+    "MerchantId": 775,
+    "Category": "Retail",
+    "Sub-category": "General Store",
+    "Spending Range (SAR)": "10-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "PURCHASE AMOUNT",
+      "Subtotal_Label": null,
+      "Tax_Label": null,
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/09",
+      "Time_Label": "20:16:29",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm:ss",
+      "InvoiceId_Label": null,
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "مركز مريم المالكي",
+        "Mariam Almaliki Center"
+      ],
+      "MerchantAddress_Keyword": [
+        "AR RUSAYFAH, Makkah"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "mom3nto pizza",
+      "مومينتو بيتزا"
+    ],
+    "MerchantAddress_Keyword": [
+      "Jeddah",
+      "حي النخيل"
+    ],
+    "MerchantId": 814,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "10-300",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "الإجمالي شامل الضريبة",
+      "Subtotal_Label": "الإجمالي",
+      "Tax_Label": "ضريبة القيمة المضافة %15",
+      "CR_Label": null,
+      "TaxID_Label": "311338520400003",
+      "Date_Label": "2025/07/09",
+      "Time_Label": "19:32",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "48057",
+      "StoreID_Label": "21",
+      "MerchantName_Keyword": [
+        "mom3nto pizza",
+        "مومينتو بيتزا"
+      ],
+      "MerchantAddress_Keyword": [
+        "Jeddah",
+        "حي النخيل"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "الريف المصري",
+      "Al Rif Al Masry"
+    ],
+    "MerchantAddress_Keyword": [
+      "Riyadh"
+    ],
+    "MerchantId": 813,
+    "Category": "F&B",
+    "Sub-category": "Bakery",
+    "Spending Range (SAR)": "5-100",
+    "ExtractionHints": {
+      "Language": "Arabic",
+      "Total_Label": "الاجمالي",
+      "Subtotal_Label": null,
+      "Tax_Label": "ضريبة القيمة المضافة %15",
+      "CR_Label": null,
+      "TaxID_Label": "311338529400003",
+      "Date_Label": "2025/07/09",
+      "Time_Label": "18:11",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "5421",
+      "StoreID_Label": null,
+      "MerchantName_Keyword": [
+        "الريف المصري",
+        "Al Rif Al Masry"
+      ],
+      "MerchantAddress_Keyword": [
+        "Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Bob's Famous",
+      "بوبز"
+    ],
+    "MerchantAddress_Keyword": [
+      "Boulevard City, Riyadh"
+    ],
+    "MerchantId": 784,
+    "Category": "Retail",
+    "Sub-category": "Entertainment Cards",
+    "Spending Range (SAR)": "10-200",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "TOTAL",
+      "Subtotal_Label": "SUBTOTAL",
+      "Tax_Label": "VAT INCLUSIVE",
+      "CR_Label": null,
+      "TaxID_Label": "300884862300003",
+      "Date_Label": "2025/07/07",
+      "Time_Label": "18:43",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "G3870",
+      "StoreID_Label": "POS2",
+      "MerchantName_Keyword": [
+        "Bob's Famous",
+        "بوبز"
+      ],
+      "MerchantAddress_Keyword": [
+        "Boulevard City, Riyadh"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Elle Tea Lounge",
+      "ELLE"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh, Riyadh,12912"
+    ],
+    "MerchantId": 715,
+    "Category": "F&B",
+    "Sub-category": "Cafe",
+    "Spending Range (SAR)": "50-500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "132.00SAR",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/08",
+      "Time_Label": "22:58",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "10004812",
+      "StoreID_Label": "TBL 33/1",
+      "MerchantName_Keyword": [
+        "Elle Tea Lounge",
+        "ELLE"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh, Riyadh,12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "Madeo",
+      "ماديو"
+    ],
+    "MerchantAddress_Keyword": [
+      "Via Riyadh",
+      "Riyadh,12912"
+    ],
+    "MerchantId": 714,
+    "Category": "F&B",
+    "Sub-category": "Restaurant",
+    "Spending Range (SAR)": "100-1500",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "748.00SAR",
+      "Subtotal_Label": "Net Total",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": null,
+      "Date_Label": "2025/07/02",
+      "Time_Label": "18:42",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "1001975",
+      "StoreID_Label": "TBL 37/1",
+      "MerchantName_Keyword": [
+        "Madeo",
+        "ماديو"
+      ],
+      "MerchantAddress_Keyword": [
+        "Via Riyadh",
+        "Riyadh,12912"
+      ]
+    }
+  },
+  {
+    "MerchantName_Keyword": [
+      "VOX Cinema",
+      "ڤوكس سينما"
+    ],
+    "MerchantAddress_Keyword": [
+      "2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"
+    ],
+    "MerchantId": 713,
+    "Category": "Entertainment",
+    "Sub-category": "Cinema",
+    "Spending Range (SAR)": "50-1000",
+    "ExtractionHints": {
+      "Language": "Mixed",
+      "Total_Label": "SAR 410.00",
+      "Subtotal_Label": "Subtotal",
+      "Tax_Label": "VAT 15%",
+      "CR_Label": null,
+      "TaxID_Label": "310193160610003",
+      "Date_Label": "2025/05/15",
+      "Time_Label": "15:59",
+      "Date_Format": "YYYY/MM/DD",
+      "Time_Format": "HH:mm",
+      "InvoiceId_Label": "VIASTD-ONLINE/4/25968",
+      "StoreID_Label": "75489",
+      "MerchantName_Keyword": [
+        "VOX Cinema",
+        "ڤوكس سينما"
+      ],
+      "MerchantAddress_Keyword": [
+        "2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"
+      ]
+    }
   }
-},
-{
-  "MerchantName_Keyword": ["مركز مريم المالكي", "Mariam Almaliki Center"],
-  "MerchantAddress_Keyword": ["AR RUSAYFAH, Makkah"],
-  "MerchantId": 775,
-  "Category": "Retail",
-  "Sub-category": "General Store",
-  "Spending Range (SAR)": "10-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "PURCHASE AMOUNT",
-    "Subtotal_Label": null,
-    "Tax_Label": null,
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/09",
-    "Time_Label": "20:16:29",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": null,
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["مركز مريم المالكي", "Mariam Almaliki Center"],
-  "MerchantAddress_Keyword": ["AR RUSAYFAH, Makkah"]
-  }
-},
-{
-  "MerchantName_Keyword": ["mom3nto pizza", "مومينتو بيتزا"],
-  "MerchantAddress_Keyword": ["Jeddah", "حي النخيل"],
-  "MerchantId": 814,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "10-300",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "الإجمالي شامل الضريبة",
-    "Subtotal_Label": "الإجمالي",
-    "Tax_Label": "ضريبة القيمة المضافة %15",
-    "CR_Label": null,
-    "TaxID_Label": "311338520400003",
-    "Date_Label": "2025/07/09",
-    "Time_Label": "19:32",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "48057",
-    "StoreID_Label": "21",
-  "MerchantName_Keyword": ["mom3nto pizza", "مومينتو بيتزا"],
-  "MerchantAddress_Keyword": ["Jeddah", "حي النخيل"]
-  }
-},
-{
-  "MerchantName_Keyword": ["الريف المصري", "Al Rif Al Masry"],
-  "MerchantAddress_Keyword": ["Riyadh"],
-  "MerchantId": 813,
-  "Category": "F&B",
-  "Sub-category": "Bakery",
-  "Spending Range (SAR)": "5-100",
-  "ExtractionHints": {
-    "Language": "Arabic",
-    "Total_Label": "الاجمالي",
-    "Subtotal_Label": null,
-    "Tax_Label": "ضريبة القيمة المضافة %15",
-    "CR_Label": null,
-    "TaxID_Label": "311338529400003",
-    "Date_Label": "2025/07/09",
-    "Time_Label": "18:11",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "5421",
-    "StoreID_Label": null,
-  "MerchantName_Keyword": ["الريف المصري", "Al Rif Al Masry"],
-  "MerchantAddress_Keyword": ["Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Bob's Famous", "بوبز"],
-  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"],
-  "MerchantId": 784,
-  "Category": "Retail",
-  "Sub-category": "Entertainment Cards",
-  "Spending Range (SAR)": "10-200",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "TOTAL",
-    "Subtotal_Label": "SUBTOTAL",
-    "Tax_Label": "VAT INCLUSIVE",
-    "CR_Label": null,
-    "TaxID_Label": "300884862300003",
-    "Date_Label": "2025/07/07",
-    "Time_Label": "18:43",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "G3870",
-    "StoreID_Label": "POS2",
-  "MerchantName_Keyword": ["Bob's Famous", "بوبز"],
-  "MerchantAddress_Keyword": ["Boulevard City, Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Elle Tea Lounge", "ELLE"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh,12912"],
-  "MerchantId": 715,
-  "Category": "F&B",
-  "Sub-category": "Cafe",
-  "Spending Range (SAR)": "50-500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "132.00SAR",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/08",
-    "Time_Label": "22:58",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "10004812",
-    "StoreID_Label": "TBL 33/1",
-  "MerchantName_Keyword": ["Elle Tea Lounge", "ELLE"],
-  "MerchantAddress_Keyword": ["Via Riyadh, Riyadh,12912"]
-  }
-},
-{
-  "MerchantName_Keyword": ["Madeo", "ماديو"],
-  "MerchantAddress_Keyword": ["Via Riyadh", "Riyadh,12912"],
-  "MerchantId": 714,
-  "Category": "F&B",
-  "Sub-category": "Restaurant",
-  "Spending Range (SAR)": "100-1500",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "748.00SAR",
-    "Subtotal_Label": "Net Total",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/07/02",
-    "Time_Label": "18:42",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "1001975",
-    "StoreID_Label": "TBL 37/1",
-    
-  "MerchantName_Keyword": ["Madeo", "ماديو"],
-  "MerchantAddress_Keyword": ["Via Riyadh", "Riyadh,12912"]
-  }
-},
-{
-  "MerchantName_Keyword": ["VOX Cinema", "ڤوكس سينما"],
-  "MerchantAddress_Keyword": ["2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"],
-  "MerchantId": 713,
-  "Category": "Entertainment",
-  "Sub-category": "Cinema",
-  "Spending Range (SAR)": "50-1000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "SAR 410.00",
-    "Subtotal_Label": "Subtotal",
-    "Tax_Label": "VAT 15%",
-    "CR_Label": null,
-    "TaxID_Label": "310193160610003",
-    "Date_Label": "2025/05/15",
-    "Time_Label": "15:59",
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm",
-    "InvoiceId_Label": "VIASTD-ONLINE/4/25968",
-    "StoreID_Label": "75489",
-  "MerchantName_Keyword": ["VOX Cinema", "ڤوكس سينما"],
-  "MerchantAddress_Keyword": ["2163 Al Urubah Rd, North Mather Dist., Unit# 6, Riyadh"]
-  }
-}
-
-
-
-
 ]
