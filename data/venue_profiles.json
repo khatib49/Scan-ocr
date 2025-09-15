@@ -49,7 +49,7 @@
   }
 },
 {
-  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle"],
+  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle", "مؤسسة مفتاح الرفاهية للتجارة" , "كلي"],
   "MerchantAddress_Keyword": ["VIA Riyadh Jeddah Road", "Saudi Arabia"],
   "MerchantId": 718,
   "Category": "Retail",
@@ -68,7 +68,7 @@
     "Time_Format": null,
     "InvoiceId_Label": "INV/2025/00000",
     "StoreID_Label": null,
-  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle"],
+  "MerchantName_Keyword": ["Mufatah Alrafayiah Est", "CLÉ", "Cle", "مؤسسة مفتاح الرفاهية للتجارة" , "كلي"],
   "MerchantAddress_Keyword": ["VIA Riyadh Jeddah Road", "Saudi Arabia"]
   }
 },
@@ -1129,30 +1129,6 @@
     "StoreID_Label": "POS2",
   "MerchantName_Keyword": ["Bob's Famous", "بوبز"],
   "MerchantAddress_Keyword": ["Boulevard City, Riyadh"]
-  }
-},
-{
-  "MerchantName_Keyword": ["MUFTAH ALRAFAHYAH EST", "مؤسسة مفتاح الرفاهية للتجارة", "CLÉ"],
-  "MerchantAddress_Keyword": ["VIA Riyadh, Jeddah Road, Saudi Arabia"],
-  "MerchantId": 718,
-  "Category": "Retail",
-  "Sub-category": "Luxury Accessories",
-  "Spending Range (SAR)": "100-50000",
-  "ExtractionHints": {
-    "Language": "Mixed",
-    "Total_Label": "Total",
-    "Subtotal_Label": "Untaxed Amount",
-    "Tax_Label": "VAT Taxes",
-    "CR_Label": null,
-    "TaxID_Label": null,
-    "Date_Label": "2025/04/07",
-    "Time_Label": null,
-    "Date_Format": "YYYY/MM/DD",
-    "Time_Format": "HH:mm:ss",
-    "InvoiceId_Label": "INV/2025/00000",
-    "StoreID_Label": "Shop/0613",
-  "MerchantName_Keyword": ["MUFTAH ALRAFAHYAH EST", "مؤسسة مفتاح الرفاهية للتجارة", "CLÉ"],
-  "MerchantAddress_Keyword": ["VIA Riyadh, Jeddah Road, Saudi Arabia"]
   }
 },
 {
