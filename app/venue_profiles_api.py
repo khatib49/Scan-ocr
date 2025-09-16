@@ -90,9 +90,21 @@ def _validate_profile_fields(p: Dict[str, Any], *, is_add: bool) -> None:
         _opt("MerchantAddress_Keyword", list)
 
 # ---------- endpoints ----------
+@router.get(
+    "/all",
+    dependencies=[Security(verify_admin_key)],
+    summary="Get all venue profiles (admin)",
+)
+async def get_all_profiles() -> Dict[str, Any]:
+    """
+    Return the entire list of venue profiles from disk.
+    Use carefully, as this could be large.
+    """
+    profiles = _load_from_disk()
+    return {"count": len(profiles), "profiles": profiles}
 
 @router.get(
-    "",
+    "/meta",
     dependencies=[Security(verify_admin_key)],
     summary="Get current venue-profiles metadata (admin)",
 )

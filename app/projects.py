@@ -7,7 +7,7 @@ from bson import ObjectId
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from datetime import datetime
 
-from app.security import verify_admin_key, _mongo_db as DB
+from app.security import verify_admin_key, _mongo_db as DB, verify_api_key
 from utils.helpers import (
     ensure_project_indexes,
     generate_unique_api_key,
@@ -50,7 +50,7 @@ class ProjectOut(ProjectBase):
 
 # ----- Self-service (scoped to caller's project) -----
 
-@router.get("/me", response_model=ProjectOut, summary="Get my project")
+@router.get("/me", response_model=ProjectOut, summary="Get my project", dependencies=[Security(verify_api_key)])
 async def get_my_project(request: Request) -> Any:
     proj_id: ObjectId = request.state.project["_id"]
     doc = await DB["Project"].find_one({"_id": proj_id})
@@ -58,7 +58,7 @@ async def get_my_project(request: Request) -> Any:
         raise HTTPException(status_code=404, detail="Project not found")
     return ProjectOut(**normalize_project_out(doc))
 
-@router.patch("/me", response_model=ProjectOut, summary="Update my project (rename and/or rotate key)")
+@router.patch("/me", response_model=ProjectOut, summary="Update my project (rename and/or rotate key)", dependencies=[Security(verify_api_key)])
 async def update_my_project(request: Request, patch: ProjectUpdate) -> Any:
     pid: ObjectId = request.state.project["_id"]
     update: Dict[str, Any] = {}
@@ -81,7 +81,7 @@ async def update_my_project(request: Request, patch: ProjectUpdate) -> Any:
     request.state.project = result
     return ProjectOut(**normalize_project_out(result))
 
-@router.delete("/me", status_code=204, summary="Delete my project")
+@router.delete("/me", status_code=204, summary="Delete my project", dependencies=[Security(verify_api_key)])
 async def delete_my_project(request: Request) -> None:
     pid: ObjectId = request.state.project["_id"]
     await DB["Project"].delete_one({"_id": pid})

@@ -54,14 +54,27 @@ async def verify_api_key(request: Request, api_key: str = Security(_api_key_head
     request.state.project = proj
     return api_key
 
-# ---- Admin key validator (NEW) ----
-def verify_admin_key(admin_key: str = Security(_admin_key_header)) -> str:
-    expected = (os.getenv("ADMIN_API_KEY") or "").strip()
-    if not expected:
-        # Misconfiguration is a server issue, not a client issue
-        raise HTTPException(status_code=500, detail="ADMIN_API_KEY not configured")
-    if admin_key != expected:
-        raise HTTPException(status_code=403, detail="Admin privileges required")
+# ---- Admin key validator----
+async def verify_admin_key(request: Request, admin_key: str = Security(_admin_key_header)) -> str:
+    if not admin_key:
+        raise HTTPException(status_code=403, detail="Invalid or missing Admin API key")
+    if _mongo_db is None:
+        raise HTTPException(status_code=500, detail="MongoDB not configured")
+
+    cache_key = f"admin:{admin_key}"            # avoid collisions with project keys
+    proj = _PROJECT_CACHE.get(cache_key)
+    if proj is None:
+        # if your admin doc is literally named "admin," include it in $in; otherwise keep "admin".
+        proj_doc = await _mongo_db["Project"].find_one(
+            {"ApiKey": admin_key, "Name": {"$in": ["admin", "admin,"]}},
+            {"_id": 1, "Name": 1},
+        )
+        if not proj_doc:
+            raise HTTPException(status_code=403, detail="API key not assigned to a project (admin)")
+        proj = {"_id": proj_doc["_id"], "Name": proj_doc.get("Name")}
+        _PROJECT_CACHE[cache_key] = proj
+
+    request.state.project = proj
     return admin_key
 
 def add_cors(app: FastAPI) -> None:
