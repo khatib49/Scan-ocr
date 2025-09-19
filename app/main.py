@@ -273,7 +273,7 @@ async def analyze(
 
         raw_txt = None
         data: Dict[str, Any] = None  # type: ignore
-
+        sys = None
             # 5) If no match, return minimal with high fraud score
         if not merchant_guess or not matched:
             data = {
@@ -301,6 +301,23 @@ async def analyze(
         else:
             sys = build_system_prompt(profile)
             m_start = perf_counter()
+        
+        if sys is None:
+            await log_scan_invoice(
+                imageUrl=blob_url,
+                merchant_guess=merchant_guess if 'merchant_guess' in locals() else None,
+                address_guess=addr_guess if 'addr_guess' in locals() else None,
+                profile=profile if 'profile' in locals() else None,
+                raw_text=raw_txt,
+                userReference=userReference,
+                final_result=final_payload,
+                project_id=project_id,
+                request_id=request_id,
+                scanReference=scanReference
+            )
+            # skip main extraction; you've already built `final_payload` for the no-match case
+            return AnalyzeResponse(**final_payload)
+
         try:
             resp = await client.chat.completions.create(
                         model=OPENAI_MODEL,
@@ -410,7 +427,7 @@ async def analyze(
             request_id=request_id,
             success=success,
             total_ms=total_ms,
-            summary=summary
+            summary=summary,
         )
 
 
