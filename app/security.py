@@ -78,24 +78,10 @@ async def verify_admin_key(request: Request, admin_key: str = Security(_admin_ke
     return admin_key
 
 def add_cors(app: FastAPI) -> None:
-    origins_env = os.getenv("CORS_ALLOWED_ORIGINS", "*").strip()
-    expose = [API_KEY_NAME, ADMIN_KEY_NAME]  # (optional) expose both in responses
-    if origins_env == "*":
-        app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["*"],
-            allow_credentials=False,
-            allow_methods=["*"],
-            allow_headers=["*"],  # already allows X-Admin-Key in requests
-            expose_headers=expose,
-        )
-    else:
-        origins = [o.strip() for o in origins_env.split(",") if o.strip()]
-        app.add_middleware(
-            CORSMiddleware,
-            allow_origins=origins,
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-            expose_headers=expose,
-        )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # allow all origins
+        allow_credentials=True,
+        allow_methods=["*"],  # allow all methods (GET, POST, PUT, DELETE, etc.)
+        allow_headers=["*"],  # allow all headers
+    )

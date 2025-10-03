@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI, RateLimitError
 from app.venue_profiles_api import router as venue_profiles_router  
 from app.projects import router as projects_router
+from app.extract_api import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
 
@@ -45,6 +46,8 @@ app.include_router(projects_router)
 app.include_router(venue_profiles_router, dependencies=[Depends(verify_admin_key)])
 # CORS
 add_cors(app)
+
+app.include_router(extract_router)
 
 # Load venue profiles
 VENUE_PROFILES = load_profiles(os.getenv("VENUE_PROFILES_PATH", "data/venue_profiles.json"))
