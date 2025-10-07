@@ -39,13 +39,12 @@ if not OPENAI_API_KEY:
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
 client = AsyncOpenAI(api_key=OPENAI_API_KEY, timeout=60, max_retries=2)
-app = FastAPI(title="Scan Invoice API", version="0.2.0")
+app = FastAPI(title="Scan Invoice API", version="4.2.0")# CORS
+add_cors(app)
 
 app.include_router(projects_router)
 
 app.include_router(venue_profiles_router, dependencies=[Depends(verify_admin_key)])
-# CORS
-add_cors(app)
 
 app.include_router(extract_router)
 
