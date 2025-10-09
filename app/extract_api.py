@@ -1,3 +1,4 @@
+from decimal import Decimal
 import os, re, json, base64
 from typing import Any, Dict, Optional, List
 from fastapi import File, Form, Security, UploadFile
@@ -201,7 +202,90 @@ def _coerce_schema(model_json: dict, merchant_id: str) -> dict:
 
     # Otherwise, map from the alternate shape
     return _map_alt_shape_to_schema(model_json, merchant_id)
+def _dedupe_preserve_order(seq: List[str]) -> List[str]:
+    seen = set(); out = []
+    for s in seq:
+        k = s.strip()
+        if not k: continue
+        if k not in seen:
+            seen.add(k); out.append(k)
+    return out
 
+def _ascii_straight_quotes(s: str) -> str:
+    return s.replace("’", "'").replace("‘","'").replace("“",'"').replace("”",'"')
+
+def _english_variants(name: str) -> List[str]:
+    # only if it looks Latin
+    if not re.search(r"[A-Za-z]", name): return [name]
+    base = _ascii_straight_quotes(name.strip())
+    return _dedupe_preserve_order([base, base.title(), base.upper()])
+
+def _normalize_names_generic(obj: dict) -> None:
+    names = obj.get("MerchantName_Keyword") or []
+    out: List[str] = []
+    for n in names:
+        n = (n or "").strip()
+        if not n: continue
+        out.extend(_english_variants(n))
+    obj["MerchantName_Keyword"] = _dedupe_preserve_order(out)
+
+def _normalize_addresses_generic(obj: dict) -> None:
+    # Keep as-is, but normalize whitespace and curly quotes; de-dupe
+    addrs = [ _ascii_straight_quotes((a or "").strip()) for a in (obj.get("MerchantAddress_Keyword") or []) ]
+    obj["MerchantAddress_Keyword"] = _dedupe_preserve_order([a for a in addrs if a])
+
+def _infer_time_format(t: str) -> str:
+    t = (t or "").strip()
+    if re.fullmatch(r"\d{1,2}:\d{2}:\d{2}", t): return "HH:mm:ss"
+    if re.fullmatch(r"\d{1,2}:\d{2}", t):       return "HH:mm"
+    return "HH:mm"  # fallback
+
+def _pick_date_format(d: str) -> str:
+    d = (d or "").replace("-", "/").strip()
+    # very light inference; your schema wants the *format string*, not the value
+    if re.fullmatch(r"\d{4}/\d{2}/\d{2}", d): return "YYYY/MM/DD"
+    if re.fullmatch(r"\d{2}/\d{2}/\d{4}", d): return "DD/MM/YYYY"
+    return "YYYY/MM/DD"
+
+def _maybe_parse_total_from_labels(obj: dict) -> Optional[Decimal]:
+    # Try to pull a number from the total label (some receipts put amount next to label)
+    lbl = obj.get("ExtractionHints",{}).get("Total_Label") or ""
+    m = re.search(r"(\d+(?:\.\d{1,2})?)", lbl.replace(",", ""))
+    if not m: return None
+    try: return Decimal(m.group(1))
+    except Exception: return None
+
+def _bucket_spending(total: Optional[Decimal]) -> str:
+    if total is None: return ""
+    v = float(total)
+    if v <= 10:   return "0-10"
+    if v <= 50:   return "5-50"
+    if v <= 100:  return "50-100"
+    if v <= 500:  return "100-500"
+    return "500+"
+
+def normalize_generic(obj: dict) -> dict:
+    # 1) names and addresses
+    _normalize_names_generic(obj)
+    _normalize_addresses_generic(obj)
+
+    # 2) fix formats if empty/loose
+    eh = obj.get("ExtractionHints", {}) or {}
+    if not (eh.get("Time_Format") or "").strip():
+        eh["Time_Format"] = _infer_time_format(eh.get("Time_Label",""))
+    if not (eh.get("Date_Format") or "").strip():
+        eh["Date_Format"] = _pick_date_format(eh.get("Date_Label",""))
+
+    # 3) spending bucket (if model didn’t fill)
+    if not (obj.get("Spending Range (SAR)") or "").strip():
+        total = _maybe_parse_total_from_labels(obj)
+        obj["Spending Range (SAR)"] = _bucket_spending(total)
+
+    # 4) mirrors (ensure hints mirror arrays)
+    eh["MerchantName_Keyword"] = obj.get("MerchantName_Keyword") or []
+    eh["MerchantAddress_Keyword"] = obj.get("MerchantAddress_Keyword") or []
+    obj["ExtractionHints"] = eh
+    return obj
 # ---------- Endpoint ----------
 
 @router.post(
@@ -265,19 +349,21 @@ Guidelines:
 
     try:
         completion = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "Always return only one valid JSON object."},
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt_text},
-                        {"type": "image_url", "image_url": {"url": image_url}},
-                    ],
-                },
-            ],
-            response_format={"type": "json_object"},
-        )
+        model=model,
+        messages=[
+            {"role": "system", "content": "Return exactly one JSON object that validates against the schema."},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt_text},
+                    {"type": "image_url", "image_url": {"url": image_url}},
+                ],
+            },
+        ],
+        # Chat Completions supports "json_object" here.
+        response_format={"type": "json_object"},
+        # IMPORTANT: do NOT send temperature/top_p/seed for models that don't support it.
+    )
         raw_text = completion.choices[0].message.content or ""
     except Exception as e:
         raise HTTPException(502, detail=f"OpenAI error: {e!s}")
@@ -285,7 +371,7 @@ Guidelines:
     # Print exactly what the model said (may include unwanted fields/wrappers)
     print("\n===== RAW_MODEL_JSON =====")
     print(raw_text)
-
+    merchant_id_int = int(merchantId)
     # Parse model JSON (raw)
     try:
         model_obj = json.loads(raw_text)
@@ -294,10 +380,10 @@ Guidelines:
         return PlainTextResponse(content=raw_text, status_code=502, media_type="text/plain")
 
     # Coerce into your strict schema and inject MerchantId
-    coerced = _coerce_schema(model_obj, merchantId.strip())
+    coerced = _coerce_schema(model_obj, merchant_id_int)
 
     # Print what you will actually return (no fraudScore/confidentScore/reason)
     print("\n===== COERCED_JSON =====")
     print(json.dumps(coerced, ensure_ascii=False, indent=2))
-
-    return JSONResponse(content=coerced, status_code=200)
+    final_obj = normalize_generic(coerced)
+    return JSONResponse(content=final_obj, status_code=200)
