@@ -127,7 +127,10 @@ async def get_merchant(merchant_id: str) -> Dict[str, Any]:
     doc = await COLL().find_one({"$or": cand})
     if not doc:
         raise HTTPException(404, detail="Merchant not found")
-    doc["id"] = str(doc["_id"]); del doc["_id"]
+    doc.pop("_id", None)
+    doc.pop("id", None)
+    doc.pop("CreatedAt", None)
+    doc.pop("_seed", None)
     return {"profile": doc}
 
 @router.post(
