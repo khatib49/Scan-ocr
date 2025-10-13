@@ -1,6 +1,6 @@
 import os, json, base64
 from time import perf_counter
-from typing import Optional, Dict, Any
+from typing import List, Optional, Dict, Any
 import uuid
 import re
 
@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI, RateLimitError
 from app.venue_profiles_api import router as venue_profiles_router  
 from app.projects import router as projects_router
+from app.venue_profiles_api_mongo import router as venue_profiles_mongo_router
 from app.extract_api import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
@@ -43,14 +44,27 @@ app = FastAPI(title="Scan Invoice API", version="4.2.0")# CORS
 add_cors(app)
 
 app.include_router(projects_router)
+app.include_router(venue_profiles_mongo_router)
 
 app.include_router(venue_profiles_router, dependencies=[Depends(verify_admin_key)])
 
 app.include_router(extract_router)
 
-# Load venue profiles
-VENUE_PROFILES = load_profiles(os.getenv("VENUE_PROFILES_PATH", "data/venue_profiles.json"))
-NAME_INDEX = build_name_index(VENUE_PROFILES)
+# Global caches (hot-reloaded by /venue-profiles/reload)
+VENUE_PROFILES: List[Dict[str, Any]] = []
+NAME_INDEX: Dict[str, Dict[str, Any]] = {}
+
+async def _load_profiles_from_db() -> List[Dict[str, Any]]:
+    cur = DB["VenueProfile"].find({})
+    out: List[Dict[str, Any]] = []
+    async for d in cur:
+        # Store as vanilla dicts (drop _id) for in-memory usage
+        if "_id" in d:
+            del d["_id"]
+        out.append(d)
+    return out
+
+
 
 class AnalyzeResponse(BaseModel):
     data: Dict[str, Any]
@@ -84,6 +98,9 @@ async def _startup_checks():
     await ensure_telemetry_indexes()
     await init_blob_clients()
     await ensure_project_indexes(DB)
+    global VENUE_PROFILES, NAME_INDEX
+    VENUE_PROFILES = await _load_profiles_from_db()
+    NAME_INDEX = build_name_index(VENUE_PROFILES)
     # ...
     try:
         await assert_blob_ready()
