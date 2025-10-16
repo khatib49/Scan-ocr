@@ -68,11 +68,13 @@ def _account_parts():
 def _build_read_sas_url(blob_name: str, ttl_minutes: int) -> str:
     account, suffix, key = _account_parts()
     expires = datetime.now(timezone.utc) + timedelta(minutes=ttl_minutes)
+    start  = datetime.now(timezone.utc) - timedelta(minutes=2)
     sas = generate_blob_sas(
         account_name=account,
         container_name=_CONTAINER,
         blob_name=blob_name,
         permission=BlobSasPermissions(read=True),
+        start=start,
         expiry=expires,
         account_key=key,
     )

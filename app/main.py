@@ -223,8 +223,13 @@ async def analyze(
         except Exception:
             QUICK_PROMPT = '{"instruction":"Return JSON { \\"m\\": \\"<merchant>\\", \\"a\\": \\"<address>\\" } only."}'
 
-        b64 = base64.b64encode(raw).decode("utf-8")
-        img_block = {"type":"image_url","image_url":{"url": blob_url}} if blob_url else {"type":"image_url","image_url":{"url": f"data:image/jpeg;base64,{b64}"}}
+        mime = image.content_type or "application/octet-stream"
+        if blob_url:
+            img_block = {"type": "image_url", "image_url": {"url": blob_url}}
+        else:
+            b64 = base64.b64encode(raw).decode("utf-8")
+            img_block = {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{b64}"}}
+
         q_start = perf_counter()
 
         try:
@@ -258,6 +263,16 @@ async def analyze(
                         }
                     }
                 )
+        except Exception as e:
+            await log_error(
+                    blob_url,
+                    f"OpenAI error on quick call: {e}",
+                    "openai_error_quick",
+                    userReference,
+                    scanReference=scanReference,
+                    extra={"request_id": request_id}
+                )
+            raise HTTPException(500, f"OpenAI error on quick call: {e}")
                 
 
             
