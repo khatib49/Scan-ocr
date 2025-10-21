@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI, RateLimitError
 from app.venue_profiles_api import router as venue_profiles_router  
 from app.projects import router as projects_router
-from app.venue_profiles_api_mongo import router as venue_profiles_mongo_router
+from app.venue_profiles_api_mongo import find_similar_profile, router as venue_profiles_mongo_router
 from app.extract_api import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
@@ -54,13 +54,15 @@ app.include_router(extract_router)
 VENUE_PROFILES: List[Dict[str, Any]] = []
 NAME_INDEX: Dict[str, Dict[str, Any]] = {}
 
-async def _load_profiles_from_db() -> List[Dict[str, Any]]:
+async def _load_profiles_from_db() -> list[dict]:
     cur = DB["VenueProfile"].find({})
-    out: List[Dict[str, Any]] = []
+    out = []
     async for d in cur:
-        # Store as vanilla dicts (drop _id) for in-memory usage
         if "_id" in d:
             del d["_id"]
+        # unwrap nested "profile" key if it exists
+        if "profile" in d and isinstance(d["profile"], dict):
+            d = d["profile"]
         out.append(d)
     return out
 
@@ -301,7 +303,7 @@ async def analyze(
             await log_error(blob_url, str(e), "quick_guess", userReference=userReference, scanReference=scanReference, extra={"raw_response": quick.choices[0].message.content if quick and getattr(quick, "choices", None) else None})
 
             # 4) Venue match
-        match = find_best_profile_indexed(NAME_INDEX, merchant_guess)
+        match = await find_similar_profile(merchant_guess)
         matched = match.get("matched")
         profile = match.get("profile")
 

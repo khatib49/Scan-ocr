@@ -1,6 +1,7 @@
 # venue_matcher.py
 import re, unicodedata, json
 from typing import Dict, Any, List, Optional
+from pymongo import errors
 
 def _strip_diacritics(s: str) -> str:
     s = unicodedata.normalize("NFKD", s)
@@ -49,3 +50,44 @@ def find_best_profile_indexed(
     if p:
         return {"matched": True, "profile": p, "hints": p.get("ExtractionHints", {})}
     return {"matched": False, "profile": None, "hints": {}}
+
+
+
+async def ensure_venue_indexes(db):
+    coll = db["VenueProfile"]
+    info = await coll.index_information()
+    # find any existing text index
+    existing_text = next((n for n,s in info.items() if any(k[1] == 'text' for k in s.get('key',[]))), None)
+
+    desired_keys = [
+        ("profile.MerchantName_Keyword","text"),
+        ("profile.TenantName","text"),
+        ("profile.Brand","text"),
+        ("profile.Aliases","text"),
+    ]
+
+    def keys_match(spec):
+        k = spec.get("key", [])
+        return len(k) == len(desired_keys) and all(a==b for a,b in zip(k, desired_keys))
+
+    if existing_text and not keys_match(info[existing_text]):
+        try:
+            await coll.drop_index(existing_text)
+        except errors.OperationFailure:
+            pass
+        existing_text = None
+
+    if not existing_text:
+        await coll.create_index(
+            desired_keys,
+            name="venue_text_idx",
+            default_language="none",
+            language_override="none",
+            weights={
+                "profile.MerchantName_Keyword": 10,
+                "profile.Brand": 8,
+                "profile.TenantName": 5,
+                "profile.Aliases": 5
+            },
+        )
+

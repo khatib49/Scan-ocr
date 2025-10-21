@@ -1,6 +1,7 @@
 # app/venue_profiles_api.py  (Mongo-backed)
 import os, json, asyncio, hashlib
 from datetime import datetime, timezone
+import re
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Body, Security, Query
@@ -217,3 +218,37 @@ async def delete_merchant(merchant_id: str) -> Dict[str, Any]:
 
     doc["id"] = str(doc["_id"]); del doc["_id"]
     return {"ok": True, "deleted": True, "removed": doc}
+
+
+async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
+    """Mongo-powered fuzzy finder. Uses $text on profile.* fields.
+       Returns {"matched": bool, "profile": dict|None} (profile unwrapped)."""
+    if not merchant_guess:
+        return {"matched": False, "profile": None}
+
+    # 1) $text with score
+    cur = (DB["VenueProfile"]
+           .find({"$text": {"$search": merchant_guess}},
+                 {"score": {"$meta": "textScore"}, "profile": 1})
+           .sort([("score", {"$meta": "textScore"})])
+           .limit(1))
+    docs = await cur.to_list(1)
+    if docs:
+        doc = docs[0]
+        prof = doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
+        return {"matched": True, "profile": prof}
+
+    # 2) Fallback: lightweight regex across aliases in nested array
+    tokens = [t for t in re.split(r"\s+", merchant_guess) if len(t) > 2][:3]
+    if tokens:
+        regex = "|".join(map(re.escape, tokens))    
+        cur = (DB["VenueProfile"]
+               .find({"profile.MerchantName_Keyword": {"$regex": regex, "$options":"i"}},
+                     {"profile": 1})
+               .limit(1))
+        docs = await cur.to_list(1)
+        if docs:
+            prof = docs[0].get("profile") if isinstance(docs[0].get("profile"), dict) else docs[0]
+            return {"matched": True, "profile": prof}
+
+    return {"matched": False, "profile": None}

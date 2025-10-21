@@ -17,23 +17,30 @@ async def get_project_by_api_key(db: AsyncIOMotorDatabase, api_key: str) -> Dict
 
 # ---------- Indexes & utilities ----------
 
+from pymongo import ASCENDING, errors
+
 async def ensure_project_indexes(db) -> None:
     """
-    Idempotent index bootstrap for the Project collection.
-    - If an index on ApiKey already exists (any name), keep it.
-    - If it's not unique, drop & recreate as unique.
-    - If missing, create it (no explicit name => Mongo will use 'ApiKey_1').
+    Idempotent index bootstrap for critical collections.
+
+    - Project:
+        * Ensures unique index on ApiKey
+    - VenueProfile:
+        * Ensures compound text index for fuzzy merchant matching
     """
-    coll = db["Project"]
+    # -------------------------------
+    # 1) Ensure Project.ApiKey unique
+    # -------------------------------
+    project_coll = db["Project"]
 
     try:
-        info = await coll.index_information()  # {index_name: {"key": [("ApiKey", 1)], "unique": True, ...}, ...}
+        info = await project_coll.index_information()
     except Exception:
         info = {}
 
-    # Find any index on ApiKey
     existing_name = None
     existing_unique = False
+
     for name, spec in (info or {}).items():
         key = spec.get("key")
         if key == [("ApiKey", 1)] or key == (("ApiKey", 1),):
@@ -43,23 +50,59 @@ async def ensure_project_indexes(db) -> None:
 
     if existing_name:
         if not existing_unique:
-            # Rare: non-unique index exists; replace it with a unique one.
             try:
-                await coll.drop_index(existing_name)
+                await project_coll.drop_index(existing_name)
             except errors.OperationFailure:
-                # If drop fails because someone else raced us, carry on.
-                pass
-            await coll.create_index([("ApiKey", ASCENDING)], unique=True)
-        # else: already correct → nothing to do
-        return
+                pass  # ignore race
+            await project_coll.create_index([("ApiKey", ASCENDING)], unique=True)
+    else:
+        try:
+            await project_coll.create_index([("ApiKey", ASCENDING)], unique=True)
+        except errors.OperationFailure as e:
+            if "IndexOptionsConflict" not in str(e):
+                raise
 
-    # No existing index on ApiKey → create it (let Mongo name it 'ApiKey_1')
+    # ---------------------------------
+    # 2) Ensure VenueProfile text index
+    # ---------------------------------
+    venue_coll = db["VenueProfile"]
     try:
-        await coll.create_index([("ApiKey", ASCENDING)], unique=True)
-    except errors.OperationFailure as e:
-        # If another instance created it between our check and now, ignore conflict.
-        if "IndexOptionsConflict" not in str(e):
-            raise
+        vinfo = await venue_coll.index_information()
+    except Exception:
+        vinfo = {}
+
+    # Check if a text index already exists (any name)
+    existing_text = next(
+        (n for n, spec in vinfo.items() if any("text" in str(k[1]) for k in spec.get("key", []))),
+        None,
+    )
+
+    if not existing_text:
+        try:
+            await venue_coll.create_index(
+                [
+                    ("MerchantName_Keyword", "text"),
+                    ("TenantName", "text"),
+                    ("Brand", "text"),
+                    ("Aliases", "text"),
+                ],
+                name="venue_text_idx",
+                default_language="none",
+                language_override="none",
+                weights={
+                    "MerchantName_Keyword": 10,
+                    "Brand": 8,
+                    "TenantName": 5,
+                    "Aliases": 5,
+                },
+            )
+            print("[index] Created VenueProfile text index (venue_text_idx).")
+        except errors.OperationFailure as e:
+            if "IndexOptionsConflict" not in str(e):
+                raise
+    else:
+        print(f"[index] VenueProfile text index already exists: {existing_text}")
+
 
 async def generate_unique_api_key(db: AsyncIOMotorDatabase) -> str:
     """Generate a collision-resistant API key and ensure uniqueness."""
