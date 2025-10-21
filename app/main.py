@@ -430,6 +430,14 @@ async def analyze(
                 # Validate/score via your custom logic
         final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
 
+        # After validate_and_score(...) or right after you get `profile`
+        if matched and isinstance(profile, dict):
+            mid = (profile.get("MerchantId")
+                or profile.get("MerchantID")
+                or profile.get("merchantId"))
+        if mid is not None:
+            final_payload["data"]["MerchantId"] = mid
+
             # 7) Persist log (SAS URL included if saved)
         await log_scan_invoice(
                 imageUrl=blob_url,

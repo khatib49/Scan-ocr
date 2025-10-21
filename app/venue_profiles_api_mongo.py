@@ -220,16 +220,18 @@ async def delete_merchant(merchant_id: str) -> Dict[str, Any]:
     return {"ok": True, "deleted": True, "removed": doc}
 
 
+
 async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
-    """Mongo-powered fuzzy finder. Uses $text on profile.* fields.
-       Returns {"matched": bool, "profile": dict|None} (profile unwrapped)."""
+    """Mongo-powered fuzzy finder. Uses $text on venue fields.
+       Returns {"matched": bool, "profile": dict|None} with MerchantId present when available.
+    """
     if not merchant_guess:
         return {"matched": False, "profile": None}
 
-    # 1) $text with score
+    # 1) $text with score — IMPORTANT: don't positively project fields, only add score
     cur = (DB["VenueProfile"]
            .find({"$text": {"$search": merchant_guess}},
-                 {"score": {"$meta": "textScore"}, "profile": 1})
+                 {"score": {"$meta": "textScore"}})   # ← keep all fields
            .sort([("score", {"$meta": "textScore"})])
            .limit(1))
     docs = await cur.to_list(1)
@@ -238,17 +240,21 @@ async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
         prof = doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
         return {"matched": True, "profile": prof}
 
-    # 2) Fallback: lightweight regex across aliases in nested array
+    # 2) Fallback: regex on nested aliases; again, don't drop fields you need
     tokens = [t for t in re.split(r"\s+", merchant_guess) if len(t) > 2][:3]
     if tokens:
-        regex = "|".join(map(re.escape, tokens))    
+        regex = "|".join(map(re.escape, tokens))
         cur = (DB["VenueProfile"]
-               .find({"profile.MerchantName_Keyword": {"$regex": regex, "$options":"i"}},
-                     {"profile": 1})
+               .find({"$or": [
+                         {"profile.MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
+                         {"MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
+                     ]})
                .limit(1))
         docs = await cur.to_list(1)
         if docs:
-            prof = docs[0].get("profile") if isinstance(docs[0].get("profile"), dict) else docs[0]
+            doc = docs[0]
+            prof = doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
             return {"matched": True, "profile": prof}
 
     return {"matched": False, "profile": None}
+
