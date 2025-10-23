@@ -303,9 +303,12 @@ async def analyze(
             await log_error(blob_url, str(e), "quick_guess", userReference=userReference, scanReference=scanReference, extra={"raw_response": quick.choices[0].message.content if quick and getattr(quick, "choices", None) else None})
 
             # 4) Venue match
+        
+        
         match = await find_similar_profile(merchant_guess)
         matched = match.get("matched")
         profile = match.get("profile")
+        signals = match.get("signals", {})
 
         raw_txt = None
         data: Dict[str, Any] = None  # type: ignore
@@ -428,13 +431,18 @@ async def analyze(
                     }
 
                 # Validate/score via your custom logic
+        
         final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
 
-        # After validate_and_score(...) or right after you get `profile`
+        # Only set MerchantId IF we truly trust the name match
+        mid = None
         if matched and isinstance(profile, dict):
-            mid = (profile.get("MerchantId")
-                or profile.get("MerchantID")
-                or profile.get("merchantId"))
+            # NEW: require strong signals to prevent false positives
+            if signals.get("name_fuzzy", 0.0) >= 0.85 and signals.get("contains_strong_token", False):
+                mid = (profile.get("MerchantId")
+                    or profile.get("MerchantID")
+                    or profile.get("merchantId"))
+
         if mid is not None:
             final_payload["data"]["MerchantId"] = mid
 
