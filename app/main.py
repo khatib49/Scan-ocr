@@ -214,8 +214,7 @@ async def analyze(
                     except Exception:
                         pass
                     await log_error(None, f"Blob upload failed: {str(e)}", "blob_upload", userReference=userReference, scanReference=scanReference, extra={"request_id": request_id})
-
-        print("[log] about to insert image_url:", blob_url)    
+   
 
             # 3) Quick pass to guess merchant/address (fast + cheap) — TIMED
         quick_prompt_path = os.getenv("QUICK_PROMPT_PATH", "data/quick_prompt.txt")
@@ -304,16 +303,19 @@ async def analyze(
 
             # 4) Venue match
         
-        
+        print(f"ma from quick: {ma}")
+        print(f"[quick] merchant_guess='{merchant_guess}' addr_guess='{addr_guess}'")
         match = await find_similar_profile(merchant_guess)
         matched = match.get("matched")
         profile = match.get("profile")
         signals = match.get("signals", {})
 
+        print(f"[match] merchant_guess='{merchant_guess}' matched={matched} profile_id={(profile.get('MerchantId') if profile else None)} signals={signals}")
         raw_txt = None
         data: Dict[str, Any] = None  # type: ignore
         sys = None
-            # 5) If no match, return minimal with high fraud score
+            
+        # 5) If no match, return minimal with high fraud score
         if not merchant_guess or not matched:
             data = {
                     "data": {
@@ -431,7 +433,7 @@ async def analyze(
                     }
 
                 # Validate/score via your custom logic
-        
+
         final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
 
         # Only set MerchantId IF we truly trust the name match

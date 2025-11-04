@@ -14,6 +14,10 @@ STRICT RULES
    - Use ExtractionHints only to know which labels to look for, how to parse date/time, expected merchant/address keywords (for confidence), and optional InvoiceId/StoreID labels.
    - Do not fabricate values not visible in the image.
    - MerchantId handling: If the CONTEXT VENUE PROFILE includes "MerchantId", return that number in the output. If it is absent in the context and not printed on the image, return null. If both are present and conflict, prefer the printed value and note the mismatch in "reason".
+8.If a discount is printed (e.g. “DISCOUNT”, “Discount 20%”, “TOTAL DISCOUNT”, etc.):
+   - Extract the discount numeric amount.
+   - Use the discount amount ONLY for math validation and VAT validation.
+   - Put this value in the "Discount" field in the JSON output.
 
 VALIDATIONS (explanations go in "reason")
 - Math: Subtotal + Tax should equal Total within ±1 SAR.
@@ -47,6 +51,7 @@ OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
     "CR": "string or null",
     "TaxID": "string or null",
     "MerchantId": number or null,
+    "Discount": number or null,
     "Subtotal": number or null,
     "Tax": number or null,
     "Total": number or null,

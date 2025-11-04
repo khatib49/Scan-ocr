@@ -34,19 +34,59 @@ def validate_and_score(
     subtotal = coerce_number(d.get("Subtotal"))
     tax = coerce_number(d.get("Tax"))
     total = coerce_number(d.get("Total"))
+    discount = coerce_number(d.get("Discount"))
     reason = []
 
-    # 1) Math sanity: Subtotal + Tax ≈ Total
+    MATH_TOLERANCE_SAR = 1.00     # ± 1 SAR
+    VAT_TARGET         = 0.15
+    VAT_TOLERANCE      = 0.015    # ± 1.5 %
+    SMALL_TOL          = 0.10
+    fraud = 0
+    confident = 100
+    math_ok = None
+    vat_ok  = None
+
     if subtotal is not None and tax is not None and total is not None:
-        expected = round(subtotal + tax, 2)
-        if abs(expected - total) > 0.10:
-            reason.append("Subtotal + Tax != Total")
+
+        if discount is not None and discount > 0:
+            # printed discount
+            eff_sub = round(subtotal - discount, 2)
+            expected_total = round(eff_sub + tax, 2)
+            math_ok = (abs(expected_total - total) <= MATH_TOLERANCE_SAR)
+
+            # VAT against discounted base
+            if eff_sub > SMALL_TOL:
+                observed_vat_rate = tax / eff_sub
+                vat_ok = abs(observed_vat_rate - VAT_TARGET) <= VAT_TOLERANCE
+
+        else:
+            # NO printed discount (old normal rule)
+            expected_total = round(subtotal + tax, 2)
+            math_ok = abs(expected_total - total) <= MATH_TOLERANCE_SAR
+
+            # VAT normal
+            if subtotal > SMALL_TOL:
+                observed_vat_rate = tax / subtotal
+                vat_ok = abs(observed_vat_rate - VAT_TARGET) <= VAT_TOLERANCE
+
+    # penalties
+    if math_ok is False:
+        fraud += 20
+        confident -= 20
+        reason.append("Math check failed")
+
+    if vat_ok is False:
+        fraud += 15
+        confident -= 15
+        reason.append("VAT check failed")
 
     # 2) Profile-based checks
     name_mismatch = False
     if profile:
         # TaxID exact label match (if both present)
         if d.get("TaxID") and profile.get("TaxID_Label") and d.get("TaxID") != profile["TaxID_Label"]:
+            fraud += 30
+            confident -= 30
             reason.append("TaxID mismatch")
 
         # Merchant name agreement (ignore generic words; allow AR/EN normalization)
@@ -76,11 +116,13 @@ def validate_and_score(
             MIN_FUZZY = 0.80  # conservative; adjust with data
             if (best_fuzzy < MIN_FUZZY) or (not has_overlap):
                 name_mismatch = True
+                fraud = 100
+                confident = 0
                 reason.append("Merchant name mismatch")
 
     # 3) Fraud/Confidence + bookkeeping
-    d["fraudScore"] = 100 if reason else 0
-    d["confidentScore"] = 0 if reason else 100
+    d["fraudScore"] = fraud
+    d["confidentScore"] = confident
     if reason:
         d["reason"] = ", ".join(reason)
 

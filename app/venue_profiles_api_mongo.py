@@ -366,7 +366,7 @@ async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
     # gate: need threshold + margin + at least one strong token + min fuzzy
     strong_enough = (
         (best_final >= MIN_FINAL) and
-        ((best_final - second_final) >= MARGIN) and
+        ((best_final - second_final) >= MARGIN or best_final == 1.0) and
         best_signals["contains_strong_token"] and
         (best_signals["name_fuzzy"] >= MIN_FUZZY)
     )
@@ -398,3 +398,4 @@ async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
         "second_final": second_final
     }
     return out
+
