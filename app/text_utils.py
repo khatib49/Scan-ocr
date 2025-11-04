@@ -22,6 +22,7 @@ GENERIC_WORDS = {
     "food", "lounge", "mall", "center", "centre", "co", "company",
     # --- English cities / landmarks ---
     "riyadh", "jeddah", "blvd", "boulevard", "marina", "promenade",
+    "Boulevard", "Promenade", "City",
     "via", "jyc", "yacht", "club", "yachtclub", "jewelry", "jewelery",
     # --- Business suffixes / forms ---
     "est", "est.", "trading", "tradingco", "trading-co", "establishment",
@@ -37,6 +38,7 @@ def arabic_normalize(s: str) -> str:
     if not s:
         return ""
     s = s.strip()
+    s = _strip_latin_diacritics(s)  
     # Unify common Arabic forms
     s = (s.replace("أ", "ا")
            .replace("إ", "ا")

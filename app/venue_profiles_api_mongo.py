@@ -224,178 +224,149 @@ async def delete_merchant(merchant_id: str) -> Dict[str, Any]:
 
 async def find_similar_profile(merchant_guess: str) -> Dict[str, Any]:
     """
-    Mongo-powered fuzzy finder with re-ranking.
-    Returns:
-      {
-        "matched": bool,
-        "profile": dict | None,
-        "signals": {
-            "top_textScore": float,
-            "final": float,               # our combined score 0..1
-            "overlap": float,             # Jaccard 0..1
-            "name_fuzzy": float,          # 0..1 (difflib)
-            "contains_strong_token": bool,
-            "second_final": float         # for margin diagnostics
-        },
-        "candidates": [ { "id": <_id>, "textScore": x, "final": y, "name": "..."} ]  # (optional, for logs)
-      }
+    Finds the single best match in VenueProfile by name similarity and returns it
+    ONLY if the best similarity >= 0.80. Otherwise returns matched=False.
+
+    Scoring:
+      - For each doc, gather candidate name strings:
+          * profile.MerchantName (or MerchantName)
+          * each item in profile.MerchantName_Keyword or MerchantName_Keyword
+      - Score = max( fuzzy_ratio(guess, candidate_name) )  # 0..1
+      - Choose the document with the highest score.
     """
+
     out: Dict[str, Any] = {"matched": False, "profile": None, "signals": {}, "candidates": []}
 
     guess_raw = (merchant_guess or "").strip()
     if not guess_raw:
         return out
 
-    guess_tokens = set(tokenize_distinct(guess_raw))
+    # Early token sanity (optional, just to avoid garbage inputs)
+    guess_tokens = tokenize_distinct(guess_raw)
     if not guess_tokens:
-        # If all tokens were generic, don't attempt a match
         return out
 
-    # ---- 1) Pull top-K by Mongo textScore
-    K = 10
+    # --- 1) Pull a reasonable top-K candidate set from Mongo, using text index first
+    K = 20
+    docs = []
     cur = (DB["VenueProfile"]
-            .find({"$text": {"$search": guess_raw}},
-                  {"score": {"$meta": "textScore"}})
-            .sort([("score", {"$meta": "textScore"})])
-            .limit(K))
+           .find({"$text": {"$search": guess_raw}}, {"score": {"$meta": "textScore"}})
+           .sort([("score", {"$meta": "textScore"})])
+           .limit(K))
+    docs = await cur.to_list(length=K)
 
-    docs = await cur.to_list(K)
+    # Fallback: regex on a few tokens if text index returns nothing
     if not docs:
-        # Fallback regex on name keywords (still re-ranked)
         tokens = [t for t in re.split(r"\s+", guess_raw) if len(t) > 2][:3]
         if tokens:
             regex = "|".join(map(re.escape, tokens))
             cur = (DB["VenueProfile"]
-                    .find({"$or": [
-                        {"profile.MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
-                        {"MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
-                    ]})
-                    .limit(K))
-            docs = await cur.to_list(K)
+                   .find({
+                       "$or": [
+                           {"profile.MerchantName": {"$regex": regex, "$options": "i"}},
+                           {"MerchantName": {"$regex": regex, "$options": "i"}},
+                           {"profile.MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
+                           {"MerchantName_Keyword": {"$regex": regex, "$options": "i"}},
+                       ]
+                   })
+                   .limit(K))
+            docs = await cur.to_list(length=K)
 
     if not docs:
         return out
 
-    # ---- 2) Build candidates with signals
-    def extract_keywords(doc: Dict[str, Any]) -> List[str]:
-        prof = doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
-        kw = prof.get("MerchantName_Keyword") or prof.get("profile", {}).get("MerchantName_Keyword")
-        if not isinstance(kw, list):
-            kw = []
-        # Remove generic words-only entries
-        cleaned = []
-        for k in kw:
-            k = (k or "").strip()
-            if not k:
-                continue
-            toks = set(tokenize_distinct(k))
-            if not toks:
-                continue
-            cleaned.append(k)
-        return cleaned
+    # --- 2) For each doc, compute the best fuzzy similarity vs any candidate name string
+    def get_profile(doc: Dict[str, Any]) -> Dict[str, Any]:
+        return doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
 
-    cand_list: List[Tuple[Dict[str, Any], float, float, float, bool]] = []
-    # (doc, textScore, overlap, name_fuzzy, contains_strong_token)
+    def get_candidate_strings(doc: Dict[str, Any]) -> List[str]:
+        prof = get_profile(doc)
+        names: List[str] = []
+        # Primary name
+        if isinstance(prof.get("MerchantName"), str) and prof["MerchantName"].strip():
+            names.append(prof["MerchantName"].strip())
+        if isinstance(doc.get("MerchantName"), str) and doc["MerchantName"].strip():
+            names.append(doc["MerchantName"].strip())
 
-    max_text = max((doc.get("score", 0.0) for doc in docs), default=0.0) or 1.0
+        # Keyword arrays (both root and nested)
+        for path in (
+            ("profile", "MerchantName_Keyword"),
+            ("MerchantName_Keyword",),
+        ):
+            try:
+                val = prof[path[1]] if len(path) == 1 else prof.get(path[1])
+                if val is None and len(path) == 2 and path[0] == "profile":
+                    # If profile missing, try root doc
+                    val = doc.get(path[1])
+                if isinstance(val, list):
+                    for s in val:
+                        if isinstance(s, str) and s.strip():
+                            names.append(s.strip())
+            except Exception:
+                pass
+
+        # Deduplicate while preserving order
+        seen, uniq = set(), []
+        for s in names:
+            key = s.lower()
+            if key not in seen:
+                seen.add(key)
+                uniq.append(s)
+        return uniq
+
+    scored: List[Tuple[Dict[str, Any], float, str]] = []  # (doc, best_sim, best_name_used)
 
     for doc in docs:
-        prof = doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
-        text_score = float(doc.get("score", 0.0))
-        kw_list = extract_keywords(doc)
+        candidates = get_candidate_strings(doc)
+        if not candidates:
+            continue
 
-        # Aggregate signals across keywords
-        max_fuzzy = 0.0
-        best_kw = ""
-        any_strong_token = False
-        # token overlap: compare set vs each keyword's tokens and keep the best
-        max_overlap = 0.0
+        best_sim = 0.0
+        best_name = ""
+        for cand in candidates:
+            sim = fuzzy_ratio(guess_raw, cand)  # expected 0..1
+            if sim > best_sim:
+                best_sim = sim
+                best_name = cand
 
-        for kw in kw_list:
-            kw_tokens = set(tokenize_distinct(kw))
-            if not kw_tokens:
-                continue
-            ov = jaccard(guess_tokens, kw_tokens)
-            if ov > max_overlap:
-                max_overlap = ov
+        scored.append((doc, best_sim, best_name))
 
-            f = fuzzy_ratio(guess_raw, kw)
-            if f > max_fuzzy:
-                max_fuzzy = f
-                best_kw = kw
-
-            # strong token = at least one guess token appears verbatim in kw tokens
-            if not any_strong_token and (guess_tokens & kw_tokens):
-                any_strong_token = True
-
-        cand_list.append((doc, text_score, max_overlap, max_fuzzy, any_strong_token))
-
+        prof = get_profile(doc)
         out["candidates"].append({
             "id": str(doc.get("_id")),
-            "name": (prof.get("MerchantName") or best_kw or ""),
-            "textScore": text_score,
-            "overlap": max_overlap,
-            "name_fuzzy": max_fuzzy
+            "name": best_name or prof.get("MerchantName") or "",
+            "final": best_sim
         })
 
-    # ---- 3) Final combined score & selection
-    # weights (tune on your data)
-    W_TEXT, W_OVER, W_FUZZ = 0.50, 0.30, 0.20
-    MIN_FINAL = 0.55
-    MIN_FUZZY = 0.80
-    MARGIN   = 0.15
+    if not scored:
+        return out
 
-    scored: List[Tuple[Dict[str, Any], float, Dict[str, Any]]] = []
-    for doc, text_score, overlap, name_fuzzy, has_token in cand_list:
-        final = (W_TEXT * (text_score / max_text)) + (W_OVER * overlap) + (W_FUZZ * name_fuzzy)
-        signals = {
-            "textScore_norm": (text_score / max_text),
-            "overlap": overlap,
-            "name_fuzzy": name_fuzzy,
-            "contains_strong_token": bool(has_token),
-            "textScore_raw": text_score,
-            "final": final,
-        }
-        scored.append((doc, final, signals))
-
-    # order by our final score
+    # --- 3) Select the absolute best and apply a single 80% threshold gate
     scored.sort(key=lambda x: x[1], reverse=True)
-    best_doc, best_final, best_signals = scored[0]
-    second_final = scored[1][1] if len(scored) > 1 else 0.0
+    best_doc, best_sim, best_name = scored[0]
+    second_sim = scored[1][1] if len(scored) > 1 else 0.0
 
-    # gate: need threshold + margin + at least one strong token + min fuzzy
-    strong_enough = (
-        (best_final >= MIN_FINAL) and
-        ((best_final - second_final) >= MARGIN or best_final == 1.0) and
-        best_signals["contains_strong_token"] and
-        (best_signals["name_fuzzy"] >= MIN_FUZZY)
-    )
-
-    if not strong_enough:
-        # no reliable match
+    THRESHOLD = 0.80  # 80%
+    if best_sim < THRESHOLD:
         out["matched"] = False
         out["profile"] = None
         out["signals"] = {
-            "top_textScore": scored[0][2]["textScore_raw"],
-            "final": best_final,
-            "overlap": best_signals["overlap"],
-            "name_fuzzy": best_signals["name_fuzzy"],
-            "contains_strong_token": best_signals["contains_strong_token"],
-            "second_final": second_final
+            "best_similarity": best_sim,
+            "second_similarity": second_sim,
+            "threshold": THRESHOLD,
+            "best_name": best_name
         }
         return out
 
     # Success
-    prof = best_doc.get("profile") if isinstance(best_doc.get("profile"), dict) else best_doc
+    prof = get_profile(best_doc)
     out["matched"] = True
     out["profile"] = prof
     out["signals"] = {
-        "top_textScore": scored[0][2]["textScore_raw"],
-        "final": best_final,
-        "overlap": best_signals["overlap"],
-        "name_fuzzy": best_signals["name_fuzzy"],
-        "contains_strong_token": best_signals["contains_strong_token"],
-        "second_final": second_final
+        "best_similarity": best_sim,
+        "second_similarity": second_sim,
+        "threshold": THRESHOLD,
+        "best_name": best_name
     }
     return out
 
