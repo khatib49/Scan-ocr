@@ -69,17 +69,6 @@ def validate_and_score(
                 observed_vat_rate = tax / subtotal
                 vat_ok = abs(observed_vat_rate - VAT_TARGET) <= VAT_TOLERANCE
 
-    # penalties
-    if math_ok is False:
-        fraud += 20
-        confident -= 20
-        reason.append("Math check failed")
-
-    if vat_ok is False:
-        fraud += 15
-        confident -= 15
-        reason.append("VAT check failed")
-
     # 2) Profile-based checks
     name_mismatch = False
     if profile:
@@ -120,6 +109,14 @@ def validate_and_score(
                 confident = 0
                 reason.append("Merchant name mismatch")
 
+    if math_ok is False:
+        reason.append("Math check failed")
+        fraud = 100
+
+    if vat_ok is False:
+        reason.append("VAT check failed")
+        fraud = 100
+        
     # 3) Fraud/Confidence + bookkeeping
     d["fraudScore"] = fraud
     d["confidentScore"] = confident
