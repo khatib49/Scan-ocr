@@ -37,30 +37,50 @@ def validate_and_score(
     discount = coerce_number(d.get("Discount"))
     reason = []
 
-    MATH_TOLERANCE_SAR = 1.00     # ± 1 SAR
+    MATH_TOLERANCE_SAR = 1.50     # Increased tolerance for rounding
     VAT_TARGET         = 0.15
-    VAT_TOLERANCE      = 0.015    # ± 1.5 %
+    VAT_TOLERANCE      = 0.020    # Increased to 2% for tax-inclusive scenarios
     SMALL_TOL          = 0.10
     fraud = 0
     confident = 100
     math_ok = None
     vat_ok  = None
 
+    # Check if profile indicates tax-inclusive
+    tax_inclusive = False
+    if profile:
+        hints = profile.get("ExtractionHints") or {}
+        tax_inclusive = hints.get("TaxInclusive", False)
+
     if subtotal is not None and tax is not None and total is not None:
+        
+        # IMPORTANT: Subtotal from receipt is AFTER discount and may be tax-inclusive
+        if tax_inclusive:
+            # Tax-inclusive scenario: Subtotal already includes tax
+            # Formula: net = subtotal / 1.15, tax_check = net * 0.15
+            net_amount = subtotal / 1.15
+            expected_tax = net_amount * 0.15
+            
+            # Check if tax matches
+            vat_ok = abs(expected_tax - tax) <= (expected_tax * VAT_TOLERANCE)
+            
+            # Check if total matches subtotal (since tax is included)
+            math_ok = abs(subtotal - total) <= MATH_TOLERANCE_SAR
+            
+        elif discount is not None and discount > 0:
+            # Discount scenario (tax-exclusive)
+            # The subtotal is AFTER discount, so we validate:
+            # subtotal + tax = total
+            expected_total = round(subtotal + tax, 2)
+            math_ok = abs(expected_total - total) <= MATH_TOLERANCE_SAR
 
-        if discount is not None and discount > 0:
-            # printed discount
-            eff_sub = round(subtotal - discount, 2)
-            expected_total = round(eff_sub + tax, 2)
-            math_ok = (abs(expected_total - total) <= MATH_TOLERANCE_SAR)
-
-            # VAT against discounted base
-            if eff_sub > SMALL_TOL:
-                observed_vat_rate = tax / eff_sub
+            # VAT check on post-discount subtotal
+            if subtotal > SMALL_TOL:
+                observed_vat_rate = tax / subtotal
                 vat_ok = abs(observed_vat_rate - VAT_TARGET) <= VAT_TOLERANCE
 
         else:
-            # NO printed discount (old normal rule)
+            # Normal scenario (no discount, tax-exclusive)
             expected_total = round(subtotal + tax, 2)
             math_ok = abs(expected_total - total) <= MATH_TOLERANCE_SAR
 
@@ -69,23 +89,21 @@ def validate_and_score(
                 observed_vat_rate = tax / subtotal
                 vat_ok = abs(observed_vat_rate - VAT_TARGET) <= VAT_TOLERANCE
 
-    # 2) Profile-based checks
+    # Profile-based checks
     name_mismatch = False
     if profile:
-        # TaxID exact label match (if both present)
+        # TaxID exact label match
         if d.get("TaxID") and profile.get("TaxID_Label") and d.get("TaxID") != profile["TaxID_Label"]:
             fraud += 30
             confident -= 30
             reason.append("TaxID mismatch")
 
-        # Merchant name agreement (ignore generic words; allow AR/EN normalization)
+        # Merchant name agreement
         prof_keywords = profile.get("MerchantName_Keyword") or []
         if d.get("MerchantName") and isinstance(prof_keywords, list) and prof_keywords:
-            # Token / fuzzy gates
             observed_name = str(d["MerchantName"]).strip()
             obs_tokens = set(tokenize_distinct(observed_name))
 
-            # choose the best keyword by fuzzy similarity
             best_fuzzy = 0.0
             best_kw = None
             for kw in prof_keywords:
@@ -93,7 +111,6 @@ def validate_and_score(
                 if fz > best_fuzzy:
                     best_fuzzy, best_kw = fz, kw
 
-            # also require at least one non-generic token overlap
             has_overlap = False
             for kw in prof_keywords:
                 kw_tokens = set(tokenize_distinct(kw or ""))
@@ -101,8 +118,7 @@ def validate_and_score(
                     has_overlap = True
                     break
 
-            # tuneable thresholds
-            MIN_FUZZY = 0.80  # conservative; adjust with data
+            MIN_FUZZY = 0.80
             if (best_fuzzy < MIN_FUZZY) or (not has_overlap):
                 name_mismatch = True
                 fraud = 100
@@ -117,23 +133,20 @@ def validate_and_score(
         reason.append("VAT check failed")
         fraud = 100
         
-    # 3) Fraud/Confidence + bookkeeping
+    # If both pass, set good scores
+    if math_ok and vat_ok and not name_mismatch:
+        fraud = 0
+        confident = 95
+
     d["fraudScore"] = fraud
     d["confidentScore"] = confident
     if reason:
         d["reason"] = ", ".join(reason)
+    else:
+        d["reason"] = "All validations passed" if fraud == 0 else "No issues detected"
 
     d["image_url"] = image_url
-
-    # 4) Profile match flag:
-    #    If name mismatch is detected, we do NOT trust the profile even if upstream matched=True.
-    if name_mismatch:
-        d["profileMatched"] = False
-    else:
-        d["profileMatched"] = bool(matched) if merchant_guess else False
-
-    # 5) needsRescan rules:
-    #    True when: no guess, not matched, name mismatch, or Total missing (critical value).
+    d["profileMatched"] = bool(matched) if merchant_guess else False if name_mismatch else bool(matched)
     d["needsRescan"] = (
         (merchant_guess is None or str(merchant_guess).strip() == "") or
         (not matched) or

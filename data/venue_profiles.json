@@ -2009,7 +2009,7 @@
       "ExtractionHints": {
         "Language": "Mixed",
         "Total_Label": "TOTAL DUE",
-        "Subtotal_Label": "SUBTOTAL",
+        "Subtotal_Label": "total chk",
         "Tax_Label": "VAT 15%",
         "CR_Label": null,
         "TaxID_Label": "310437408400003",
