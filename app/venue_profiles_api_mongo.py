@@ -52,7 +52,7 @@ async def _load_all_from_db() -> List[Dict[str, Any]]:
 async def _save_cache(profiles: List[Dict[str, Any]]) -> None:
     # Validate index builds before hot-swapping memory for /analyze
     build_name_index(profiles)
-    from app import main as app_main
+    from app import main_openai as app_main
     app_main.VENUE_PROFILES = profiles
     app_main.NAME_INDEX = build_name_index(profiles)
 

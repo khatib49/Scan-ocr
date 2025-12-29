@@ -1,50 +1,28 @@
-import os, json, base64
+import  json
 from time import perf_counter
 from typing import List, Optional, Dict, Any
 import uuid
-import re
+
 
 from fastapi import FastAPI, Query, Request, UploadFile, File, HTTPException, Depends, Form, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
-import asyncio
+from app.gemini_client import call_gemini_with_image, SYSTEM_PROMPT
 from app.venue_profiles_api import router as venue_profiles_router  
 from app.projects import router as projects_router
 from app.venue_profiles_api_mongo import find_similar_profile, router as venue_profiles_mongo_router
-from app.extract_api import router as extract_router
+from app.extract_api_gemini import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
 
-from .venue_matcher import load_profiles, build_name_index, find_best_profile_indexed
-from utils.transforms import coerce_number, coerce_nullish, norm_date, validate_and_score  
-from utils.logger import append_blob_op, append_llm_call, ensure_telemetry_indexes, finalize_request_log, init_request_log, log_scan_invoice, log_error, ping_mongo_or_raise
+from .venue_matcher import  build_name_index
+from utils.transforms import validate_and_score  
+from utils.logger import append_blob_op, ensure_telemetry_indexes, finalize_request_log, init_request_log, log_scan_invoice, log_error, ping_mongo_or_raise
 
 from .security import verify_admin_key, verify_api_key, add_cors
 from .blob_service import close_blob_clients, init_blob_clients, upload_image_bytes, assert_blob_ready, build_read_url
 
-# Load environment variables
-try:
-    load_dotenv()
-except Exception:
-    pass
-
-PROMPT_PATH = os.getenv("PROMPT_PATH", "data/prompt.txt")
-with open(PROMPT_PATH, encoding="utf-8") as f:
-    SYSTEM_PROMPT = f.read()
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    raise RuntimeError("Set GEMINI_API_KEY in environment or .env")
-
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-
-# Configure Gemini client
-gemini_client = genai.Client(api_key=GEMINI_API_KEY)
-
-app = FastAPI(title="Scan Invoice API", version="4.2.0")
+app = FastAPI(title="Scan Invoice API (Gemini)", version="9.0.0")
 
 # CORS
 add_cors(app)
@@ -98,98 +76,9 @@ def build_system_prompt(with_profile: Optional[Dict[str, Any]]) -> str:
     return base
 
 
-async def call_gemini_with_image(
-    prompt: str,
-    image_bytes: bytes,
-    mime_type: str,
-    model_name: str = GEMINI_MODEL,
-    temp: float = 0.1,
-    request_id: Optional[str] = None,
-    call_type: str = "main"
-) -> tuple[str, dict]:
-    """
-    Call Gemini API with image and prompt.
-    Returns: (response_text, usage_dict)
-    Raises: RuntimeError with "RATE_LIMIT_EXCEEDED" if rate limited
-    """
-    try:
-        start = perf_counter()
-        
-        # Create the content parts
-        contents = [
-            types.Part(text=prompt),
-            types.Part(inline_data=types.Blob(mime_type=mime_type, data=image_bytes))
-        ]
-        
-        # Generate content with new SDK
-        response = await asyncio.to_thread(
-            gemini_client.models.generate_content,
-            model=model_name,
-            contents=contents,
-            config=types.GenerateContentConfig(
-                temperature=temp,
-                top_p=0.95,
-                top_k=40,
-                max_output_tokens=8192,
-                response_mime_type="application/json",
-                safety_settings=[
-                    types.SafetySetting(
-                        category="HARM_CATEGORY_HARASSMENT",
-                        threshold="BLOCK_NONE"
-                    ),
-                    types.SafetySetting(
-                        category="HARM_CATEGORY_HATE_SPEECH",
-                        threshold="BLOCK_NONE"
-                    ),
-                    types.SafetySetting(
-                        category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                        threshold="BLOCK_NONE"
-                    ),
-                    types.SafetySetting(
-                        category="HARM_CATEGORY_DANGEROUS_CONTENT",
-                        threshold="BLOCK_NONE"
-                    ),
-                ]
-            )
-        )
-        
-        duration_ms = (perf_counter() - start) * 1000.0
-        
-        # Extract usage metadata
-        usage = {}
-        if hasattr(response, 'usage_metadata') and response.usage_metadata:
-            usage = {
-                "prompt_tokens": getattr(response.usage_metadata, 'prompt_token_count', 0),
-                "completion_tokens": getattr(response.usage_metadata, 'candidates_token_count', 0),
-                "total_tokens": getattr(response.usage_metadata, 'total_token_count', 0),
-            }
-        
-        # Log the call
-        if request_id:
-            await append_llm_call(
-                request_id=request_id,
-                call_type=call_type,
-                model=model_name,
-                duration_ms=duration_ms,
-                usage=usage
-            )
-        
-        return response.text, usage
-        
-    except Exception as e:
-        error_msg = str(e).lower()
-        
-        # Check if it's a rate limit error
-        is_rate_limit = ("429" in error_msg or "quota" in error_msg or 
-                       "rate" in error_msg or "resource" in error_msg or
-                       "exhausted" in error_msg)
-        
-        if is_rate_limit:
-            raise RuntimeError("RATE_LIMIT_EXCEEDED") from e
-        
-        # Re-raise other errors as-is
-        raise
-
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.on_event("startup")
 async def _startup_checks():

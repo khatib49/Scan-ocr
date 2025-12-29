@@ -12,7 +12,7 @@ from openai import AsyncOpenAI, RateLimitError
 from app.venue_profiles_api import router as venue_profiles_router  
 from app.projects import router as projects_router
 from app.venue_profiles_api_mongo import find_similar_profile, router as venue_profiles_mongo_router
-from app.extract_api import router as extract_router
+from app.extract_api_openai import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
 
