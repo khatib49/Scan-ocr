@@ -126,3 +126,7 @@ def parse_oid(project_id: str) -> ObjectId:
         return ObjectId(project_id)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid project id")
+
+
+#uvicorn app.main:app --host 0.0.0.0 --port 8000
+#uvicorn app.main_gemini:app --host 0.0.0.0 --port 8000
