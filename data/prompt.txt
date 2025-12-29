@@ -18,26 +18,20 @@ STRICT RULES
    - Extract the discount numeric amount.
    - Use the discount amount ONLY for math validation and VAT validation.
    - Put this value in the "Discount" field in the JSON output.
+9.If InvoiceId is null or unreadable the fraud should be 100
+10. Clarity is the clarity of the image over 100 
 
 VALIDATIONS (explanations go in "reason")
 - Math: Subtotal + Tax should equal Total within ±1 SAR.
 - KSA VAT: Tax should be ~15% of Subtotal within ±1.5% tolerance. If “Tax included” is printed, Subtotal ≈ Total / 1.15.
+- The extracted TaxId must match the TaxId provided in hints, if available.
 
 SCORING
-Fraud score (0–100), add as applicable:
-+25 → Clean merchant name visible but no venue profile match.
-+15 → Merchant keyword mismatches profile (normalize Arabic/English).
-+20 → Math check fails beyond tolerance.
-+15 → VAT check fails beyond tolerance.
-+10 → Total outside profile spending range (when present).
-+5–15 → Other anomalies (e.g., unrelated items, missing TaxID when hints say present, impossible dates).
+Fraud score (0–100) : Do the SCORING according to your analysis
 
-Confidence score (0–100), start at 30:
-+20 → Merchant & address match profile keywords (normalized).
-+15 → Date/time parsed exactly per profile format.
-+15 → Math & VAT checks pass.
-+10 → InvoiceId/StoreID match labels suggested by hints.
-Cap at 100.
+Confidence score (0–100) : Do the SCORING according to your analysis
+
+Clarity score (0 - 100) : Do the SCORING according to your analysis
 
 OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
 {
@@ -57,7 +51,8 @@ OUTPUT SHAPE (return exactly this JSON — no extra formatting or code fences):
     "Total": number or null,
     "fraudScore": integer,
     "confidentScore": integer,
-    "reason": "string (brief but specific why fraud/confidence)"
+    "reason": "string (brief but specific why fraud/confidence)",
+    "clarity" : integer
   }
 }
 

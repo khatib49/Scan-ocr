@@ -44,8 +44,7 @@ STRICT RULES
      • Names or items like "slushy, juice, water, coffee, tea" → Category "F&B", Sub-category "Beverages" (or "Coffee Shop" if clearly a café).
      • "pharmacy, drugstore" → "Retail" / "Pharmacy"
      • "cinema" → "Entertainment"
-   - If still ambiguous after reasonable inference, return null.
-
+   - If still ambiguous after reasonable inference, return null. 
 
 OUTPUT SHAPE (return exactly this JSON object):
 {
