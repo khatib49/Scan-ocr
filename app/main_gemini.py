@@ -1,6 +1,8 @@
+from datetime import datetime
 import  json
 from time import perf_counter
 from typing import List, Optional, Dict, Any
+from unittest import signals
 import uuid
 
 
@@ -112,7 +114,9 @@ async def analyze(
     image: UploadFile = File(...),
     userReference: str = Form(..., description="Your internal user ID or reference"),
     scanReference: str = Form(..., description="Your internal scan reference"),
-    save_image: bool = Form(False, description="If true, saves the uploaded image to Azure Blob Storage")
+    save_image: bool = Form(True, description="If true, saves the uploaded image to Azure Blob Storage"), 
+    skip_ai_check: bool = Form(False, description="If true, skips AI generation detection"),
+    skip_authenticity_check: bool = Form(False, description="If true, skips screen capture and edit detection")
 ):
     request_id = str(uuid.uuid4())
     t0 = perf_counter()
@@ -121,6 +125,7 @@ async def analyze(
     blob_name: Optional[str] = None
     raw_txt: Optional[str] = None
     success = True
+    ai_detection_result: Optional[Dict[str, Any]] = None
     
     try:
         await init_request_log(
@@ -128,7 +133,7 @@ async def analyze(
             path="/analyze",
             userReference=userReference,
             scanReference=scanReference,
-            meta={"save_image": save_image}
+            meta={"save_image": save_image, "skip_ai_check": skip_ai_check}
         )
 
         project_id = request.state.project["_id"]
@@ -143,73 +148,220 @@ async def analyze(
         finally:
             await image.close()
 
-        # 2) Optionally save to Azure and get SAS URL (timed)
-        if save_image:
-            try:
-                preferred = None
-                if image.filename and len(image.filename) < 150 and "." in image.filename:
-                    preferred = image.filename.replace("\\", "/").split("/")[-1]
+        # 2) Save to Azure Blob Storage FIRST (always save for audit trail)
+        try:
+            preferred = None
+            if image.filename and len(image.filename) < 150 and "." in image.filename:
+                preferred = image.filename.replace("\\", "/").split("/")[-1]
 
-                up_start = perf_counter()
-                blob_name, blob_url = await upload_image_bytes(
-                    raw,
-                    content_type=content_type,
-                    preferred_name=preferred,
-                    return_sas=True,
+            up_start = perf_counter()
+            blob_name, blob_url = await upload_image_bytes(
+                raw,
+                content_type=content_type,
+                preferred_name=preferred,
+                return_sas=True,
+            )
+            up_ms = (perf_counter() - up_start) * 1000.0
+            await append_blob_op(
+                request_id=request_id,
+                op="upload_image_bytes",
+                duration_ms=up_ms,
+                success=True,
+                meta={
+                    "preferred": preferred,
+                    "blob_name": blob_name,
+                    "content_type": content_type,
+                    "size_bytes": file_size
+                }
+            )
+
+            # If no SAS returned, build a read URL
+            if not blob_url and blob_name:
+                br_start = perf_counter()
+                blob_url = await build_read_url(blob_name)
+                br_ms = (perf_counter() - br_start) * 1000.0
+                await append_blob_op(
+                    request_id=request_id,
+                    op="build_read_url",
+                    duration_ms=br_ms,
+                    success=True,
+                    meta={"blob_name": blob_name}
                 )
-                up_ms = (perf_counter() - up_start) * 1000.0
+
+            if blob_url:
+                print("[blob] SAS:", blob_url)
+            if blob_name:
+                print("[blob] blob_name:", blob_name)
+
+        except Exception as e:
+            try:
                 await append_blob_op(
                     request_id=request_id,
                     op="upload_image_bytes",
-                    duration_ms=up_ms,
-                    success=True,
-                    meta={
-                        "preferred": preferred,
-                        "blob_name": blob_name,
-                        "content_type": content_type,
-                        "size_bytes": file_size
-                    }
+                    duration_ms=0.0,
+                    success=False,
+                    meta={"error": str(e)}
                 )
+            except Exception:
+                pass
+            await log_error(
+                None, 
+                f"Blob upload failed: {str(e)}", 
+                "blob_upload", 
+                userReference=userReference, 
+                scanReference=scanReference, 
+                extra={"request_id": request_id}
+            )
+            # Continue even if blob upload fails
+            blob_url = None
+            blob_name = None
 
-                # If no SAS returned, build a read URL (timed)
-                if not blob_url and blob_name:
-                    br_start = perf_counter()
-                    blob_url = await build_read_url(blob_name)
-                    br_ms = (perf_counter() - br_start) * 1000.0
-                    await append_blob_op(
-                        request_id=request_id,
-                        op="build_read_url",
-                        duration_ms=br_ms,
-                        success=True,
-                        meta={"blob_name": blob_name}
-                    )
+        # 3.1) AI Generation Detection (second call, after blob save)
+        # if not skip_ai_check:
+            # ai_detect_start = perf_counter()
+            # ai_detection_result = await detect_ai_generated(
+            #     image_bytes=raw,
+            #     mime_type=content_type,
+            #     request_id=request_id
+            # )
+            # ai_detect_ms = (perf_counter() - ai_detect_start) * 1000.0
+            
+            # await append_blob_op(
+            #     request_id=request_id,
+            #     op="ai_generation_detection",
+            #     duration_ms=ai_detect_ms,
+            #     success=True,
+            #     meta=ai_detection_result
+            # )
+            
+            # print(f"[ai-detect] Result: {ai_detection_result}")
+            
+            # # HIGH confidence AI-generated: STOP and return error
+            # if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "high":
+            #     # Log the rejection
+            #     await log_error(
+            #         blob_url,
+            #         f"AI-generated image detected with high confidence: {ai_detection_result['details']}",
+            #         "ai_generated_rejection",
+            #         userReference=userReference,
+            #         scanReference=scanReference,
+            #         extra={
+            #             "request_id": request_id,
+            #             "ai_detection": ai_detection_result,
+            #             "blob_url": blob_url,
+            #             "blob_name": blob_name
+            #         }
+            #     )
+                
+            #     # Return error response
+            #     return JSONResponse(
+            #         status_code=400,
+            #         content={
+            #             "error": {
+            #                 "code": "ai_generated_image",
+            #                 "message": "This image appears to be AI-generated and cannot be processed as a receipt.",
+            #                 "details": ai_detection_result["details"],
+            #                 "confidence": ai_detection_result["confidence"],
+            #                 "imageUrl": blob_url,
+            #                 "blobName": blob_name
+            #             }
+            #         }
+            #     )
+            
+            # # MEDIUM confidence: Continue but mark it
+            # if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "medium":
+            #     print(f"[ai-detect] Medium confidence AI detection - continuing with warning flag")
+            #     await log_error(
+            #         blob_url,
+            #         f"AI-generated image suspected (medium confidence): {ai_detection_result['details']}",
+            #         "ai_generated_warning",
+            #         userReference=userReference,
+            #         scanReference=scanReference,
+            #         extra={
+            #             "request_id": request_id,
+            #             "ai_detection": ai_detection_result,
+            #             "blob_url": blob_url
+            #         }
+            #     )
 
-                if blob_url:
-                    print("[blob] SAS:", blob_url)
-                if blob_name:
-                    print("[blob] blob_name:", blob_name)
+        # authenticity_result: Optional[Dict[str, Any]] = None
 
-            except Exception as e:
-                try:
-                    await append_blob_op(
-                        request_id=request_id,
-                        op="upload_image_bytes",
-                        duration_ms=0.0,
-                        success=False,
-                        meta={"error": str(e)}
-                    )
-                except Exception:
-                    pass
-                await log_error(
-                    None, 
-                    f"Blob upload failed: {str(e)}", 
-                    "blob_upload", 
-                    userReference=userReference, 
-                    scanReference=scanReference, 
-                    extra={"request_id": request_id}
-                )
-
-        # 3) Quick pass to guess merchant/address (fast + cheap)
+        # 3.2) Screen Capture & Edit Detection
+        # if not skip_authenticity_check:
+        #     auth_start = perf_counter()
+        #     authenticity_result = await detect_screen_capture_or_edit(
+        #         image_bytes=raw,
+        #         mime_type=content_type,
+        #         request_id=request_id
+        #     )
+        #     auth_ms = (perf_counter() - auth_start) * 1000.0
+            
+        #     await append_blob_op(
+        #         request_id=request_id,
+        #         op="authenticity_detection",
+        #         duration_ms=auth_ms,
+        #         success=True,
+        #         meta=authenticity_result
+        #     )
+            
+        #     print(f"[authenticity] Result: {authenticity_result}")
+            
+        #     # HIGH confidence screen capture or edit: STOP and return error
+        #     if authenticity_result["confidence"] == "high":
+        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
+        #             issue_type = []
+        #             if authenticity_result["is_screen_capture"]:
+        #                 issue_type.append("screen capture")
+        #             if authenticity_result["is_edited"]:
+        #                 issue_type.append("digitally edited")
+                    
+        #             await log_error(
+        #                 blob_url,
+        #                 f"Authenticity issue detected: {', '.join(issue_type)} - {authenticity_result['details']}",
+        #                 "authenticity_rejection",
+        #                 userReference=userReference,
+        #                 scanReference=scanReference,
+        #                 extra={
+        #                     "request_id": request_id,
+        #                     "authenticity_check": authenticity_result,
+        #                     "blob_url": blob_url,
+        #                     "blob_name": blob_name
+        #                 }
+        #             )
+                    
+        #             return JSONResponse(
+        #                 status_code=400,
+        #                 content={
+        #                     "error": {
+        #                         "code": "image_authenticity_failed",
+        #                         "message": f"This image appears to be a {' and '.join(issue_type)} and cannot be processed.",
+        #                         "details": authenticity_result["details"],
+        #                         "indicators": authenticity_result["indicators"],
+        #                         "confidence": authenticity_result["confidence"],
+        #                         "imageUrl": blob_url,
+        #                         "blobName": blob_name
+        #                     }
+        #                 }
+        #             )
+            
+        #     # MEDIUM confidence: Continue but flag it
+        #     if authenticity_result["confidence"] == "medium":
+        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
+        #             print(f"[authenticity] Medium confidence detection - continuing with warning flag")
+        #             await log_error(
+        #                 blob_url,
+        #                 f"Potential authenticity issue (medium confidence): {authenticity_result['details']}",
+        #                 "authenticity_warning",
+        #                 userReference=userReference,
+        #                 scanReference=scanReference,
+        #                 extra={
+        #                     "request_id": request_id,
+        #                     "authenticity_check": authenticity_result,
+        #                     "blob_url": blob_url
+        #                 }
+        #             )
+                    
+        # 4) Quick pass to guess merchant/address (fast + cheap)
         quick_prompt = """Return ONLY this raw JSON object:
 {"m": "merchant name or null", "a": "merchant address or null"}
 
@@ -293,20 +445,23 @@ Extraction rules:
                 extra={"raw_response": quick_response}
             )
 
-        # 4) Venue match
+        # 5) Venue match
         print(f"[quick] merchant_guess='{merchant_guess}' addr_guess='{addr_guess}'")
-        match = await find_similar_profile(merchant_guess)
+        match = await find_similar_profile(merchant_guess, addr_guess)
         matched = match.get("matched")
         profile = match.get("profile")
         signals = match.get("signals", {})
+        match_mode = signals.get("match_mode", "unknown")
 
         print(f"[match] merchant_guess='{merchant_guess}' matched={matched} profile_id={(profile.get('MerchantId') if profile else None)} signals={signals}")
 
         data: Dict[str, Any] = None  # type: ignore
         sys = None
             
-        # 5) If no match, return minimal with high fraud score
+        # 6) If no match, return minimal with high fraud score
         if not merchant_guess or not matched:
+            rejection_reason = signals.get("rejection_reason", "No matching venue profile found.")
+    
             data = {
                 "data": {
                     "MerchantName": merchant_guess or None,
@@ -323,107 +478,50 @@ Extraction rules:
                     "Total": None,
                     "fraudScore": 100,
                     "confidentScore": 0,
-                    "reason": ("Merchant name missing." if not merchant_guess else "No matching venue profile found."),
+                    "reason": rejection_reason,
                     "needsRescan": merchant_guess is None,
-                    "profileMatched": bool(matched) if merchant_guess else False
+                    "profileMatched": False,
+                    "matchSignals": signals if signals else None
                 }
             }
             final_payload = data
         else:
-            # 6) Build prompt with profile context
-            sys = build_system_prompt(profile)
             
-            # Replace {{MERCHANT_ID}} placeholder
-            merchant_id = None
-            if isinstance(profile, dict):
-                merchant_id = (profile.get("MerchantId") 
-                             or profile.get("MerchantID") 
-                             or profile.get("merchantId"))
+            # Profile matched - now verify confidence for MerchantId assignment
             
-            if merchant_id is not None:
-                sys = sys.replace("{{MERCHANT_ID}}", str(merchant_id))
-            else:
-                sys = sys.replace("{{MERCHANT_ID}}", "null")
+            name_score = signals.get("name_fuzzy", 0.0)
+            addr_score = signals.get("address_fuzzy", 0.0)
+            has_strong_tokens = signals.get("contains_strong_token", False)
+            match_mode = signals.get("match_mode", "unknown")
 
-            # Main extraction call
-            try:
-                print("[main] calling Gemini for full extraction...")
-                main_response, _ = await call_gemini_with_image(
-                    prompt=sys,
-                    image_bytes=raw,
-                    mime_type=content_type,
-                    temp=0.1,
-                    request_id=request_id,
-                    call_type="main"
+            # Determine if we can confidently assign MerchantId based on mode
+            can_assign_merchant_id = False
+            
+            if match_mode == "strict":
+                # STRICT MODE: Require good name + address scores + strong tokens
+                can_assign_merchant_id = (
+                    name_score >= 0.75 and 
+                    addr_score >= 0.70 and 
+                    has_strong_tokens
                 )
-                print(f"[main] Gemini response: {main_response}")
-            except RuntimeError as e:
-                if "RATE_LIMIT_EXCEEDED" in str(e):
-                    await log_error(
-                        blob_url,
-                        f"Rate limit on main call: {e}",
-                        "gemini_rate_limit_main",
-                        userReference,
-                        scanReference=scanReference,
-                        extra={"request_id": request_id}
-                    )
-                    return JSONResponse(
-                        status_code=429,
-                        content={
-                            "error": {
-                                "code": "rate_limit",
-                                "stage": "main",
-                                "message": "Gemini API rate limit exceeded. Please wait a moment and try again.",
-                                "retry_after": 10,
-                            }
-                        }
-                    )
+            elif match_mode == "name_only":
+                # NAME-ONLY MODE: Require high name score + strong tokens (already validated by matcher)
+                can_assign_merchant_id = (
+                    name_score >= 0.85 and 
+                    has_strong_tokens
+                )
+            
+            if not can_assign_merchant_id:
+                # NOT CONFIDENT ENOUGH - REJECT THE TRANSACTION
+                print(f"[match] Match found but not confident enough for MerchantId assignment: mode={match_mode}, name={name_score:.2f}, addr={addr_score:.2f}, strong_tokens={has_strong_tokens}")
                 
-                # Re-raise other RuntimeErrors
-                await log_error(
-                    blob_url,
-                    f"Gemini runtime error on main call: {e}",
-                    "gemini_error_main",
-                    userReference,
-                    scanReference=scanReference,
-                    extra={"request_id": request_id}
-                )
-                raise HTTPException(500, f"Gemini error on main call: {e}")
-            except Exception as e:
-                # Other errors
-                await log_error(
-                    blob_url,
-                    f"Gemini error on main call: {e}",
-                    "gemini_error_main",
-                    userReference,
-                    scanReference=scanReference,
-                    extra={"request_id": request_id}
-                )
-                raise HTTPException(500, f"Gemini error on main call: {e}")
-
-            raw_txt = main_response
-            
-            # Parse main response
-            try:
-                data = json.loads(raw_txt)
-                if "data" not in data:
-                    # Gemini returned the extraction directly, wrap it
-                    data = {"data": data}
-            except Exception as e:
-                await log_error(
-                    blob_url, 
-                    str(e), 
-                    "parse_gemini_response", 
-                    userReference=userReference, 
-                    scanReference=scanReference, 
-                    extra={"raw_response": raw_txt}, 
-                    project_id=project_id
-                )
+                # Return rejection response
                 data = {
                     "data": {
-                        "MerchantName": None,
-                        "MerchantAddress": None,
+                        "MerchantName": merchant_guess or None,
+                        "MerchantAddress": addr_guess or None,
                         "Image": blob_url or None,
+                        "MerchantId": None,
                         "TransactionDate": None,
                         "StoreID": None,
                         "InvoiceId": None,
@@ -432,28 +530,200 @@ Extraction rules:
                         "Subtotal": None,
                         "Tax": None,
                         "Total": None,
-                        "fraudScore": 0,
+                        "fraudScore": 100,
                         "confidentScore": 0,
-                        "reason": f"Model returned non-JSON or invalid format. {str(e)}",
+                        "reason": f"Match quality insufficient ({match_mode} mode): name={name_score:.2%}, address={addr_score:.2%}, strong_tokens={has_strong_tokens}",
+                        "needsRescan": False,
+                        "profileMatched": True,  # Match found but not confident enough
+                        "matchSignals": {
+                            "name_fuzzy": name_score,
+                            "address_fuzzy": addr_score,
+                            "contains_strong_token": has_strong_tokens,
+                            "match_mode": match_mode,
+                            "best_name": signals.get("best_name"),
+                            "best_address": signals.get("best_address"),
+                            "rejection_reason": "Confidence threshold not met for MerchantId assignment"
+                        }
                     }
                 }
+                final_payload = data
+            else:
+                # 7) Build prompt with profile context
+                sys = build_system_prompt(profile)
+                
+                # Replace {{MERCHANT_ID}} placeholder
+                merchant_id = None
+                if isinstance(profile, dict):
+                    merchant_id = (profile.get("MerchantId") 
+                                or profile.get("MerchantID") 
+                                or profile.get("merchantId"))
+                
+                if merchant_id is not None:
+                    sys = sys.replace("{{MERCHANT_ID}}", str(merchant_id))
+                else:
+                    sys = sys.replace("{{MERCHANT_ID}}", "null")
 
-            # Validate/score via your custom logic
-            final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
+                # Main extraction call
+                try:
+                    print("[main] calling Gemini for full extraction...")
+                    main_response, _ = await call_gemini_with_image(
+                        prompt=sys,
+                        image_bytes=raw,
+                        mime_type=content_type,
+                        temp=0.1,
+                        request_id=request_id,
+                        call_type="main"
+                    )
+                    print(f"[main] Gemini response: {main_response}")
+                except RuntimeError as e:
+                    if "RATE_LIMIT_EXCEEDED" in str(e):
+                        await log_error(
+                            blob_url,
+                            f"Rate limit on main call: {e}",
+                            "gemini_rate_limit_main",
+                            userReference,
+                            scanReference=scanReference,
+                            extra={"request_id": request_id}
+                        )
+                        return JSONResponse(
+                            status_code=429,
+                            content={
+                                "error": {
+                                    "code": "rate_limit",
+                                    "stage": "main",
+                                    "message": "Gemini API rate limit exceeded. Please wait a moment and try again.",
+                                    "retry_after": 10,
+                                }
+                            }
+                        )
+                    
+                    # Re-raise other RuntimeErrors
+                    await log_error(
+                        blob_url,
+                        f"Gemini runtime error on main call: {e}",
+                        "gemini_error_main",
+                        userReference,
+                        scanReference=scanReference,
+                        extra={"request_id": request_id}
+                    )
+                    raise HTTPException(500, f"Gemini error on main call: {e}")
+                except Exception as e:
+                    # Other errors
+                    await log_error(
+                        blob_url,
+                        f"Gemini error on main call: {e}",
+                        "gemini_error_main",
+                        userReference,
+                        scanReference=scanReference,
+                        extra={"request_id": request_id}
+                    )
+                    raise HTTPException(500, f"Gemini error on main call: {e}")
 
-            # Only set MerchantId IF we truly trust the name match
-            mid = None
-            if matched and isinstance(profile, dict):
-                # Require strong signals to prevent false positives
-                if signals.get("name_fuzzy", 0.0) >= 0.85 and signals.get("contains_strong_token", False):
-                    mid = (profile.get("MerchantId")
-                        or profile.get("MerchantID")
-                        or profile.get("merchantId"))
+                raw_txt = main_response
+                
+                # Parse main response
+                try:
+                    data = json.loads(raw_txt)
+                    if "data" not in data:
+                        # Gemini returned the extraction directly, wrap it
+                        data = {"data": data}
+                except Exception as e:
+                    await log_error(
+                        blob_url, 
+                        str(e), 
+                        "parse_gemini_response", 
+                        userReference=userReference, 
+                        scanReference=scanReference, 
+                        extra={"raw_response": raw_txt}, 
+                        project_id=project_id
+                    )
+                    data = {
+                        "data": {
+                            "MerchantName": None,
+                            "MerchantAddress": None,
+                            "Image": blob_url or None,
+                            "TransactionDate": None,
+                            "StoreID": None,
+                            "InvoiceId": None,
+                            "CR": None,
+                            "TaxID": None,
+                            "Subtotal": None,
+                            "Tax": None,
+                            "Total": None,
+                            "fraudScore": 0,
+                            "confidentScore": 0,
+                            "reason": f"Model returned non-JSON or invalid format. {str(e)}",
+                        }
+                    }
 
-            if mid is not None:
-                final_payload["data"]["MerchantId"] = mid
+                # Validate/score via your custom logic
+                final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
 
-        # 7) Persist log (SAS URL included if saved)
+                # Only set MerchantId IF we truly trust the name match
+                mid = None
+                if matched and isinstance(profile, dict):
+                    # Require strong signals to prevent false positives
+                    if signals.get("name_fuzzy", 0.0) >= 0.85 and signals.get("contains_strong_token", False):
+                        mid = (profile.get("MerchantId")
+                            or profile.get("MerchantID")
+                            or profile.get("merchantId"))
+
+                if mid is not None:
+                    final_payload["data"]["MerchantId"] = mid
+                
+        # final_payload["data"]["aiGeneratedWarning"] = False
+        # # 8) Add AI detection info to the response if it was performed
+        # if ai_detection_result:
+        #     final_payload["data"]["aiDetection"] = {
+        #         "isAiGenerated": ai_detection_result["is_ai_generated"],
+        #         "isDigitalFabrication": ai_detection_result["is_digital_fabrication"],
+        #         "confidence": ai_detection_result["confidence"],
+        #         "details": ai_detection_result["details"]
+        #     }
+            
+        #     # If medium confidence, also add a warning flag
+        #     if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "medium":
+        #         final_payload["data"]["aiGeneratedWarning"] = True
+        #         # Optionally increase fraud score
+        #         if "fraudScore" in final_payload["data"]:
+        #             current_score = final_payload["data"]["fraudScore"]
+        #             final_payload["data"]["fraudScore"] = min(100, current_score + 50)  # Add 50 points to fraud score
+            
+        #     # If it is digital fabrication with medium confidence, also add a warning flag
+        #     if ai_detection_result["is_digital_fabrication"]:
+        #         final_payload["data"]["aiGeneratedWarning"] = True
+        #         # Optionally increase fraud score
+        #         if "fraudScore" in final_payload["data"]:
+        #             current_score = final_payload["data"]["fraudScore"]
+        #             final_payload["data"]["fraudScore"] = min(100, current_score + 100)  # Add 100 points to fraud score
+        
+        # 9) Add authenticity detection info to response
+        # if authenticity_result:
+        #     final_payload["data"]["authenticityCheck"] = {
+        #         "isScreenCapture": authenticity_result["is_screen_capture"],
+        #         "isEdited": authenticity_result["is_edited"],
+        #         "confidence": authenticity_result["confidence"],
+        #         "details": authenticity_result["details"],
+        #         "indicators": authenticity_result["indicators"]
+        #     }
+            
+        #     # If medium confidence issues found, add warning and increase fraud score
+        #     if authenticity_result["confidence"] in ["high", "medium"]:
+        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
+        #             final_payload["data"]["authenticityWarning"] = True
+                    
+        #             if "fraudScore" in final_payload["data"]:
+        #                 current_score = final_payload["data"]["fraudScore"]
+        #                 # Add more points for screen captures (75) and edits (85)
+        #                 penalty = 0
+        #                 if authenticity_result["is_screen_capture"]:
+        #                     penalty += 75
+        #                 if authenticity_result["is_edited"]:
+        #                     penalty += 85
+                        
+        #                 final_payload["data"]["fraudScore"] = min(100, current_score + penalty)
+
+        # 9) Persist log (SAS URL included if saved)
         await log_scan_invoice(
             imageUrl=blob_url,
             merchant_guess=merchant_guess if 'merchant_guess' in locals() else None,
@@ -487,6 +757,7 @@ Extraction rules:
             "had_profile_match": bool(locals().get("matched", False)),
             "blob_saved": bool(blob_url),
             "blob_name": blob_name,
+            "ai_detection": ai_detection_result if ai_detection_result else None
         }
         await finalize_request_log(
             request_id=request_id,
@@ -494,3 +765,75 @@ Extraction rules:
             total_ms=total_ms,
             summary=summary,
         )
+
+@app.post("/analyze", dependencies=[Depends(verify_api_key)], summary="Detect if image is AI-generated ")
+async def detect_ai_generated(
+    image: UploadFile = File(..., description="The image file to analyze for AI generation"),
+) -> Dict[str, Any]:
+    """
+    First-pass check to detect if image is AI-generated using SynthID verification.
+    Returns dict with: {"is_ai_generated": bool, "confidence": str, "details": str}
+    """
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    verification_prompt = f"""
+    Identify if this image contains a digital watermark or technical metadata signifying it was AI-generated.@synthid
+
+    SCOPE:
+    1. : Scan specifically for the SynthID digital watermark.
+    2. DIGITAL ARTIFACTS: Check for invisible watermarking or metadata indicators of AI origin.
+    3. IGNORE TEXT CONTENT: Do NOT flag the image for spelling errors, regional terms (e.g., 'Siyal'), or dates (the current date is {current_time}). These are valid for this document type.
+
+    Return ONLY this raw JSON object:
+    {{
+    "ai_generated": true/false,
+    "confidence": "high/medium/low",
+    "reason": "Identify if a watermark was detected or if no technical signs of AI generation exist."
+    }}
+    """
+
+    try:
+        
+        request_id = "ai-detect-" + str(uuid.uuid4())
+        try:
+            raw = await image.read()
+            if not raw:
+                raise HTTPException(400, "Empty file.")
+            content_type = image.content_type or "image/jpeg"
+        finally:
+            await image.close()
+        print("[ai-detect] calling Gemini for AI generation detection...")
+        response, _ = await call_gemini_with_image(
+            prompt=verification_prompt,
+            image_bytes=raw,
+            model_name="gemini-3-flash-preview",
+            mime_type=content_type,
+            temp=1.0,
+            request_id= request_id,
+            call_type="ai_detection"
+        )
+        print(f"[ai-detect] Gemini response: {response}")
+        
+        # Parse response
+        result = json.loads(response)
+        return {
+            "is_ai_generated": result.get("ai_generated", False),
+            "is_digital_fabrication": result.get("digital_fabrication", False),
+            "confidence": result.get("confidence", "unclear"),
+            "details": result.get("reason", "No details provided")
+        }
+    except Exception as e:
+        print(f"[ai-detect] Error during AI detection: {e}")
+        await log_error(
+            None,
+            f"AI detection failed: {e}",
+            "ai_detection_error",
+            extra={"request_id": request_id}
+        )
+        # Return uncertain result on error
+        return {
+            "is_ai_generated": False,
+            "confidence": "unclear",
+            "details": f"Detection failed: {str(e)}"
+        }
+
