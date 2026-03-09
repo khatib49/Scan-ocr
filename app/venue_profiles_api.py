@@ -3,11 +3,11 @@ import os, json, hashlib, asyncio, tempfile
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, Body, Query, Security
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Body, Query, Security
 from app.security import verify_admin_key
 from app.venue_matcher import build_name_index
 
-router = APIRouter(prefix="/venue-profiles", tags=["Venue Profiles"])
+router = APIRouter(prefix="/venue-profiles", tags=["Venue Profiles"], dependencies=[Depends(verify_admin_key)])
 
 # Guard concurrent read/modify/write
 _profiles_lock = asyncio.Lock()

@@ -133,7 +133,7 @@ async def analyze(
             path="/analyze",
             userReference=userReference,
             scanReference=scanReference,
-            meta={"save_image": save_image, "skip_ai_check": skip_ai_check}
+            meta={}
         )
 
         project_id = request.state.project["_id"]
