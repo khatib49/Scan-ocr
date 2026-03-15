@@ -489,9 +489,11 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         # Get profile info to check if it has an address
         prof = get_profile(best_doc)
         profile_has_address = bool(
-            (prof.get("MerchantAddress") and str(prof.get("MerchantAddress")).strip()) or
-            (best_doc.get("MerchantAddress") and str(best_doc.get("MerchantAddress")).strip())
-        )
+                (prof.get("MerchantAddress") and str(prof.get("MerchantAddress")).strip()) or
+                (best_doc.get("MerchantAddress") and str(best_doc.get("MerchantAddress")).strip()) or
+                (prof.get("MerchantAddress_Keyword") and len(prof.get("MerchantAddress_Keyword", [])) > 0) or
+                (best_doc.get("MerchantAddress_Keyword") and len(best_doc.get("MerchantAddress_Keyword", [])) > 0)
+            )
         
         if not profile_has_address or addr_score == 0.0:
             # Receipt has address but profile doesn't - cannot match
