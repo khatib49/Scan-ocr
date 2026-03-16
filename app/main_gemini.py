@@ -114,10 +114,9 @@ async def analyze(
     request: Request,
     image: UploadFile = File(...),
     userReference: str = Form(..., description="Your internal user ID or reference"),
-    scanReference: str = Form(..., description="Your internal scan reference"),
-    save_image: bool = Form(True, description="If true, saves the uploaded image to Azure Blob Storage"), 
-    skip_ai_check: bool = Form(False, description="If true, skips AI generation detection"),
-    skip_authenticity_check: bool = Form(False, description="If true, skips screen capture and edit detection")
+    scanReference: str = Form(..., description="Your internal scan reference"), 
+    skip_screen_check: bool = Form(False, description="If true, skips screen capture "),
+    save_image: bool = Form(True, description="If true, saves the uploaded image to Azure Blob Storage")
 ):
     request_id = str(uuid.uuid4())
     t0 = perf_counter()
@@ -221,7 +220,7 @@ async def analyze(
         screen_result = detect_screen_photo(raw, content_type)
         print(f"[screen-detect] score={screen_result['score']} action={screen_result['action']}")
 
-        if screen_result["action"] in ("auto_reject", "manual_review"):
+        if not skip_screen_check and screen_result["action"] in ("auto_reject", "manual_review"):
             # Both high AND medium confidence → fraudScore 100, needsRescan true
             await log_error(
                 blob_url,
@@ -636,7 +635,7 @@ Extraction rules:
             request_id=request_id,
             scanReference=scanReference
         )
-        if screen_result["action"] == "manual_review":
+        if not skip_screen_check and screen_result["action"] == "manual_review":
             if "fraudScore" in final_payload["data"]:
                 current = final_payload["data"]["fraudScore"]
                 final_payload["data"]["fraudScore"] = min(100, current + 50)
