@@ -221,179 +221,57 @@ async def analyze(
         screen_result = detect_screen_photo(raw, content_type)
         print(f"[screen-detect] score={screen_result['score']} action={screen_result['action']}")
 
-        if screen_result["action"] == "auto_reject":
-            # Save to blob first for audit trail (already done above), then reject
+        if screen_result["action"] in ("auto_reject", "manual_review"):
+            # Both high AND medium confidence → fraudScore 100, needsRescan true
             await log_error(
                 blob_url,
-                f"Screen photo detected: {screen_result['details']}",
-                "screen_photo_rejection",
+                f"Screen photo detected (confidence={screen_result['confidence']}): {screen_result['details']}",
+                "screen_photo_detected",
                 userReference=userReference,
                 scanReference=scanReference,
                 extra={"request_id": request_id, "screen_detection": screen_result}
             )
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": {
-                        "code": "screen_photo_detected",
-                        "message": "This receipt appears to have been photographed from a screen. Please upload a direct photo of the original receipt.",
-                        "score": screen_result["score"],
-                        "confidence": screen_result["confidence"],
-                        "details": screen_result["details"],
-                        "imageUrl": blob_url,
-                        "blobName": blob_name
-                    }
+
+            final_payload = {
+                "data": {
+                    "MerchantName":          None,
+                    "MerchantAddress":       None,
+                    "image_url":             blob_url or None,
+                    "MerchantId":            None,
+                    "TransactionDate":       None,
+                    "StoreID":               None,
+                    "InvoiceId":             None,
+                    "CR":                    None,
+                    "TaxID":                 None,
+                    "Subtotal":              None,
+                    "Tax":                   None,
+                    "Total":                 None,
+                    "fraudScore":            100,
+                    "confidentScore":        0,
+                    "reason":                f"Receipt appears to have been photographed from a screen (score: {screen_result['score']:.1f}/100).",
+                    "needsRescan":           False,
+                    "profileMatched":        False,
+                    "merchantNameMissing":   False,
+                    "merchantNotSupported":  False,
+                    "screenPhotoWarning":    True,
+                    "screenPhotoScore":      screen_result["score"],
                 }
+            }
+
+            await log_scan_invoice(
+                imageUrl=blob_url,
+                merchant_guess=None,
+                address_guess=None,
+                profile=None,
+                raw_text=None,
+                userReference=userReference,
+                final_result=final_payload,
+                project_id=project_id,
+                request_id=request_id,
+                scanReference=scanReference
             )
+            return AnalyzeResponse(**final_payload)
 
-        if screen_result["action"] == "manual_review":
-            # Continue but flag it — will increase fraud score later
-            print(f"[screen-detect] Medium confidence — continuing with warning flag")
-        # 3.1) AI Generation Detection (second call, after blob save)
-        # if not skip_ai_check:
-            # ai_detect_start = perf_counter()
-            # ai_detection_result = await detect_ai_generated(
-            #     image_bytes=raw,
-            #     mime_type=content_type,
-            #     request_id=request_id
-            # )
-            # ai_detect_ms = (perf_counter() - ai_detect_start) * 1000.0
-            
-            # await append_blob_op(
-            #     request_id=request_id,
-            #     op="ai_generation_detection",
-            #     duration_ms=ai_detect_ms,
-            #     success=True,
-            #     meta=ai_detection_result
-            # )
-            
-            # print(f"[ai-detect] Result: {ai_detection_result}")
-            
-            # # HIGH confidence AI-generated: STOP and return error
-            # if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "high":
-            #     # Log the rejection
-            #     await log_error(
-            #         blob_url,
-            #         f"AI-generated image detected with high confidence: {ai_detection_result['details']}",
-            #         "ai_generated_rejection",
-            #         userReference=userReference,
-            #         scanReference=scanReference,
-            #         extra={
-            #             "request_id": request_id,
-            #             "ai_detection": ai_detection_result,
-            #             "blob_url": blob_url,
-            #             "blob_name": blob_name
-            #         }
-            #     )
-                
-            #     # Return error response
-            #     return JSONResponse(
-            #         status_code=400,
-            #         content={
-            #             "error": {
-            #                 "code": "ai_generated_image",
-            #                 "message": "This image appears to be AI-generated and cannot be processed as a receipt.",
-            #                 "details": ai_detection_result["details"],
-            #                 "confidence": ai_detection_result["confidence"],
-            #                 "imageUrl": blob_url,
-            #                 "blobName": blob_name
-            #             }
-            #         }
-            #     )
-            
-            # # MEDIUM confidence: Continue but mark it
-            # if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "medium":
-            #     print(f"[ai-detect] Medium confidence AI detection - continuing with warning flag")
-            #     await log_error(
-            #         blob_url,
-            #         f"AI-generated image suspected (medium confidence): {ai_detection_result['details']}",
-            #         "ai_generated_warning",
-            #         userReference=userReference,
-            #         scanReference=scanReference,
-            #         extra={
-            #             "request_id": request_id,
-            #             "ai_detection": ai_detection_result,
-            #             "blob_url": blob_url
-            #         }
-            #     )
-
-        # authenticity_result: Optional[Dict[str, Any]] = None
-
-        # 3.2) Screen Capture & Edit Detection
-        # if not skip_authenticity_check:
-        #     auth_start = perf_counter()
-        #     authenticity_result = await detect_screen_capture_or_edit(
-        #         image_bytes=raw,
-        #         mime_type=content_type,
-        #         request_id=request_id
-        #     )
-        #     auth_ms = (perf_counter() - auth_start) * 1000.0
-            
-        #     await append_blob_op(
-        #         request_id=request_id,
-        #         op="authenticity_detection",
-        #         duration_ms=auth_ms,
-        #         success=True,
-        #         meta=authenticity_result
-        #     )
-            
-        #     print(f"[authenticity] Result: {authenticity_result}")
-            
-        #     # HIGH confidence screen capture or edit: STOP and return error
-        #     if authenticity_result["confidence"] == "high":
-        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
-        #             issue_type = []
-        #             if authenticity_result["is_screen_capture"]:
-        #                 issue_type.append("screen capture")
-        #             if authenticity_result["is_edited"]:
-        #                 issue_type.append("digitally edited")
-                    
-        #             await log_error(
-        #                 blob_url,
-        #                 f"Authenticity issue detected: {', '.join(issue_type)} - {authenticity_result['details']}",
-        #                 "authenticity_rejection",
-        #                 userReference=userReference,
-        #                 scanReference=scanReference,
-        #                 extra={
-        #                     "request_id": request_id,
-        #                     "authenticity_check": authenticity_result,
-        #                     "blob_url": blob_url,
-        #                     "blob_name": blob_name
-        #                 }
-        #             )
-                    
-        #             return JSONResponse(
-        #                 status_code=400,
-        #                 content={
-        #                     "error": {
-        #                         "code": "image_authenticity_failed",
-        #                         "message": f"This image appears to be a {' and '.join(issue_type)} and cannot be processed.",
-        #                         "details": authenticity_result["details"],
-        #                         "indicators": authenticity_result["indicators"],
-        #                         "confidence": authenticity_result["confidence"],
-        #                         "imageUrl": blob_url,
-        #                         "blobName": blob_name
-        #                     }
-        #                 }
-        #             )
-            
-        #     # MEDIUM confidence: Continue but flag it
-        #     if authenticity_result["confidence"] == "medium":
-        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
-        #             print(f"[authenticity] Medium confidence detection - continuing with warning flag")
-        #             await log_error(
-        #                 blob_url,
-        #                 f"Potential authenticity issue (medium confidence): {authenticity_result['details']}",
-        #                 "authenticity_warning",
-        #                 userReference=userReference,
-        #                 scanReference=scanReference,
-        #                 extra={
-        #                     "request_id": request_id,
-        #                     "authenticity_check": authenticity_result,
-        #                     "blob_url": blob_url
-        #                 }
-        #             )
-                    
         # 4) Quick pass to guess merchant/address (fast + cheap)
         quick_prompt = """Return ONLY this raw JSON object:
 {"m": "merchant name or null", "a": "merchant address or null"}
@@ -491,30 +369,67 @@ Extraction rules:
         data: Dict[str, Any] = None  # type: ignore
         sys = None
             
-        # 6) If no match, return minimal with high fraud score
-        if not merchant_guess or not matched:
-            rejection_reason = signals.get("rejection_reason", "No matching venue profile found.")
-    
+        
+        # ── 6) Merchant name missing ───────────────────────────────────
+        # Gemini could not extract any merchant name from the image at all
+        if not merchant_guess:
             data = {
                 "data": {
-                    "MerchantName": merchant_guess or None,
-                    "MerchantAddress": addr_guess or None,
-                    "Image": blob_url or None,
-                    "MerchantId": None,
-                    "TransactionDate": None,
-                    "StoreID": None,
-                    "InvoiceId": None,
-                    "CR": None,
-                    "TaxID": None,
-                    "Subtotal": None,
-                    "Tax": None,
-                    "Total": None,
-                    "fraudScore": 100,
-                    "confidentScore": 0,
-                    "reason": rejection_reason,
-                    "needsRescan": merchant_guess is None,
-                    "profileMatched": False,
-                    "matchSignals": signals if signals else None
+                    "MerchantName":          None,
+                    "MerchantAddress":       addr_guess or None,
+                    "image_url":                 blob_url or None,
+                    "MerchantId":            None,
+                    "TransactionDate":       None,
+                    "StoreID":               None,
+                    "InvoiceId":             None,
+                    "CR":                    None,
+                    "TaxID":                 None,
+                    "Subtotal":              None,
+                    "Tax":                   None,
+                    "Total":                 None,
+                    "fraudScore":            100,
+                    "confidentScore":        0,
+                    "reason":                "Merchant name could not be extracted from the receipt image.",
+                    "needsRescan":           True,
+                    "profileMatched":        False,
+                    "matchSignals":          None,
+                    "merchantNameMissing":   True,   # ← Gemini returned null for merchant name
+                    "merchantNotSupported":  False,
+                    "screenPhotoWarning":    False,
+                    "screenPhotoScore":      None,
+                }
+            }
+            final_payload = data
+
+        # ── 7) Merchant not supported ──────────────────────────────────
+        # Name was extracted but no matching profile exists in our system
+        elif not matched:
+            rejection_reason = signals.get("rejection_reason", "Merchant is not currently supported.")
+
+            data = {
+                "data": {
+                    "MerchantName":          merchant_guess or None,
+                    "MerchantAddress":       addr_guess or None,
+                    "image_url":                 blob_url or None,
+                    "MerchantId":            None,
+                    "TransactionDate":       None,
+                    "StoreID":               None,
+                    "InvoiceId":             None,
+                    "CR":                    None,
+                    "TaxID":                 None,
+                    "Subtotal":              None,
+                    "Tax":                   None,
+                    "Total":                 None,
+                    "fraudScore":            100,
+                    "confidentScore":        0,
+                    "reason":                rejection_reason,
+                    "needsRescan":           False,
+                    "profileMatched":        False,
+                    "matchSignals":          signals if signals else None,
+                    "merchantNameMissing":   False,
+                    "merchantNotSupported":  True,   # ← Name found but not in our supported merchants
+                    "screenPhotoWarning":    False,
+                    "screenPhotoScore":      None,
                 }
             }
             final_payload = data
@@ -553,7 +468,7 @@ Extraction rules:
                     "data": {
                         "MerchantName": merchant_guess or None,
                         "MerchantAddress": addr_guess or None,
-                        "Image": blob_url or None,
+                        "image_url": blob_url or None,
                         "MerchantId": None,
                         "TransactionDate": None,
                         "StoreID": None,
@@ -674,7 +589,7 @@ Extraction rules:
                         "data": {
                             "MerchantName": None,
                             "MerchantAddress": None,
-                            "Image": blob_url or None,
+                            "image_url": blob_url or None,
                             "TransactionDate": None,
                             "StoreID": None,
                             "InvoiceId": None,
@@ -704,58 +619,6 @@ Extraction rules:
                 if mid is not None:
                     final_payload["data"]["MerchantId"] = mid
                 
-        # final_payload["data"]["aiGeneratedWarning"] = False
-        # # 8) Add AI detection info to the response if it was performed
-        # if ai_detection_result:
-        #     final_payload["data"]["aiDetection"] = {
-        #         "isAiGenerated": ai_detection_result["is_ai_generated"],
-        #         "isDigitalFabrication": ai_detection_result["is_digital_fabrication"],
-        #         "confidence": ai_detection_result["confidence"],
-        #         "details": ai_detection_result["details"]
-        #     }
-            
-        #     # If medium confidence, also add a warning flag
-        #     if ai_detection_result["is_ai_generated"] and ai_detection_result["confidence"] == "medium":
-        #         final_payload["data"]["aiGeneratedWarning"] = True
-        #         # Optionally increase fraud score
-        #         if "fraudScore" in final_payload["data"]:
-        #             current_score = final_payload["data"]["fraudScore"]
-        #             final_payload["data"]["fraudScore"] = min(100, current_score + 50)  # Add 50 points to fraud score
-            
-        #     # If it is digital fabrication with medium confidence, also add a warning flag
-        #     if ai_detection_result["is_digital_fabrication"]:
-        #         final_payload["data"]["aiGeneratedWarning"] = True
-        #         # Optionally increase fraud score
-        #         if "fraudScore" in final_payload["data"]:
-        #             current_score = final_payload["data"]["fraudScore"]
-        #             final_payload["data"]["fraudScore"] = min(100, current_score + 100)  # Add 100 points to fraud score
-        
-        # 9) Add authenticity detection info to response
-        # if authenticity_result:
-        #     final_payload["data"]["authenticityCheck"] = {
-        #         "isScreenCapture": authenticity_result["is_screen_capture"],
-        #         "isEdited": authenticity_result["is_edited"],
-        #         "confidence": authenticity_result["confidence"],
-        #         "details": authenticity_result["details"],
-        #         "indicators": authenticity_result["indicators"]
-        #     }
-            
-        #     # If medium confidence issues found, add warning and increase fraud score
-        #     if authenticity_result["confidence"] in ["high", "medium"]:
-        #         if authenticity_result["is_screen_capture"] or authenticity_result["is_edited"]:
-        #             final_payload["data"]["authenticityWarning"] = True
-                    
-        #             if "fraudScore" in final_payload["data"]:
-        #                 current_score = final_payload["data"]["fraudScore"]
-        #                 # Add more points for screen captures (75) and edits (85)
-        #                 penalty = 0
-        #                 if authenticity_result["is_screen_capture"]:
-        #                     penalty += 75
-        #                 if authenticity_result["is_edited"]:
-        #                     penalty += 85
-                        
-        #                 final_payload["data"]["fraudScore"] = min(100, current_score + penalty)
-
         # 9) Persist log (SAS URL included if saved)
         await log_scan_invoice(
             imageUrl=blob_url,
