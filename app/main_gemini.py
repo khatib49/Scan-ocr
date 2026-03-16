@@ -16,6 +16,7 @@ from app.venue_profiles_api_mongo import find_similar_profile, router as venue_p
 from app.extract_api_gemini import router as extract_router
 from utils.helpers import ensure_project_indexes     
 from app.security import _mongo_db as DB
+from utils.screen_detector import detect_screen_photo, THRESHOLD_AUTO_REJECT, THRESHOLD_MANUAL_REVIEW
 
 from .venue_matcher import  build_name_index
 from utils.transforms import validate_and_score  
@@ -216,6 +217,38 @@ async def analyze(
             blob_url = None
             blob_name = None
 
+        # 1.5) Screen photo detection — FIRST CHECK before anything else
+        screen_result = detect_screen_photo(raw, content_type)
+        print(f"[screen-detect] score={screen_result['score']} action={screen_result['action']}")
+
+        if screen_result["action"] == "auto_reject":
+            # Save to blob first for audit trail (already done above), then reject
+            await log_error(
+                blob_url,
+                f"Screen photo detected: {screen_result['details']}",
+                "screen_photo_rejection",
+                userReference=userReference,
+                scanReference=scanReference,
+                extra={"request_id": request_id, "screen_detection": screen_result}
+            )
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "error": {
+                        "code": "screen_photo_detected",
+                        "message": "This receipt appears to have been photographed from a screen. Please upload a direct photo of the original receipt.",
+                        "score": screen_result["score"],
+                        "confidence": screen_result["confidence"],
+                        "details": screen_result["details"],
+                        "imageUrl": blob_url,
+                        "blobName": blob_name
+                    }
+                }
+            )
+
+        if screen_result["action"] == "manual_review":
+            # Continue but flag it — will increase fraud score later
+            print(f"[screen-detect] Medium confidence — continuing with warning flag")
         # 3.1) AI Generation Detection (second call, after blob save)
         # if not skip_ai_check:
             # ai_detect_start = perf_counter()
@@ -736,7 +769,12 @@ Extraction rules:
             request_id=request_id,
             scanReference=scanReference
         )
-
+        if screen_result["action"] == "manual_review":
+            if "fraudScore" in final_payload["data"]:
+                current = final_payload["data"]["fraudScore"]
+                final_payload["data"]["fraudScore"] = min(100, current + 50)
+            final_payload["data"]["screenPhotoWarning"] = True
+            final_payload["data"]["screenPhotoScore"] = screen_result["score"]
         # Done
         return AnalyzeResponse(**final_payload)
 
@@ -766,7 +804,7 @@ Extraction rules:
             summary=summary,
         )
 
-@app.post("/analyze", dependencies=[Depends(verify_api_key)], summary="Detect if image is AI-generated ")
+@app.post("/detect", dependencies=[Depends(verify_api_key)], summary="Detect if image is AI-generated ")
 async def detect_ai_generated(
     image: UploadFile = File(..., description="The image file to analyze for AI generation"),
 ) -> Dict[str, Any]:
