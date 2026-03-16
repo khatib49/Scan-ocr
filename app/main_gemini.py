@@ -642,6 +642,8 @@ Extraction rules:
             final_payload["data"]["screenPhotoWarning"] = True
             final_payload["data"]["screenPhotoScore"] = screen_result["score"]
         # Done
+        final_payload["data"]["merchantNameMissing"] = False
+        final_payload["data"]["merchantNotSupported"] = False
         return AnalyzeResponse(**final_payload)
 
     except Exception as e:
