@@ -480,7 +480,7 @@ Extraction rules:
                         "fraudScore": 100,
                         "confidentScore": 0,
                         "merchantNameMissing":   False,
-                        "merchantNotSupported":  False,   
+                        "merchantNotSupported":  True,   # ← Name found but confidence too low to support this merchant
                         "screenPhotoWarning":    False,
                         "screenPhotoScore":      None,
                         "reason": f"Match quality insufficient ({match_mode} mode): name={name_score:.2%}, address={addr_score:.2%}, strong_tokens={has_strong_tokens}",
@@ -609,7 +609,10 @@ Extraction rules:
 
                 # Validate/score via your custom logic
                 final_payload = validate_and_score(data, profile, blob_url, merchant_guess, matched)
-
+                
+                final_payload["data"]["merchantNameMissing"] = False
+                final_payload["data"]["merchantNotSupported"] = False
+                
                 # Only set MerchantId IF we truly trust the name match
                 mid = None
                 if matched and isinstance(profile, dict):
@@ -642,8 +645,6 @@ Extraction rules:
             final_payload["data"]["screenPhotoWarning"] = True
             final_payload["data"]["screenPhotoScore"] = screen_result["score"]
         # Done
-        final_payload["data"]["merchantNameMissing"] = False
-        final_payload["data"]["merchantNotSupported"] = False
         return AnalyzeResponse(**final_payload)
 
     except Exception as e:
