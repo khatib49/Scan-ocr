@@ -480,6 +480,10 @@ Extraction rules:
                         "Total": None,
                         "fraudScore": 100,
                         "confidentScore": 0,
+                        "merchantNameMissing":   False,
+                        "merchantNotSupported":  False,   
+                        "screenPhotoWarning":    False,
+                        "screenPhotoScore":      None,
                         "reason": f"Match quality insufficient ({match_mode} mode): name={name_score:.2%}, address={addr_score:.2%}, strong_tokens={has_strong_tokens}",
                         "needsRescan": False,
                         "profileMatched": True,  # Match found but not confident enough
