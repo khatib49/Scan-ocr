@@ -144,7 +144,7 @@ async def analyze(
             if not raw:
                 raise HTTPException(400, "Empty file.")
             content_type = image.content_type or "image/jpeg"
-            file_size = len(raw)
+            file_size = len(raw) 
         finally:
             await image.close()
 
@@ -217,59 +217,67 @@ async def analyze(
             blob_name = None
 
         # 1.5) Screen photo detection — FIRST CHECK before anything else
-        screen_result = detect_screen_photo(raw, content_type)
-        print(f"[screen-detect] score={screen_result['score']} action={screen_result['action']}")
+        screen_result = None
+        screen_flagged = False
+        if not skip_screen_check:
+            screen_result = detect_screen_photo(raw, content_type)
+            print(f"[screen-detect] score={screen_result['score']} action={screen_result['action']}")
 
-        if not skip_screen_check and screen_result["action"] in ("auto_reject", "manual_review"):
-            # Both high AND medium confidence → fraudScore 100, needsRescan true
-            await log_error(
-                blob_url,
-                f"Screen photo detected (confidence={screen_result['confidence']}): {screen_result['details']}",
-                "screen_photo_detected",
-                userReference=userReference,
-                scanReference=scanReference,
-                extra={"request_id": request_id, "screen_detection": screen_result}
+            screen_flagged = (
+                not skip_screen_check and
+                screen_result["action"] == "manual_review"
             )
 
-            final_payload = {
-                "data": {
-                    "MerchantName":          None,
-                    "MerchantAddress":       None,
-                    "image_url":             blob_url or None,
-                    "MerchantId":            None,
-                    "TransactionDate":       None,
-                    "StoreID":               None,
-                    "InvoiceId":             None,
-                    "CR":                    None,
-                    "TaxID":                 None,
-                    "Subtotal":              None,
-                    "Tax":                   None,
-                    "Total":                 None,
-                    "fraudScore":            100,
-                    "confidentScore":        0,
-                    "reason":                f"Receipt appears to have been photographed from a screen (score: {screen_result['score']:.1f}/100).",
-                    "needsRescan":           False,
-                    "profileMatched":        False,
-                    "merchantNameMissing":   False,
-                    "merchantNotSupported":  False,
-                    "screenPhotoWarning":    True,
-                    "screenPhotoScore":      screen_result["score"],
+            if screen_result["action"] == "auto_reject":
+                # Both high confidence → fraudScore 100, needsRescan true
+                await log_error(
+                    blob_url,
+                    f"Screen photo detected (confidence={screen_result['confidence']}): {screen_result['details']}",
+                    "screen_photo_detected",
+                    userReference=userReference,
+                    scanReference=scanReference,
+                    extra={"request_id": request_id, "screen_detection": screen_result}
+                )
+
+                final_payload = {
+                    "data": {
+                        "MerchantName":          None,
+                        "MerchantAddress":       None,
+                        "image_url":             blob_url or None,
+                        "MerchantId":            None,
+                        "TransactionDate":       None,
+                        "StoreID":               None,
+                        "InvoiceId":             None,
+                        "CR":                    None,
+                        "TaxID":                 None,
+                        "Subtotal":              None,
+                        "Tax":                   None,
+                        "Total":                 None,
+                        "fraudScore":            100,
+                        "confidentScore":        0,
+                        "reason":                f"Receipt appears to have been photographed from a screen (score: {screen_result['score']:.1f}/100).",
+                        "needsRescan":           False,
+                        "profileMatched":        False,
+                        "merchantNameMissing":   False,
+                        "merchantNotSupported":  False,
+                        "screenPhotoWarning":    True,
+                        "screenPhotoScore":      screen_result["score"],
+                    }
                 }
-            }
 
-            await log_scan_invoice(
-                imageUrl=blob_url,
-                merchant_guess=None,
-                address_guess=None,
-                profile=None,
-                raw_text=None,
-                userReference=userReference,
-                final_result=final_payload,
-                project_id=project_id,
-                request_id=request_id,
-                scanReference=scanReference
-            )
-            return AnalyzeResponse(**final_payload)
+                await log_scan_invoice(
+                    imageUrl=blob_url,
+                    merchant_guess=None,
+                    address_guess=None,
+                    profile=None,
+                    raw_text=None,
+                    userReference=userReference,
+                    final_result=final_payload,
+                    project_id=project_id,
+                    request_id=request_id,
+                    scanReference=scanReference
+                )
+                return AnalyzeResponse(**final_payload)
 
         # 4) Quick pass to guess merchant/address (fast + cheap)
         quick_prompt = """Return ONLY this raw JSON object:
@@ -625,6 +633,10 @@ Extraction rules:
                 if mid is not None:
                     final_payload["data"]["MerchantId"] = mid
                 
+        # Apply screen photo flag for medium confidence (50–69)
+        if not skip_screen_check:
+            final_payload["data"]["screenPhotoWarning"] = screen_flagged
+            final_payload["data"]["screenPhotoScore"]   = round(screen_result["score"], 1)
         # 9) Persist log (SAS URL included if saved)
         await log_scan_invoice(
             imageUrl=blob_url,
@@ -638,12 +650,6 @@ Extraction rules:
             request_id=request_id,
             scanReference=scanReference
         )
-        if not skip_screen_check and screen_result["action"] == "manual_review":
-            if "fraudScore" in final_payload["data"]:
-                current = final_payload["data"]["fraudScore"]
-                final_payload["data"]["fraudScore"] = min(100, current + 50)
-            final_payload["data"]["screenPhotoWarning"] = True
-            final_payload["data"]["screenPhotoScore"] = screen_result["score"]
         # Done
         return AnalyzeResponse(**final_payload)
 

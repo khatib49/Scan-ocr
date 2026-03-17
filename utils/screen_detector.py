@@ -141,7 +141,7 @@ _WEIGHTS = {
 # THRESHOLDS
 # ─────────────────────────────────────────────
 THRESHOLD_AUTO_REJECT   = 70   # >= 70  → auto reject
-THRESHOLD_MANUAL_REVIEW = 51   # 51-69  → manual review
+THRESHOLD_MANUAL_REVIEW = 50   # 51-69  → manual review
 THRESHOLD_SOFT_FLAG     = 25   # 25-50  → soft flag
 
 
@@ -234,7 +234,7 @@ def detect_screen_photo(image_bytes: bytes, mime_type: str = "image/jpeg") -> Di
     elif final_score >= THRESHOLD_MANUAL_REVIEW:
         confidence = "medium"
         action = "manual_review"
-        details = "Likely a screen photo — multiple indicators present. Manual review recommended."
+        details = "Suspicious screen photo indicators detected — flagged for review."
     elif final_score >= THRESHOLD_SOFT_FLAG:
         confidence = "low"
         action = "soft_flag"
