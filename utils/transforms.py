@@ -98,30 +98,30 @@ def validate_and_score(
             reason.append("TaxID mismatch")
 
         # Merchant name agreement
-        prof_keywords = profile.get("MerchantName_Keyword") or []
-        if d.get("MerchantName") and isinstance(prof_keywords, list) and prof_keywords:
-            observed_name = str(d["MerchantName"]).strip()
-            obs_tokens = set(tokenize_distinct(observed_name))
+        # prof_keywords = profile.get("MerchantName_Keyword") or []
+        # if d.get("MerchantName") and isinstance(prof_keywords, list) and prof_keywords:
+        #     observed_name = str(d["MerchantName"]).strip()
+        #     obs_tokens = set(tokenize_distinct(observed_name))
 
-            best_fuzzy = 0.0
-            best_kw = None
-            for kw in prof_keywords:
-                fz = fuzzy_ratio(observed_name, kw or "")
-                if fz > best_fuzzy:
-                    best_fuzzy, best_kw = fz, kw
+        #     best_fuzzy = 0.0
+        #     best_kw = None
+        #     for kw in prof_keywords:
+        #         fz = fuzzy_ratio(observed_name, kw or "")
+        #         if fz > best_fuzzy:
+        #             best_fuzzy, best_kw = fz, kw
 
-            has_overlap = False
-            for kw in prof_keywords:
-                kw_tokens = set(tokenize_distinct(kw or ""))
-                if kw_tokens and (obs_tokens & kw_tokens):
-                    has_overlap = True
-                    break
+        #     has_overlap = False
+        #     for kw in prof_keywords:
+        #         kw_tokens = set(tokenize_distinct(kw or ""))
+        #         if kw_tokens and (obs_tokens & kw_tokens):
+        #             has_overlap = True
+        #             break
 
-            MIN_FUZZY = 0.80
-            if (best_fuzzy < MIN_FUZZY) or (not has_overlap):
-                name_mismatch = True
-                fraud = 100
-                reason.append("Merchant name mismatch")
+        #     MIN_FUZZY = 0.80
+        #     if (best_fuzzy < MIN_FUZZY) or (not has_overlap):
+        #         name_mismatch = True
+        #         fraud = 100
+        #         reason.append("Merchant name mismatch")
 
 
     d["fraudScore"] = fraud
