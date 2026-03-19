@@ -28,6 +28,7 @@ from app.venue_profiles_api_mongo import (
 )
 from app.extract_api_gemini import router as extract_router
 from app.template_fraud_api import router as template_fraud_router
+from app.merchant_templates_profile_mongo import router as merchant_templates_profile_mongo
 from utils.helpers import ensure_project_indexes
 from app.security import _mongo_db as DB
 from utils.screen_detector import (
@@ -67,6 +68,7 @@ app.include_router(venue_profiles_mongo_router)
 app.include_router(venue_profiles_router, dependencies=[Depends(verify_admin_key)])
 app.include_router(extract_router)
 app.include_router(template_fraud_router)
+app.include_router(merchant_templates_profile_mongo)
 
 # Global caches (hot-reloaded by /venue-profiles/reload)
 VENUE_PROFILES: List[Dict[str, Any]] = []
