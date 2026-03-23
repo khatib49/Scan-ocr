@@ -10,3 +10,5 @@ azure-storage-blob>=12.19.0
 Pillow>=10.0.0
 aiohttp>=3.9.0
 opencv-python-headless
+scikit-image
+scipy

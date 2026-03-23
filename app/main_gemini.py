@@ -1,9 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
+import os
 from time import perf_counter
 from typing import List, Optional, Dict, Any
 from unittest import signals
 import uuid
+from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 
 
 from fastapi import (
@@ -35,6 +37,7 @@ from utils.screen_detector import (
     detect_screen_photo,
     THRESHOLD_AUTO_REJECT,
     THRESHOLD_MANUAL_REVIEW,
+    detect_screen_photo_from_url,
 )
 
 from .venue_matcher import build_name_index
@@ -170,22 +173,17 @@ def health():
 )
 async def analyze(
     request: Request,
-    image: UploadFile = File(...),
     userReference: str = Form(..., description="Your internal user ID or reference"),
     scanReference: str = Form(..., description="Your internal scan reference"),
     skip_screen_check: bool = Form(False, description="If true, skips screen capture "),
-    save_image: bool = Form(
-        True, description="If true, saves the uploaded image to Azure Blob Storage"
-    ),
+    imageUrl: Optional[str] = Form(None, description="Direct URL to the image if already hosted (overrides file upload)")
 ):
     request_id = str(uuid.uuid4())
     t0 = perf_counter()
 
-    blob_url: Optional[str] = None
-    blob_name: Optional[str] = None
+    blob_url: Optional[str] = imageUrl
     raw_txt: Optional[str] = None
     success = True
-    ai_detection_result: Optional[Dict[str, Any]] = None
 
     try:
         await init_request_log(
@@ -198,89 +196,11 @@ async def analyze(
 
         project_id = request.state.project["_id"]
 
-        # 1) Read file
-        try:
-            raw = await image.read()
-            if not raw:
-                raise HTTPException(400, "Empty file.")
-            content_type = image.content_type or "image/jpeg"
-            file_size = len(raw)
-        finally:
-            await image.close()
-
-        # 2) Save to Azure Blob Storage FIRST (always save for audit trail)
-        try:
-            preferred = None
-            if image.filename and len(image.filename) < 150 and "." in image.filename:
-                preferred = image.filename.replace("\\", "/").split("/")[-1]
-
-            up_start = perf_counter()
-            blob_name, blob_url = await upload_image_bytes(
-                raw,
-                content_type=content_type,
-                preferred_name=preferred,
-                return_sas=True,
-            )
-            up_ms = (perf_counter() - up_start) * 1000.0
-            await append_blob_op(
-                request_id=request_id,
-                op="upload_image_bytes",
-                duration_ms=up_ms,
-                success=True,
-                meta={
-                    "preferred": preferred,
-                    "blob_name": blob_name,
-                    "content_type": content_type,
-                    "size_bytes": file_size,
-                },
-            )
-
-            # If no SAS returned, build a read URL
-            if not blob_url and blob_name:
-                br_start = perf_counter()
-                blob_url = await build_read_url(blob_name)
-                br_ms = (perf_counter() - br_start) * 1000.0
-                await append_blob_op(
-                    request_id=request_id,
-                    op="build_read_url",
-                    duration_ms=br_ms,
-                    success=True,
-                    meta={"blob_name": blob_name},
-                )
-
-            if blob_url:
-                print("[blob] SAS:", blob_url)
-            if blob_name:
-                print("[blob] blob_name:", blob_name)
-
-        except Exception as e:
-            try:
-                await append_blob_op(
-                    request_id=request_id,
-                    op="upload_image_bytes",
-                    duration_ms=0.0,
-                    success=False,
-                    meta={"error": str(e)},
-                )
-            except Exception:
-                pass
-            await log_error(
-                None,
-                f"Blob upload failed: {str(e)}",
-                "blob_upload",
-                userReference=userReference,
-                scanReference=scanReference,
-                extra={"request_id": request_id},
-            )
-            # Continue even if blob upload fails
-            blob_url = None
-            blob_name = None
-
         # 1.5) Screen photo detection — FIRST CHECK before anything else
         screen_result = None
         screen_flagged = False
         if not skip_screen_check:
-            screen_result = detect_screen_photo(raw, content_type)
+            screen_result = detect_screen_photo_from_url(blob_url)
             print(
                 f"[screen-detect] score={screen_result['score']} action={screen_result['action']}"
             )
@@ -359,8 +279,8 @@ Extraction rules:
             print("[quick] calling Gemini for merchant/address guess...")
             quick_response, _ = await call_gemini_with_image(
                 prompt=quick_prompt,
-                image_bytes=raw,
-                mime_type=content_type,
+                image_url = blob_url,
+                mime_type="image/jpeg",
                 temp=0.0,
                 request_id=request_id,
                 call_type="quick",
@@ -590,8 +510,8 @@ Extraction rules:
                     print("[main] calling Gemini for full extraction...")
                     main_response, _ = await call_gemini_with_image(
                         prompt=sys,
-                        image_bytes=raw,
-                        mime_type=content_type,
+                        image_url = blob_url,
+                        mime_type="image/jpeg",
                         temp=0.1,
                         request_id=request_id,
                         call_type="main",
@@ -738,8 +658,6 @@ Extraction rules:
         summary = {
             "had_profile_match": bool(locals().get("matched", False)),
             "blob_saved": bool(blob_url),
-            "blob_name": blob_name,
-            "ai_detection": ai_detection_result if ai_detection_result else None,
         }
         await finalize_request_log(
             request_id=request_id,
@@ -824,4 +742,60 @@ async def detect_ai_generated(
             "is_ai_generated": False,
             "confidence": "unclear",
             "details": f"Detection failed: {str(e)}",
+        }
+
+
+
+AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+AZURE_BLOB_CONTAINER = os.getenv("AZURE_BLOB_CONTAINER", "invoicefiles")
+SAS_TTL_MINUTES = int(os.getenv("SAS_TTL_MINUTES", "10080"))
+
+blob_service = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
+container_client = blob_service.get_container_client(AZURE_BLOB_CONTAINER)
+
+@app.post("/upload", 
+    dependencies=[Depends(verify_api_key)],
+    summary="Save Image")
+async def upload_file(
+    file: UploadFile = File(...),
+    fileName: str = Form(...)
+):
+    try:
+        # 1. Clean filename (same as your .NET / Python logic)
+        safe_name = fileName.replace("\\", "/").split("/")[-1]
+
+        # 2. Generate blob name
+        blob_name = f"{datetime.utcnow().strftime('%Y/%m')}/{uuid.uuid4()}_{safe_name}"
+
+        blob_client = container_client.get_blob_client(blob_name)
+
+        # 3. Upload (stream مباشرة — أفضل من read)
+        blob_client.upload_blob(
+            file.file,
+            overwrite=True,
+            content_type=file.content_type
+        )
+
+        # 4. Generate SAS URL
+        sas_token = generate_blob_sas(
+            account_name=blob_service.account_name,
+            container_name=AZURE_BLOB_CONTAINER,
+            blob_name=blob_name,
+            account_key=blob_service.credential.account_key,
+            permission=BlobSasPermissions(read=True),
+            expiry=datetime.utcnow() + timedelta(minutes=SAS_TTL_MINUTES)
+        )
+
+        blob_url = f"{blob_client.url}?{sas_token}"
+
+        return {
+            "success": True,
+            "blobUrl": blob_url,
+            "fileName": safe_name
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
         }
