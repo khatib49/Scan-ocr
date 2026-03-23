@@ -14,22 +14,39 @@ Detectors:
   8. Color Temperature   - Screen light is blue-shifted vs warm paper
 """
 
-import io
 import warnings
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import cv2
 import numpy as np
+import urllib.request
 
 warnings.filterwarnings("ignore")
+
+
+# ─────────────────────────────────────────────
+# URL → BYTES HELPER
+# ─────────────────────────────────────────────
+
+def _fetch_image_bytes(url: str, timeout: int = 10) -> bytes:
+    """
+    Download image from a URL and return raw bytes.
+    Raises ValueError if download fails.
+    """
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "ScanInvoiceAPI/1.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.read()
+    except Exception as e:
+        raise ValueError(f"Failed to fetch image from URL: {e}") from e
 
 
 # ─────────────────────────────────────────────
 # INDIVIDUAL DETECTORS
 # ─────────────────────────────────────────────
 
-def _detect_vignetting(gray: np.ndarray) -> float:
-    """Returns score 0-100. High = strong vignetting = screen photo."""
+def _detect_vignetting(gray: np.ndarray):
+    """Returns (score 0-100, ratio). High = strong vignetting = screen photo."""
     h, w = gray.shape
     thick = max(30, h // 15)
     center = gray[h // 4:3 * h // 4, w // 4:3 * w // 4].mean()
@@ -40,11 +57,11 @@ def _detect_vignetting(gray: np.ndarray) -> float:
         gray[:, w - thick:w].mean(),
     ])
     ratio = center / (edges + 1e-6)
-    return 100 if ratio > 2.0 else (60 if ratio > 1.5 else 10), ratio
+    return (100 if ratio > 2.0 else (60 if ratio > 1.5 else 10)), ratio
 
 
-def _detect_bezel(gray: np.ndarray) -> float:
-    """Returns score 0-100. High = dark borders = phone bezel visible."""
+def _detect_bezel(gray: np.ndarray):
+    """Returns (score 0-100, max_ratio). High = dark borders = phone bezel visible."""
     h, w = gray.shape
     thick = max(30, w // 12)
     center = gray[h // 4:3 * h // 4, w // 4:3 * w // 4].mean()
@@ -58,8 +75,8 @@ def _detect_bezel(gray: np.ndarray) -> float:
     return (100 if max_r > 5.0 else (80 if max_r > 2.0 else (40 if max_r > 1.5 else 5))), max_r
 
 
-def _detect_refresh_banding(gray: np.ndarray) -> float:
-    """Returns score 0-100. High = horizontal banding = screen refresh artifact."""
+def _detect_refresh_banding(gray: np.ndarray):
+    """Returns (score 0-100, ratio). High = horizontal banding = screen refresh artifact."""
     row_means = gray.mean(axis=1).astype(np.float32)
     trend = np.convolve(row_means, np.ones(50) / 50, mode="same")
     detrended = row_means - trend
@@ -72,8 +89,8 @@ def _detect_refresh_banding(gray: np.ndarray) -> float:
     return (100 if ratio > 20 else (60 if ratio > 10 else 5)), ratio
 
 
-def _detect_blur_inconsistency(gray: np.ndarray, grid: int = 6) -> float:
-    """Returns score 0-100. High = uneven focus = screen in frame, background blurry."""
+def _detect_blur_inconsistency(gray: np.ndarray, grid: int = 6):
+    """Returns (score 0-100, ratio). High = uneven focus = screen in frame."""
     h, w = gray.shape
     gh, gw = h // grid, w // grid
     sharp_map = np.zeros((grid, grid))
@@ -85,8 +102,8 @@ def _detect_blur_inconsistency(gray: np.ndarray, grid: int = 6) -> float:
     return (100 if ratio > 1.2 else (60 if ratio > 0.8 else 10)), ratio
 
 
-def _detect_fft_grid(gray: np.ndarray) -> float:
-    """Returns score 0-100. High = periodic pixel grid = photographed screen."""
+def _detect_fft_grid(gray: np.ndarray):
+    """Returns (score 0-100, peaks). High = periodic pixel grid = photographed screen."""
     f = np.fft.fft2(gray.astype(np.float32))
     fs = np.fft.fftshift(f)
     mag = np.log(np.abs(fs) + 1)
@@ -97,8 +114,8 @@ def _detect_fft_grid(gray: np.ndarray) -> float:
     return (100 if peaks > 500 else (80 if peaks > 100 else (40 if peaks > 50 else 5))), peaks
 
 
-def _detect_rgb_correlation(rgb: np.ndarray) -> float:
-    """Returns score 0-100. High = channels too similar = screen uniform emission."""
+def _detect_rgb_correlation(rgb: np.ndarray):
+    """Returns (score 0-100, avg_corr). High = channels too similar = screen emission."""
     r = rgb[:, :, 0].astype(np.float32).flatten()
     g = rgb[:, :, 1].astype(np.float32).flatten()
     b = rgb[:, :, 2].astype(np.float32).flatten()
@@ -106,16 +123,16 @@ def _detect_rgb_correlation(rgb: np.ndarray) -> float:
     return (100 if avg_corr > 0.97 else (60 if avg_corr > 0.90 else 10)), avg_corr
 
 
-def _detect_glare(rgb: np.ndarray) -> float:
-    """Returns score 0-100. High = specular highlights = glass screen surface."""
+def _detect_glare(rgb: np.ndarray):
+    """Returns (score 0-100, glare_ratio). High = specular highlights = glass screen."""
     r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
     near_white = (r > 230) & (g > 230) & (b > 230)
     glare_ratio = near_white.sum() / (rgb.shape[0] * rgb.shape[1]) * 100
     return (100 if glare_ratio > 3.0 else (60 if glare_ratio > 1.0 else 10)), glare_ratio
 
 
-def _detect_color_temperature(rgb: np.ndarray) -> float:
-    """Returns score 0-100. High = blue-shifted = cool screen light."""
+def _detect_color_temperature(rgb: np.ndarray):
+    """Returns (score 0-100, br_ratio). High = blue-shifted = cool screen light."""
     r_m = rgb[:, :, 0].astype(np.float32).mean()
     b_m = rgb[:, :, 2].astype(np.float32).mean()
     br_ratio = b_m / (r_m + 1e-6)
@@ -124,7 +141,7 @@ def _detect_color_temperature(rgb: np.ndarray) -> float:
 
 
 # ─────────────────────────────────────────────
-# WEIGHTS  (must sum to 17)
+# WEIGHTS
 # ─────────────────────────────────────────────
 _WEIGHTS = {
     "vignetting":         3,
@@ -141,53 +158,33 @@ _WEIGHTS = {
 # THRESHOLDS
 # ─────────────────────────────────────────────
 THRESHOLD_AUTO_REJECT   = 70   # >= 70  → auto reject
-THRESHOLD_MANUAL_REVIEW = 50   # 51-69  → manual review
-THRESHOLD_SOFT_FLAG     = 25   # 25-50  → soft flag
+THRESHOLD_MANUAL_REVIEW = 50   # 50-69  → flag only, processing continues
+THRESHOLD_SOFT_FLAG     = 25   # 25-49  → soft flag
 
 
 # ─────────────────────────────────────────────
-# MAIN PUBLIC FUNCTION
+# CORE DETECTION LOGIC (works on decoded image)
 # ─────────────────────────────────────────────
 
-def detect_screen_photo(image_bytes: bytes, mime_type: str = "image/jpeg") -> Dict[str, Any]:
+def _run_detection(image_bytes: bytes) -> Dict[str, Any]:
     """
-    Analyze image bytes and return screen-photo detection result.
-
-    Returns:
-    {
-        "is_screen_photo": bool,
-        "confidence": "high" | "medium" | "low" | "clean",
-        "score": float (0-100),
-        "action": "auto_reject" | "manual_review" | "soft_flag" | "approve",
-        "details": str,
-        "detectors": {
-            "vignetting":        {"score": int, "raw": float},
-            "bezel":             {"score": int, "raw": float},
-            "banding":           {"score": int, "raw": float},
-            "blur":              {"score": int, "raw": float},
-            "fft":               {"score": int, "raw": float},
-            "rgb_correlation":   {"score": int, "raw": float},
-            "glare":             {"score": int, "raw": float},
-            "color_temperature": {"score": int, "raw": float},
-        }
-    }
+    Core detection — takes raw image bytes, returns full result dict.
     """
-    # Decode image
     try:
         arr = np.frombuffer(image_bytes, dtype=np.uint8)
         img_bgr = cv2.imdecode(arr, cv2.IMREAD_COLOR)
         if img_bgr is None:
             raise ValueError("cv2 could not decode image")
-        img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+        img_rgb  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
     except Exception as e:
         return {
             "is_screen_photo": False,
-            "confidence": "clean",
-            "score": 0.0,
-            "action": "approve",
-            "details": f"Image decode failed: {e}",
-            "detectors": {}
+            "confidence":      "clean",
+            "score":           0.0,
+            "action":          "approve",
+            "details":         f"Image decode failed: {e}",
+            "detectors":       {}
         }
 
     # Run all detectors
@@ -229,31 +226,68 @@ def detect_screen_photo(image_bytes: bytes, mime_type: str = "image/jpeg") -> Di
     # Verdict
     if final_score >= THRESHOLD_AUTO_REJECT:
         confidence = "high"
-        action = "auto_reject"
-        details = "High confidence screen photo — receipt photographed from a phone screen."
+        action     = "auto_reject"
+        details    = "High confidence screen photo — receipt photographed from a phone screen."
     elif final_score >= THRESHOLD_MANUAL_REVIEW:
         confidence = "medium"
-        action = "manual_review"
-        details = "Suspicious screen photo indicators detected — flagged for review."
+        action     = "manual_review"
+        details    = "Suspicious screen photo indicators detected — flagged for review."
     elif final_score >= THRESHOLD_SOFT_FLAG:
         confidence = "low"
-        action = "soft_flag"
-        details = "Some suspicious indicators — proceed with caution."
+        action     = "soft_flag"
+        details    = "Some suspicious indicators — proceed with caution."
     else:
         confidence = "clean"
-        action = "approve"
-        details = "No significant screen-photo indicators detected."
-
-    is_screen = final_score >= THRESHOLD_MANUAL_REVIEW  # medium or high = flagged
+        action     = "approve"
+        details    = "No significant screen-photo indicators detected."
 
     return {
-        "is_screen_photo": is_screen,
-        "confidence": confidence,
-        "score": round(final_score, 2),
-        "action": action,
-        "details": details,
+        "is_screen_photo": final_score >= THRESHOLD_MANUAL_REVIEW,
+        "confidence":      confidence,
+        "score":           round(final_score, 2),
+        "action":          action,
+        "details":         details,
         "detectors": {
             k: {"score": scores[k], "raw": round(float(raws[k]), 4)}
             for k in scores
         }
     }
+
+
+# ─────────────────────────────────────────────
+# PUBLIC FUNCTIONS
+# ─────────────────────────────────────────────
+
+def detect_screen_photo(image_bytes: bytes, mime_type: str = "image/jpeg") -> Dict[str, Any]:
+    """
+    Detect screen photo from raw image bytes.
+    Used in /analyze endpoint where bytes are already in memory.
+    """
+    return _run_detection(image_bytes)
+
+
+def detect_screen_photo_from_url(image_url: str, timeout: int = 10) -> Dict[str, Any]:
+    """
+    Detect screen photo from an image URL (e.g. Azure Blob SAS URL).
+    Downloads the image first, then runs detection.
+
+    Usage:
+        result = detect_screen_photo_from_url(
+            "https://invoicescannerstorage.blob.core.windows.net/invoicefiles/receipt.jpg?..."
+        )
+
+    Returns same structure as detect_screen_photo().
+    """
+    try:
+        image_bytes = _fetch_image_bytes(image_url, timeout=timeout)
+    except ValueError as e:
+        return {
+            "is_screen_photo": False,
+            "confidence":      "clean",
+            "score":           0.0,
+            "action":          "approve",
+            "details":         str(e),
+            "detectors":       {}
+        }
+
+    return _run_detection(image_bytes)
