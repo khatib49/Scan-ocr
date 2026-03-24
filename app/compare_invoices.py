@@ -478,6 +478,13 @@ async def compare_invoice(
     stored = await _fetch_stored_invoices(merchant_id, project_id)
     merchant_template = await _fetch_merchant_template(merchant_id)
 
+    if not merchant_template:
+        raise HTTPException(
+            404,
+            detail=f"Merchant {merchant_id} does not have an existing template. "
+            "Please create a template before running comparison.",
+        )
+
     # ── Step 3b: Template structure check ────────────────────
     template_check_result: Optional[Dict[str, Any]] = None
     template_signals: List[FraudSignal] = []
