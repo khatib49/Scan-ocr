@@ -30,7 +30,10 @@ from app.venue_profiles_api_mongo import (
 )
 from app.extract_api_gemini import router as extract_router
 from app.template_fraud_api import router as template_fraud_router
-from app.merchant_templates_profile_mongo import router as merchant_templates_profile_mongo
+from app.merchant_templates_profile_mongo import (
+    router as merchant_templates_profile_mongo,
+)
+from app.compare_invoices import router as compare_router
 from utils.helpers import ensure_project_indexes
 from app.security import _mongo_db as DB
 from utils.screen_detector import (
@@ -72,6 +75,7 @@ app.include_router(venue_profiles_router, dependencies=[Depends(verify_admin_key
 app.include_router(extract_router)
 app.include_router(template_fraud_router)
 app.include_router(merchant_templates_profile_mongo)
+app.include_router(compare_router)
 
 # Global caches (hot-reloaded by /venue-profiles/reload)
 VENUE_PROFILES: List[Dict[str, Any]] = []
@@ -211,7 +215,10 @@ async def analyze(
     userReference: str = Form(..., description="Your internal user ID or reference"),
     scanReference: str = Form(..., description="Your internal scan reference"),
     skip_screen_check: bool = Form(False, description="If true, skips screen capture "),
-    imageUrl: Optional[str] = Form(None, description="Direct URL to the image if already hosted (overrides file upload)")
+    imageUrl: Optional[str] = Form(
+        None,
+        description="Direct URL to the image if already hosted (overrides file upload)",
+    ),
 ):
     request_id = str(uuid.uuid4())
     t0 = perf_counter()
@@ -314,7 +321,7 @@ Extraction rules:
             print("[quick] calling Gemini for merchant/address guess...")
             quick_response, _ = await call_gemini_with_image(
                 prompt=quick_prompt,
-                image_url = blob_url,
+                image_url=blob_url,
                 mime_type="image/jpeg",
                 temp=0.0,
                 request_id=request_id,
@@ -529,7 +536,7 @@ Extraction rules:
                     print("[main] calling Gemini for full extraction...")
                     main_response, _ = await call_gemini_with_image(
                         prompt=sys,
-                        image_url = blob_url,
+                        image_url=blob_url,
                         mime_type="image/jpeg",
                         temp=0.1,
                         request_id=request_id,
@@ -756,7 +763,6 @@ async def detect_ai_generated(
         }
 
 
-
 AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 AZURE_BLOB_CONTAINER = os.getenv("AZURE_BLOB_CONTAINER", "invoicefiles")
 SAS_TTL_MINUTES = int(os.getenv("SAS_TTL_MINUTES", "10080"))
@@ -764,13 +770,9 @@ SAS_TTL_MINUTES = int(os.getenv("SAS_TTL_MINUTES", "10080"))
 blob_service = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
 container_client = blob_service.get_container_client(AZURE_BLOB_CONTAINER)
 
-@app.post("/upload", 
-    dependencies=[Depends(verify_api_key)],
-    summary="Save Image")
-async def upload_file(
-    file: UploadFile = File(...),
-    fileName: str = Form(...)
-):
+
+@app.post("/upload", dependencies=[Depends(verify_api_key)], summary="Save Image")
+async def upload_file(file: UploadFile = File(...), fileName: str = Form(...)):
     try:
         # 1. Clean filename (same as your .NET / Python logic)
         safe_name = fileName.replace("\\", "/").split("/")[-1]
@@ -782,9 +784,7 @@ async def upload_file(
 
         # 3. Upload (stream مباشرة — أفضل من read)
         blob_client.upload_blob(
-            file.file,
-            overwrite=True,
-            content_type=file.content_type
+            file.file, overwrite=True, content_type=file.content_type
         )
 
         # 4. Generate SAS URL
@@ -794,19 +794,12 @@ async def upload_file(
             blob_name=blob_name,
             account_key=blob_service.credential.account_key,
             permission=BlobSasPermissions(read=True),
-            expiry=datetime.utcnow() + timedelta(minutes=SAS_TTL_MINUTES)
+            expiry=datetime.utcnow() + timedelta(minutes=SAS_TTL_MINUTES),
         )
 
         blob_url = f"{blob_client.url}?{sas_token}"
 
-        return {
-            "success": True,
-            "blobUrl": blob_url,
-            "fileName": safe_name
-        }
+        return {"success": True, "blobUrl": blob_url, "fileName": safe_name}
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
