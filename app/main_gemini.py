@@ -134,6 +134,41 @@ def build_system_prompt(with_profile: Optional[Dict[str, Any]]) -> str:
     return base
 
 
+def _gemini_error_payload(
+    blob_url: Optional[str],
+    error_message: str,
+    screen_result: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
+    """
+    Standard error response when Gemini call fails.
+    Always returns HTTP 200 with fraudScore 100 and the error in reason.
+    """
+    return {
+        "data": {
+            "MerchantName":         None,
+            "MerchantAddress":      None,
+            "image_url":            blob_url or None,
+            "MerchantId":           None,
+            "TransactionDate":      None,
+            "StoreID":              None,
+            "InvoiceId":            None,
+            "CR":                   None,
+            "TaxID":                None,
+            "Subtotal":             None,
+            "Tax":                  None,
+            "Total":                None,
+            "fraudScore":           100,
+            "confidentScore":       0,
+            "reason":               f"Gemini processing failed: {error_message}",
+            "needsRescan":          True,
+            "profileMatched":       False,
+            "merchantNameMissing":  False,
+            "merchantNotSupported": False,
+            "screenPhotoWarning":   screen_result["action"] in ("auto_reject", "manual_review") if screen_result else False,
+            "screenPhotoScore":     round(screen_result["score"], 1) if screen_result else None,
+        }
+    }
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -288,46 +323,30 @@ Extraction rules:
             print(f"[quick] Gemini response: {quick_response}")
         except RuntimeError as e:
             if "RATE_LIMIT_EXCEEDED" in str(e):
-                await log_error(
-                    blob_url,
-                    f"Rate limit on quick call: {e}",
-                    "gemini_rate_limit_quick",
-                    userReference,
-                    scanReference=scanReference,
-                    extra={"request_id": request_id},
-                )
-                return JSONResponse(
-                    status_code=429,
-                    content={
-                        "error": {
-                            "code": "rate_limit",
-                            "stage": "quick",
-                            "message": "Gemini API rate limit exceeded. Please wait a moment and try again.",
-                            "retry_after": 10,
-                        }
-                    },
-                )
-            # Re-raise other RuntimeErrors
-            await log_error(
-                blob_url,
-                f"Gemini runtime error on quick call: {e}",
-                "gemini_error_quick",
-                userReference,
-                scanReference=scanReference,
-                extra={"request_id": request_id},
-            )
-            raise HTTPException(500, f"Gemini error on quick call: {e}")
-        except Exception as e:
-            await log_error(
-                blob_url,
-                f"Gemini error on quick call: {e}",
-                "gemini_error_quick",
-                userReference,
-                scanReference=scanReference,
-                extra={"request_id": request_id},
-            )
-            raise HTTPException(500, f"Gemini error on quick call: {e}")
+                await log_error(blob_url, f"Rate limit on quick call: {e}", "gemini_rate_limit_quick",
+                                userReference, scanReference=scanReference, extra={"request_id": request_id})
+            else:
+                await log_error(blob_url, f"Gemini runtime error on quick call: {e}", "gemini_error_quick",
+                                userReference, scanReference=scanReference, extra={"request_id": request_id})
 
+            final_payload = _gemini_error_payload(blob_url, str(e), screen_result)
+            await log_scan_invoice(imageUrl=blob_url, merchant_guess=None, address_guess=None,
+                                   profile=None, raw_text=None, userReference=userReference,
+                                   final_result=final_payload, project_id=project_id,
+                                   request_id=request_id, scanReference=scanReference)
+            return AnalyzeResponse(**final_payload)
+
+        except Exception as e:
+            await log_error(blob_url, f"Gemini error on quick call: {e}", "gemini_error_quick",
+                            userReference, scanReference=scanReference, extra={"request_id": request_id})
+
+            final_payload = _gemini_error_payload(blob_url, str(e), screen_result)
+            await log_scan_invoice(imageUrl=blob_url, merchant_guess=None, address_guess=None,
+                                   profile=None, raw_text=None, userReference=userReference,
+                                   final_result=final_payload, project_id=project_id,
+                                   request_id=request_id, scanReference=scanReference)
+            return AnalyzeResponse(**final_payload)
+        
         # Parse quick response
         try:
             ma = json.loads(quick_response)
@@ -518,39 +537,24 @@ Extraction rules:
                     )
                     print(f"[main] Gemini response: {main_response}")
                 except RuntimeError as e:
-                    if "RATE_LIMIT_EXCEEDED" in str(e):
-                        await log_error(
-                            blob_url,
-                            f"Rate limit on main call: {e}",
-                            "gemini_rate_limit_main",
-                            userReference,
-                            scanReference=scanReference,
-                            extra={"request_id": request_id},
-                        )
-                        return JSONResponse(
-                            status_code=429,
-                            content={
-                                "error": {
-                                    "code": "rate_limit",
-                                    "stage": "main",
-                                    "message": "Gemini API rate limit exceeded. Please wait a moment and try again.",
-                                    "retry_after": 10,
-                                }
-                            },
-                        )
-
-                    # Re-raise other RuntimeErrors
                     await log_error(
                         blob_url,
                         f"Gemini runtime error on main call: {e}",
-                        "gemini_error_main",
+                        "gemini_rate_limit_main" if "RATE_LIMIT_EXCEEDED" in str(e) else "gemini_error_main",
                         userReference,
                         scanReference=scanReference,
                         extra={"request_id": request_id},
                     )
-                    raise HTTPException(500, f"Gemini error on main call: {e}")
+                    final_payload = _gemini_error_payload(blob_url, str(e), screen_result)
+                    await log_scan_invoice(
+                        imageUrl=blob_url, merchant_guess=merchant_guess, address_guess=addr_guess,
+                        profile=profile, raw_text=None, userReference=userReference,
+                        final_result=final_payload, project_id=project_id,
+                        request_id=request_id, scanReference=scanReference,
+                    )
+                    return AnalyzeResponse(**final_payload)
+
                 except Exception as e:
-                    # Other errors
                     await log_error(
                         blob_url,
                         f"Gemini error on main call: {e}",
@@ -559,8 +563,15 @@ Extraction rules:
                         scanReference=scanReference,
                         extra={"request_id": request_id},
                     )
-                    raise HTTPException(500, f"Gemini error on main call: {e}")
-
+                    final_payload = _gemini_error_payload(blob_url, str(e), screen_result)
+                    await log_scan_invoice(
+                        imageUrl=blob_url, merchant_guess=merchant_guess, address_guess=addr_guess,
+                        profile=profile, raw_text=None, userReference=userReference,
+                        final_result=final_payload, project_id=project_id,
+                        request_id=request_id, scanReference=scanReference,
+                    )
+                    return AnalyzeResponse(**final_payload)
+                
                 raw_txt = main_response
 
                 # Parse main response
