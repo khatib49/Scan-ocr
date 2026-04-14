@@ -144,14 +144,15 @@ def _detect_color_temperature(rgb: np.ndarray):
 # WEIGHTS
 # ─────────────────────────────────────────────
 _WEIGHTS = {
-    "vignetting":         3,
-    "bezel":              3,
-    "banding":            2,
-    "blur":               2,
-    "fft":                3,
-    "rgb_correlation":    2,
-    "glare":              1,
-    "color_temperature":  1,
+    "vignetting":         2,   # reduced from 3 — too many false positives on angled shots
+    "bezel":              1,   # reduced from 3 — dark backgrounds trigger this wrongly
+    "banding":            3,   # increased — very reliable screen indicator
+    "blur":               1,   # reduced — angled receipt shots also have blur inconsistency
+    "fft":                3,   # keep — good screen indicator
+    "rgb_correlation":    3,   # increased — very reliable
+    "glare":              2,   # increased from 1
+    "color_temperature":  1,   # keep
+    "white_paper_region": 4,   # NEW — most reliable differentiator
 }
 
 # ─────────────────────────────────────────────
@@ -167,9 +168,6 @@ THRESHOLD_SOFT_FLAG     = 25   # 25-49  → soft flag
 # ─────────────────────────────────────────────
 
 def _run_detection(image_bytes: bytes) -> Dict[str, Any]:
-    """
-    Core detection — takes raw image bytes, returns full result dict.
-    """
     try:
         arr = np.frombuffer(image_bytes, dtype=np.uint8)
         img_bgr = cv2.imdecode(arr, cv2.IMREAD_COLOR)
@@ -196,6 +194,7 @@ def _run_detection(image_bytes: bytes) -> Dict[str, Any]:
     rgb_s,  rgb_r  = _detect_rgb_correlation(img_rgb)
     gla_s,  gla_r  = _detect_glare(img_rgb)
     tmp_s,  tmp_r  = _detect_color_temperature(img_rgb)
+    wpr_s,  wpr_r  = _detect_white_paper_region(img_rgb)   # ← new
 
     scores = {
         "vignetting":        vig_s,
@@ -206,6 +205,7 @@ def _run_detection(image_bytes: bytes) -> Dict[str, Any]:
         "rgb_correlation":   rgb_s,
         "glare":             gla_s,
         "color_temperature": tmp_s,
+        "white_paper_region": wpr_s,   # ← new
     }
     raws = {
         "vignetting":        vig_r,
@@ -216,6 +216,7 @@ def _run_detection(image_bytes: bytes) -> Dict[str, Any]:
         "rgb_correlation":   rgb_r,
         "glare":             gla_r,
         "color_temperature": tmp_r,
+        "white_paper_region": wpr_r,   # ← new
     }
 
     # Weighted final score
@@ -291,3 +292,40 @@ def detect_screen_photo_from_url(image_url: str, timeout: int = 10) -> Dict[str,
         }
 
     return _run_detection(image_bytes)
+
+def _detect_white_paper_region(rgb: np.ndarray):
+    """
+    Returns (score 0-100, white_ratio).
+    Real receipts have a large white paper region (15-60% of image).
+    Screen photos of SMS/apps have very little or no white.
+    HIGH score = no white region = suspicious.
+    """
+    r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
+    near_white = (r > 200) & (g > 200) & (b > 200)
+    white_ratio = float(near_white.sum() / (rgb.shape[0] * rgb.shape[1]) * 100)
+    if white_ratio < 10:
+        return 80, white_ratio
+    elif white_ratio < 20:
+        return 40, white_ratio
+    else:
+        return 5, white_ratio
+    
+def _detect_bezel(gray: np.ndarray):
+    h, w = gray.shape
+    thick = max(30, w // 12)
+    center = gray[h // 4:3 * h // 4, w // 4:3 * w // 4].mean()
+    ratios = [
+        center / (gray[:, 0:thick].mean() + 1e-6),
+        center / (gray[:, w - thick:w].mean() + 1e-6),
+        center / (gray[0:thick, :].mean() + 1e-6),
+        center / (gray[h - thick:h, :].mean() + 1e-6),
+    ]
+    max_r = max(ratios)
+
+    # Only flag if at least 3 sides are dark — true bezel surrounds on all sides
+    # A dark leather/wood background usually only covers 1-2 sides
+    dark_sides = sum(1 for r in ratios if r > 1.5)
+    if dark_sides < 3:
+        return 5, max_r
+
+    return (100 if max_r > 5.0 else (80 if max_r > 2.0 else (40 if max_r > 1.5 else 5))), max_r
