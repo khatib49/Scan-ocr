@@ -43,15 +43,12 @@ from locust.runners import MasterRunner, WorkerRunner
 #  CONFIG — edit these before running
 # =============================================================================
 
-API_KEY   = os.getenv("STRESS_API_KEY",   "ffzlM8HLbhszmWosSe3qaDNqi3Va7Osic9gueKTgR94Fbg8rFnKWMzstnu5OLL6u")
-BASE_URL  = os.getenv("STRESS_BASE_URL",  "https://apiaiscanner-cygcg2h6ejg0fqfr.switzerlandnorth-01.azurewebsites.net")
+API_KEY   = os.getenv("STRESS_API_KEY")
+BASE_URL  = os.getenv("STRESS_BASE_URL")
 
 # List of invoice image URLs to rotate through.
 # Use at least one real invoice image (JPEG/PNG, publicly accessible).
-IMAGE_URLS = [ "https://invoicescannerstorage.blob.core.windows.net/invoicefiles/2026/04/5fe41b3a-5907-4baf-992b-40d3a128b0d1_mado?se=2026-05-02T13%3A49%3A10Z&sp=r&sv=2026-02-06&sr=b&sig=3w8I4stpt7Emc7fBt3Xc28L4H2wWODRzPYz7lvGa%2Bgk%3D",
-              "https://invoicescannerstorage.blob.core.windows.net/invoicefiles/2026/04/cb721109-9b48-4024-a28c-273a08f6df79_mado?se=2026-05-02T13%3A49%3A32Z&sp=r&sv=2026-02-06&sr=b&sig=QqtuqnRMjdot2BTGpz0FyxkoM4tVVgH%2BzfZqa3nOH3k%3D",
-              "https://invoicescannerstorage.blob.core.windows.net/invoicefiles/2026/04/1c3e8a30-1315-44d5-8953-fc65eeb8e3b7_mado2?se=2026-05-02T13%3A49%3A49Z&sp=r&sv=2026-02-06&sr=b&sig=gTEHjSI8kJb1yDgQGuMGI7JCzAI12nuTKMviXSuowUU%3D"]
-
+IMAGE_URLS = []
 # Skip the screen-photo check to isolate pure Gemini + extraction performance.
 SKIP_SCREEN_CHECK = os.getenv("SKIP_SCREEN_CHECK", "false").lower() == "true"
 
