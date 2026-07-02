@@ -36,19 +36,29 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
 
+      # Flow v2 (AI upgrade)
+      FLOW_VERSION: ${FLOW_VERSION:-1}
+      PROMPT_V2_PATH: ${PROMPT_V2_PATH:-data/prompt_v2.txt}
+      EXTRACTOR_PROVIDER: ${EXTRACTOR_PROVIDER:-gemini}
+      EXTRACTOR_MODEL: ${EXTRACTOR_MODEL:-gemini-3-flash-preview}
+      ARBITRATION_ENABLED: ${ARBITRATION_ENABLED:-false}
+      ARBITRATOR_PROVIDER: ${ARBITRATOR_PROVIDER:-claude}
+      ARBITRATOR_MODEL: ${ARBITRATOR_MODEL:-claude-sonnet-5}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+
       API_KEYS: ${API_KEYS:-dev-key-1,dev-key-2}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-*}
 
       PROMPT_PATH: ${PROMPT_PATH:-data/prompt.txt}
       QUICK_PROMPT_PATH: ${QUICK_PROMPT_PATH:-data/quick_prompt.txt}
-      VENUE_PROFILES_PATH: /app/data/venue_profiles.json 
+      VENUE_PROFILES_PATH: /app/data/venue_profiles.json
 
       AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
       AZURE_BLOB_CONTAINER: ${AZURE_BLOB_CONTAINER:-invoicefiles}
       SAS_TTL_MINUTES: ${SAS_TTL_MINUTES:-60}
-      
+
     volumes:
-      - ./data:/app/data  
+      - ./data:/app/data
 
 volumes:
   mongo_data:

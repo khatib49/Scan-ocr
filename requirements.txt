@@ -12,3 +12,6 @@ aiohttp>=3.9.0
 opencv-python-headless
 scikit-image
 scipy
+rapidfuzz>=3.0.0
+pyzbar>=0.1.9
+anthropic>=0.40.0

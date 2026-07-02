@@ -64,7 +64,34 @@ from .blob_service import (
     build_read_url,
 )
 
-app = FastAPI(title="Scan Invoice API (Gemini)", version="9.0.0")
+from contextlib import asynccontextmanager
+
+# Flow version: "1" = legacy two-call flow, "2" = single-call pipeline with
+# QR cross-check, deterministic scoring and optional Claude arbitration.
+FLOW_VERSION = os.getenv("FLOW_VERSION", "1").strip()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ── startup ──
+    await ping_mongo_or_raise()
+    await ensure_telemetry_indexes()
+    await init_blob_clients()
+    await ensure_project_indexes(DB)
+    global VENUE_PROFILES, NAME_INDEX
+    VENUE_PROFILES = await _load_profiles_from_db()
+    NAME_INDEX = build_name_index(VENUE_PROFILES)
+    try:
+        await assert_blob_ready()
+    except Exception as e:
+        print("[startup] Azure Blob not ready:", str(e))
+    print(f"[startup] FLOW_VERSION={FLOW_VERSION}")
+    yield
+    # ── shutdown ──
+    await close_blob_clients()
+
+
+app = FastAPI(title="Scan Invoice API (Gemini)", version="10.0.0", lifespan=lifespan)
 
 # CORS
 add_cors(app)
@@ -173,35 +200,10 @@ def _gemini_error_payload(
         }
     }
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.on_event("startup")
-async def _startup_checks():
-    # Fail fast on Mongo; warn on Azure
-    await ping_mongo_or_raise()
-    await ensure_telemetry_indexes()
-    await init_blob_clients()
-    await ensure_project_indexes(DB)
-    global VENUE_PROFILES, NAME_INDEX
-    VENUE_PROFILES = await _load_profiles_from_db()
-    NAME_INDEX = build_name_index(VENUE_PROFILES)
-    try:
-        await assert_blob_ready()
-    except Exception as e:
-        print("[startup] Azure Blob not ready:", str(e))
-
-
-@app.on_event("shutdown")
-async def _shutdown():
-    await close_blob_clients()
-
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "profiles": len(VENUE_PROFILES)}
+    return {"status": "ok", "profiles": len(VENUE_PROFILES), "flow": FLOW_VERSION}
 
 
 @app.post(
@@ -227,16 +229,33 @@ async def analyze(
     raw_txt: Optional[str] = None
     success = True
 
+    if not blob_url or not str(blob_url).strip():
+        raise HTTPException(400, "imageUrl is required.")
+
     try:
         await init_request_log(
             request_id=request_id,
             path="/analyze",
             userReference=userReference,
             scanReference=scanReference,
-            meta={},
+            meta={"flow": FLOW_VERSION},
         )
 
         project_id = request.state.project["_id"]
+
+        # ── FLOW V2: single-call pipeline with QR cross-check ─────────
+        if FLOW_VERSION == "2":
+            from app.analyze_v2 import run_analyze_v2  # lazy import (avoids cycles)
+
+            final_payload = await run_analyze_v2(
+                image_url=blob_url,
+                userReference=userReference,
+                scanReference=scanReference,
+                skip_screen_check=skip_screen_check,
+                request_id=request_id,
+                project_id=project_id,
+            )
+            return AnalyzeResponse(**final_payload)
 
         # 1.5) Screen photo detection — FIRST CHECK before anything else
         screen_result = None
@@ -353,7 +372,7 @@ Extraction rules:
                                    final_result=final_payload, project_id=project_id,
                                    request_id=request_id, scanReference=scanReference)
             return AnalyzeResponse(**final_payload)
-        
+
         # Parse quick response
         try:
             ma = json.loads(quick_response)
@@ -578,7 +597,7 @@ Extraction rules:
                         request_id=request_id, scanReference=scanReference,
                     )
                     return AnalyzeResponse(**final_payload)
-                
+
                 raw_txt = main_response
 
                 # Parse main response

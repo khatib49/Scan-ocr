@@ -51,10 +51,10 @@ async def _load_all_from_db() -> List[Dict[str, Any]]:
 
 async def _save_cache(profiles: List[Dict[str, Any]]) -> None:
     # Validate index builds before hot-swapping memory for /analyze
-    build_name_index(profiles)
-    from app import main_openai as app_main
+    idx = build_name_index(profiles)
+    from app import main_gemini as app_main  # live app (was wrongly main_openai)
     app_main.VENUE_PROFILES = profiles
-    app_main.NAME_INDEX = build_name_index(profiles)
+    app_main.NAME_INDEX = idx
 
 async def _reload_cache_from_db() -> Dict[str, Any]:
     profiles = await _load_all_from_db()
@@ -225,21 +225,21 @@ async def delete_merchant(merchant_id: str) -> Dict[str, Any]:
 async def find_similar_profile(merchant_guess: str, address_guess: str = None) -> Dict[str, Any]:
     """
     Finds the single best match in VenueProfile using flexible matching modes.
-    
+
     MATCHING MODES:
-    
+
     MODE 1: STRICT (Both name AND address available)
       - Receipt has address AND profile has address
       - Name similarity must be >= 75%
       - Address similarity must be >= 70%
       - BOTH thresholds must pass
-      
+
     MODE 2: NAME-ONLY (No address on receipt)
       - Receipt has NO address
       - Profile also has NO address
       - Name similarity must be >= 85%
       - Requires strong token matching
-    
+
     Returns:
       {
         "matched": bool,
@@ -273,24 +273,24 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
 
     # --- CONFIGURATION ---
     # FLEXIBLE MATCHING: Support both strict and name-only modes
-    
+
     # MODE 1: STRICT (when both receipt and profile have addresses)
     NAME_MIN_THRESHOLD_STRICT = 0.75       # Name must be at least 75% similar
     ADDRESS_MIN_THRESHOLD = 0.70           # Address must be at least 70% similar
-    
+
     # MODE 2: NAME-ONLY (when receipt has NO address)
     NAME_MIN_THRESHOLD_NAME_ONLY = 0.85    # Name must be at least 85% similar
     # Requires strong token matching (no address to verify)
-    
+
     # --- 1) Pull a reasonable top-K candidate set from Mongo, using text index first
     K = 20
     docs = []
-    
+
     # Build search query - include address in text search if provided
     search_text = guess_raw
     if address_raw:
         search_text = f"{guess_raw} {address_raw}"
-    
+
     cur = (DB["VenueProfile"]
            .find({"$text": {"$search": search_text}}, {"score": {"$meta": "textScore"}})
            .sort([("score", {"$meta": "textScore"})])
@@ -300,12 +300,12 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
     # Fallback: regex on a few tokens if text index returns nothing
     if not docs:
         tokens = [t for t in re.split(r"\s+", guess_raw) if len(t) > 2][:3]
-        
+
         # Add address tokens if available
         if address_raw:
             addr_tokens = [t for t in re.split(r"\s+", address_raw) if len(t) > 2][:2]
             tokens.extend(addr_tokens)
-        
+
         if tokens:
             regex = "|".join(map(re.escape, tokens))
             cur = (DB["VenueProfile"]
@@ -326,7 +326,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         return out
 
     # --- 2) Helper functions to extract candidate strings ---
-    
+
     def get_profile(doc: Dict[str, Any]) -> Dict[str, Any]:
         return doc.get("profile") if isinstance(doc.get("profile"), dict) else doc
 
@@ -334,7 +334,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         """Extract all candidate name strings from a document"""
         prof = get_profile(doc)
         names: List[str] = []
-        
+
         # Primary name
         if isinstance(prof.get("MerchantName"), str) and prof["MerchantName"].strip():
             names.append(prof["MerchantName"].strip())
@@ -370,13 +370,13 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         """Extract all candidate address strings from a document"""
         prof = get_profile(doc)
         addresses: List[str] = []
-        
+
         # Primary address
         if isinstance(prof.get("MerchantAddress"), str) and prof["MerchantAddress"].strip():
             addresses.append(prof["MerchantAddress"].strip())
         if isinstance(doc.get("MerchantAddress"), str) and doc["MerchantAddress"].strip():
             addresses.append(doc["MerchantAddress"].strip())
-        
+
         # Address keyword arrays (if you have them)
         for path in (
             ("profile", "MerchantAddress_Keyword"),
@@ -406,24 +406,24 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         """Check if guess contains strong matching tokens (3+ chars)"""
         guess_tokens = set(t.lower() for t in re.split(r"\s+", guess) if len(t) >= 3)
         cand_tokens = set(t.lower() for t in re.split(r"\s+", candidate) if len(t) >= 3)
-        
+
         if not guess_tokens or not cand_tokens:
             return False
-        
+
         # At least 50% of guess tokens must appear in candidate
         matches = guess_tokens & cand_tokens
         return len(matches) >= max(1, len(guess_tokens) * 0.5)
 
     # --- 3) Score each document ---
-    
-    scored: List[Tuple[Dict[str, Any], float, float, float, str, str]] = []  
+
+    scored: List[Tuple[Dict[str, Any], float, float, float, str, str]] = []
     # (doc, name_score, address_score, combined_score, best_name_used, best_address_used)
 
     for doc in docs:
         # Get all candidate strings
         candidate_names = get_candidate_names(doc)
         candidate_addresses = get_candidate_addresses(doc) if address_raw else []
-        
+
         if not candidate_names:
             continue
 
@@ -431,7 +431,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         best_name_sim = 0.0
         best_name = ""
         has_strong_tokens = False
-        
+
         for cand_name in candidate_names:
             sim = fuzzy_ratio(guess_raw, cand_name)
             if sim > best_name_sim:
@@ -442,7 +442,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         # Score address similarity (if address provided)
         best_addr_sim = 0.0
         best_addr = ""
-        
+
         if address_raw and candidate_addresses:
             for cand_addr in candidate_addresses:
                 sim = fuzzy_ratio(address_raw, cand_addr)
@@ -469,7 +469,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
         return out
 
     # --- 4) Select the best match and apply appropriate thresholds based on mode ---
-    
+
     # Sort by name score first (primary), then address score (secondary)
     scored.sort(key=lambda x: (x[1], x[2]), reverse=True)
     best_doc, name_score, addr_score, best_name, best_addr = scored[0]
@@ -477,15 +477,15 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
 
     # Determine matching mode
     receipt_has_address = bool(address_raw and address_raw.strip())
-    
+
     matched = False
     rejection_reason = None
     match_mode = None
-    
+
     if receipt_has_address:
         # MODE 1: STRICT - Receipt has address, so we need address matching
         match_mode = "strict"
-        
+
         # Get profile info to check if it has an address
         prof = get_profile(best_doc)
         profile_has_address = bool(
@@ -494,7 +494,7 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
                 (prof.get("MerchantAddress_Keyword") and len(prof.get("MerchantAddress_Keyword", [])) > 0) or
                 (best_doc.get("MerchantAddress_Keyword") and len(best_doc.get("MerchantAddress_Keyword", [])) > 0)
             )
-        
+
         if not profile_has_address or addr_score == 0.0:
             # Receipt has address but profile doesn't - cannot match
             matched = False
@@ -512,18 +512,18 @@ async def find_similar_profile(merchant_guess: str, address_guess: str = None) -
                 rejection_reason = f"Name score too low ({name_score:.2f} < {NAME_MIN_THRESHOLD_STRICT})"
             else:
                 rejection_reason = f"Address score too low ({addr_score:.2f} < {ADDRESS_MIN_THRESHOLD})"
-    
+
     else:
         # MODE 2: NAME-ONLY - Receipt has NO address
         match_mode = "name_only"
-        
+
         # Get profile info to check if it ALSO has no address
         prof = get_profile(best_doc)
         profile_has_address = bool(
             (prof.get("MerchantAddress") and str(prof.get("MerchantAddress")).strip()) or
             (best_doc.get("MerchantAddress") and str(best_doc.get("MerchantAddress")).strip())
         )
-        
+
         if profile_has_address:
             # Receipt has no address but profile has address - cannot match
             # (We can only match address-less to address-less)
@@ -596,11 +596,11 @@ def fuzzy_ratio(s1: str, s2: str) -> float:
     """
     Calculate fuzzy similarity ratio between two strings.
     Returns a value between 0.0 and 1.0
-    
+
     You can use fuzzywuzzy or rapidfuzz library:
     from rapidfuzz import fuzz
     return fuzz.ratio(s1.lower(), s2.lower()) / 100.0
-    
+
     Or implement your own logic
     """
     try:
@@ -610,19 +610,18 @@ def fuzzy_ratio(s1: str, s2: str) -> float:
         # Fallback to simple character-based similarity
         s1_lower = s1.lower()
         s2_lower = s2.lower()
-        
+
         if s1_lower == s2_lower:
             return 1.0
-        
+
         # Simple character overlap ratio
         set1 = set(s1_lower)
         set2 = set(s2_lower)
-        
+
         if not set1 or not set2:
             return 0.0
-        
+
         intersection = len(set1 & set2)
         union = len(set1 | set2)
-        
+
         return intersection / union if union > 0 else 0.0
-    

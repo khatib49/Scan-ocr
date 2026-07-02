@@ -81,6 +81,7 @@ async def call_gemini_with_image(
     temp: float = 0.1,
     request_id: Optional[str] = None,
     call_type: str = "main",
+    response_schema: Optional[dict] = None,
 ) -> tuple[str, dict]:
     """
     Call Gemini API with image and prompt.
@@ -120,6 +121,8 @@ async def call_gemini_with_image(
         top_k=40,
         max_output_tokens=8192,
         response_mime_type="application/json",
+        # Enforce output structure server-side (eliminates JSON parse failures)
+        response_schema=response_schema,
         safety_settings=[
             types.SafetySetting(
                 category="HARM_CATEGORY_HARASSMENT", threshold="BLOCK_NONE"
