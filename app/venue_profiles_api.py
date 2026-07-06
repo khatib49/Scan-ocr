@@ -53,7 +53,7 @@ def _save_to_disk_and_refresh(profiles: List[Dict[str, Any]]) -> None:
     content = json.dumps(profiles, ensure_ascii=False, indent=2).encode("utf-8")
     _atomic_write(_profiles_path(), content)
     # Hot-swap globals used by /analyze
-    from app import main_openai as app_main
+    from app import main_gemini as app_main  # live app (was wrongly main_openai)
     app_main.VENUE_PROFILES = profiles
     app_main.NAME_INDEX = build_name_index(profiles)
 

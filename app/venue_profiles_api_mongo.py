@@ -51,10 +51,10 @@ async def _load_all_from_db() -> List[Dict[str, Any]]:
 
 async def _save_cache(profiles: List[Dict[str, Any]]) -> None:
     # Validate index builds before hot-swapping memory for /analyze
-    build_name_index(profiles)
-    from app import main_openai as app_main
+    idx = build_name_index(profiles)
+    from app import main_gemini as app_main  # live app (was wrongly main_openai)
     app_main.VENUE_PROFILES = profiles
-    app_main.NAME_INDEX = build_name_index(profiles)
+    app_main.NAME_INDEX = idx
 
 async def _reload_cache_from_db() -> Dict[str, Any]:
     profiles = await _load_all_from_db()
